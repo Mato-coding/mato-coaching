@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss";
 
+// Tailwind v4: Tokens leben in globals.css (@theme). Content wird automatisch erkannt.
+// Diese Datei ist optional — du kannst sie löschen. Behalte sie nur, wenn du später
+// Plugins ergänzen willst. Die alten, toten Farb-Referenzen wurden entfernt.
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,13 +10,7 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        // Hier kannst du später dein Design-System definieren
-        background: "var(--background)",
-        primary: "var(--foreground)",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };

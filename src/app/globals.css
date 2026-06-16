@@ -1,21 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #fcfaf0;
+  /* Farbe — Quelle der Wahrheit. Erzeugt bg-*/text-*/border-* Utilities. */
+  --color-paper: #fcfaf0;
   --color-surface: #ffffff;
-  --color-primary: #19191a;
-  --color-accent: #09173b;
-  
-  /* Beibehaltung der Next.js Standard-Fonts, falls genutzt */
+  --color-ink: #19191a;
+  --color-navy: #09173b;
+  --color-muted: #6b6e72;
+  --color-umber: #7c6a57;
+
+  /* Schriften — gemappt auf next/font CSS-Variablen aus layout.tsx */
   --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-spectral);
   --font-mono: var(--font-geist-mono);
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-primary);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, Arial, sans-serif;
   line-height: 1.6;
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Überschriften standardmäßig in der Serife (Spectral) */
+h1, h2, h3 {
+  font-family: var(--font-serif), Georgia, serif;
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+/* Atem-Rhythmus / Motion: Bewegung respektiert Nutzer-Präferenz */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
