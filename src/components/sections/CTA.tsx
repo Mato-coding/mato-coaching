@@ -3,7 +3,7 @@ import FadeIn from "../ui/FadeIn";
 
 export default function CTA() {
   return (
-    <section className="bg-background px-6 py-24 md:py-32">
+    <section className="bg-background px-6 py-16 md:py-24">
       <div className="mx-auto max-w-2xl text-center">
 
         <FadeIn>

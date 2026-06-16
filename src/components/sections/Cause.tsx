@@ -2,12 +2,12 @@ import FadeIn from "../ui/FadeIn";
 
 export default function Cause() {
   return (
-    <section className="bg-surface px-6 py-24 md:py-32">
+    <section className="bg-surface px-6 py-16 md:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
 
           {/* Linke Spalte: Eyebrow + Headline */}
-          <div className="md:col-span-5">
+          <div>
             <FadeIn>
               <div className="flex items-center gap-3 mb-6">
                 <span className="h-px w-6 bg-umber" aria-hidden="true" />
@@ -17,14 +17,14 @@ export default function Cause() {
               </div>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15]">
+              <h2 className="font-serif text-4xl md:text-5xl font-medium text-primary leading-[1.1]">
                 Dein System macht keinen Fehler. Es schützt dich.
               </h2>
             </FadeIn>
           </div>
 
-          {/* Rechte Spalte: Body-Text */}
-          <div className="md:col-span-7 lg:col-span-6 lg:col-start-7">
+          {/* Rechte Spalte: Body-Text, vertikal zentriert */}
+          <div className="flex items-center">
             <FadeIn delay={0.2}>
               <p className="text-primary/80 text-lg leading-relaxed">
                 Chronische innere Unruhe oder Zustände akuter Überwältigung

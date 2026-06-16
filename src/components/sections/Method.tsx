@@ -2,7 +2,7 @@ import FadeIn from "../ui/FadeIn";
 
 export default function Method() {
   return (
-    <section className="bg-background px-6 py-24 md:py-32">
+    <section className="bg-background px-6 py-16 md:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
 

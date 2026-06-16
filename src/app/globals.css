@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  /* Bestehende Tokens — alle Komponenten bleiben unverändert */
+  /* Farb-Tokens */
   --color-background: #fcfaf0;
   --color-surface: #ffffff;
   --color-primary: #19191a;
   --color-accent: #09173b;
-
-  /* Neu ergänzt */
   --color-muted: #6b6e72;
   --color-umber: #7c6a57;
 
@@ -15,15 +13,11 @@
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-spectral);
   --font-mono: var(--font-geist-mono);
-
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
 }
 
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-background);
+  color: var(--color-primary);
   font-family: var(--font-sans), system-ui, Arial, sans-serif;
   line-height: 1.6;
   margin: 0;
@@ -32,18 +26,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Überschriften standardmäßig in der Serife (Spectral) */
 h1, h2, h3 {
   font-family: var(--font-serif), Georgia, serif;
   line-height: 1.15;
   font-weight: 500;
 }
 
-/* Atem-Rhythmus / Motion: Bewegung respektiert Nutzer-Präferenz */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

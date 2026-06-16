@@ -9,7 +9,7 @@ const credentials = [
 
 export default function About() {
   return (
-    <section className="bg-surface py-24 md:py-32">
+    <section className="bg-surface py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
 

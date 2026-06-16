@@ -8,7 +8,7 @@ const benefits = [
 
 export default function Transformation() {
   return (
-    <section className="bg-background px-6 py-24 md:py-32">
+    <section className="bg-background px-6 py-16 md:py-24">
       <div className="mx-auto max-w-3xl">
 
         {/* Eyebrow mit Umber-Signature */}
