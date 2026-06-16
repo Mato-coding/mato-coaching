@@ -2,8 +2,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center bg-background px-6">
-      <div className="max-w-3xl mx-auto text-center mt-16 md:mt-0">
+<section className="min-h-[90vh] flex flex-col items-center justify-centerbg-background px-6 pt-20">      <div className="max-w-3xl mx-auto text-center">
         
         {/* Dachzeile zur sofortigen inhaltlichen Einordnung */}
         <div className="text-sm font-medium tracking-widest uppercase text-accent mb-6">
