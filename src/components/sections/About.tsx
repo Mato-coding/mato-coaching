@@ -17,7 +17,7 @@ export default function About() {
           <FadeIn>
             <div className="flex justify-center lg:justify-end">
               <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop"
+                src="/portrait-lasse-sw.jpg"
                 alt="Lasse Klüver — Somatic Breathwork & Prozessbegleitung"
                 width={600}
                 height={800}
