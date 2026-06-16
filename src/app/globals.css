@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-/* Farbe — Quelle der Wahrheit. Erzeugt bg-, text- und border-Utilities. */
-  --color-paper: #fcfaf0;
+  /* Bestehende Tokens — alle Komponenten bleiben unverändert */
+  --color-background: #fcfaf0;
   --color-surface: #ffffff;
-  --color-ink: #19191a;
-  --color-navy: #09173b;
+  --color-primary: #19191a;
+  --color-accent: #09173b;
+
+  /* Neu ergänzt */
   --color-muted: #6b6e72;
   --color-umber: #7c6a57;
 
-  /* Schriften — gemappt auf next/font CSS-Variablen aus layout.tsx */
+  /* Schriften */
   --font-sans: var(--font-geist-sans);
   --font-serif: var(--font-spectral);
   --font-mono: var(--font-geist-mono);

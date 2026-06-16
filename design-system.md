@@ -10,20 +10,23 @@ Stelle ausgegeben, alles andere bleibt diszipliniert und leise.
 
 ## 1. Farbe (Tokens)
 
-| Token        | Hex       | Rolle |
-|--------------|-----------|-------|
-| `--color-paper`    | `#FCFAF0` | Hintergrund (warmes Papierweiß) |
-| `--color-surface`  | `#FFFFFF` | Karten / leicht erhöhte Flächen |
-| `--color-ink`      | `#19191A` | Primäre Textfarbe |
-| `--color-navy`     | `#09173B` | Primär: Autorität, CTAs, Akzentflächen |
-| `--color-muted`    | `#6B6E72` | Sekundärtext, Hairlines, Captions |
-| `--color-umber`    | `#7C6A57` | EINZIGER warmer Zier-Akzent. Sehr sparsam: dünne Linie, Eyebrow-Strich, kleine Marke. |
+Tokens leben in `globals.css` via `@theme` — das ist die einzige Quelle der Wahrheit.
+Tailwind generiert daraus automatisch `bg-*`, `text-*`, `border-*`-Utilities.
+
+| Token (CSS-Variable)       | Tailwind-Klasse    | Hex       | Rolle |
+|----------------------------|--------------------|-----------|-------|
+| `--color-background`       | `bg-background`    | `#FCFAF0` | Hintergrund (warmes Papierweiß) |
+| `--color-surface`          | `bg-surface`       | `#FFFFFF` | Karten / leicht erhöhte Flächen |
+| `--color-primary`          | `text-primary`     | `#19191A` | Primäre Textfarbe |
+| `--color-accent`           | `bg-accent`        | `#09173B` | Primär: Autorität, CTAs, Akzentflächen |
+| `--color-muted`            | `text-muted`       | `#6B6E72` | Sekundärtext, Hairlines, Captions |
+| `--color-umber`            | `bg-umber`         | `#7C6A57` | EINZIGER warmer Zier-Akzent. Sehr sparsam: dünne Linie, Eyebrow-Strich. |
 
 Regeln:
-- CTAs: Fläche `--color-navy`, Text `--color-paper`. Sekundär-CTA: Outline in `--color-navy`.
-- `--color-umber` ist Signal, nicht Dekoration — selten und absichtsvoll.
-- Navy bleibt der Anker; Umber ist warm, aber nie laut. Niemals beide als Flächen konkurrieren lassen.
-- Umber nie für Fließtext; Kontrast immer prüfen.
+- CTAs: Fläche `bg-accent`, Text `text-background`. Sekundär-CTA: Outline in `accent`.
+- `text-primary/70` etc. für Opazitätsstufen (Tailwind v4 unterstützt das nativ).
+- `--color-umber` ist Signal, nicht Dekoration — selten und absichtsvoll einsetzen.
+- Umber nie für Fließtext verwenden.
 
 ---
 
@@ -31,9 +34,9 @@ Regeln:
 
 **Pairing (final): Display = Spectral · Body/UI = Geist Sans**
 - **Spectral** (via `next/font/google`) für Überschriften — ruhig, kontrastarm, literarisch.
-  Echte Kursive vorhanden: für Betonungen und das Testimonial-Zitat nutzen.
+  Echte Kursive vorhanden (`font-style: italic`): für Betonungen und das Testimonial-Zitat.
 - **Geist Sans** für Fließtext, UI und Buttons (bereits verdrahtet).
-- Gewichte schlank halten: Spectral 400/500 (+ italic), Geist 400/500.
+- Im Code: `font-serif` (Spectral) und `font-sans` (Geist) als Tailwind-Utilities.
 
 Type-Skala (Richtwerte, `clamp()` für responsive Größen):
 | Rolle          | Größe                          | Font     | Gewicht | Line-height |
@@ -43,9 +46,9 @@ Type-Skala (Richtwerte, `clamp()` für responsive Größen):
 | H2             | `1.5rem`                       | Spectral | 500     | 1.25 |
 | Body           | `1.125rem` (18px)              | Geist    | 400     | 1.6 |
 | Small          | `0.9375rem`                    | Geist    | 400     | 1.55 |
-| Eyebrow        | `0.8125rem`, uppercase, `letter-spacing: 0.12em` | Geist | 500 | 1.4 |
+| Eyebrow        | `0.8125rem`, uppercase, `tracking-[0.15em]` | Geist | 500 | 1.4 |
 
-Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signature-Detail).
+Eyebrows tragen beidseitig einen dünnen `bg-umber`-Hairline-Strich (Signature-Detail).
 
 ---
 
@@ -57,40 +60,64 @@ Basiseinheit 4px. Skala: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 12
 - Sektions-Innenabstand (vertikal): Desktop `96–160px`, Mobil `64–96px`.
 - Content-Container: max. `~1140px`; Textspalten max. `~68ch` für ruhigen Lesefluss.
 - Radius: `rounded-sm` (4px) für Inputs, `rounded-md` (8px) für Karten/Buttons.
-- Hairlines: 1px in `--color-muted` bei reduzierter Deckkraft (~`/30`).
+- Hairlines: 1px in `border-primary/10` (dezente Trennlinie).
 
 ---
 
 ## 4. Motion (Framer Motion)
 
 Leise, langsam, absichtsvoll — kein Bounce, kein Spring, keine Streueffekte.
-- Einblendungen: `600–1200ms`, Easing `cubic-bezier(0.16, 1, 0.3, 1)`.
-- Bewegung minimal: Opazität + kleiner Y-Versatz (`8–16px`).
-- **Eine** orchestrierte Hero-Einblendung beim Laden („settle"), danach Stille.
-- Scroll-Reveals dezent und einmalig (nicht bei jedem Re-Enter).
-- `prefers-reduced-motion`: Transforms aus, nur sanfte Opazität oder keine Bewegung.
+- Bestehender Wrapper: `src/components/ui/FadeIn.tsx` — immer wiederverwenden, nie duplizieren.
+- Einblendungen: `duration: 0.8`, `ease: "easeOut"`, Y-Versatz `20px`.
+- Gestaffelte Hero-Einblendung via `delay`-Prop (0 / 0.1 / 0.2 / 0.3).
+- Scroll-Reveals: `viewport={{ once: true, margin: "-100px" }}` — einmalig, nie bei Re-Enter.
+- `prefers-reduced-motion`: in `globals.css` global abgefangen (Transitions auf 0.01ms).
 
 ---
 
 ## 5. Signature-Element
 
 **„Der Atem-Rhythmus":** Pacing über großzügige, konsistente Abstände plus eine einzige
-langsame Hero-Einblendung. Wiederkehrendes Signal: ein dünner `--color-umber`-Keyline-/
-Eyebrow-Strich. Das ist die *eine* Stelle, an der Charakter sichtbar wird — sonst Stille.
+langsame Hero-Einblendung. Wiederkehrendes visuelles Signal: beidseitige `bg-umber`-Hairlines
+flankieren die Eyebrow-Dachzeile. Das ist die *eine* Stelle, an der Charakter sichtbar wird —
+sonst Stille.
 
 ---
 
-## 6. Quality-Floor (immer)
+## 6. Angebot (zwei Stufen)
 
-- Responsive bis Mobil; sichtbarer Tastatur-Fokus; `prefers-reduced-motion` respektiert.
-- Sentence-Case in der UI, aktive Verben, keine Floskeln.
-- Buttons sagen, was passiert („Erstgespräch vereinbaren"), konsistent durch den Flow.
+- **„Erdung"** — Gruppen-Breathwork-Reihe, hybrid (online + Präsenz), Einstieg (~190–390 € p. P.)
+- **„Neuausrichtung"** — 1:1-Prozessbegleitung ~10–12 Wochen, hybrid, Premium (~2.900–4.500 €,
+  Einmalzahlung oder 2–3 Raten)
 
 ---
 
-## 7. Technische Notiz für die Umsetzung
+## 7. Copy-Regeln (wichtig — auch rechtlich)
 
-- `globals.css` nutzt Tailwind v4 (`@theme`) — das ist die Quelle der Wahrheit für Tokens.
-- `tailwind.config.ts` enthielt tote Referenzen (`var(--background)`/`var(--foreground)`) → entfernt.
-  In v4 ist die JS-Config optional; Tokens leben im `@theme`.
-- Schriften über `next/font/google` (Spectral + Geist) laden und als CSS-Variablen mappen.
+- KEINE Heilversprechen, KEINE klinischen Diagnosen als Zielgruppen-Label.
+- Framing: stressbedingte innere Unruhe, Nervensystem-Regulation, Persönlichkeitsentwicklung.
+- Disclaimer nahe Angebot und im Footer:
+  „Diese Arbeit dient der Persönlichkeitsentwicklung und Stressregulation und ersetzt keine
+  psychotherapeutische oder ärztliche Behandlung."
+- Sentence case in der UI. Aktive Verben. Keine Floskeln.
+- Buttons sagen, was passiert: „Erstgespräch vereinbaren", „Zum Kurz-Assessment".
+
+---
+
+## 8. Quality-Floor (immer)
+
+- Responsive bis Mobil; sichtbarer Tastatur-Fokus (`focus-visible`).
+- `prefers-reduced-motion` ist in `globals.css` global abgefangen.
+- Kein neues Animations-System einführen — nur `FadeIn.tsx` verwenden.
+- Tokens nicht neu erfinden — ausschließlich aus `globals.css` verwenden.
+
+---
+
+## 9. Technische Notiz
+
+- Tailwind v4: Tokens in `globals.css` via `@theme`, keine `tailwind.config.ts` (gelöscht).
+- Schriften via `next/font/google`: Spectral (weight 400/500, style normal/italic) +
+  Geist Sans — als CSS-Variablen `--font-spectral` und `--font-geist-sans` gemappt,
+  beide als Klassen auf `<body>` in `layout.tsx`.
+- `h1`, `h2`, `h3` erben `font-family: var(--font-serif)` global aus `globals.css`.
+  Im JSX zusätzlich `font-serif` als Tailwind-Klasse setzen, falls nötig.
