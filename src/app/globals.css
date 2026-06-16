@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Farbe — Quelle der Wahrheit. Erzeugt bg-*/text-*/border-* Utilities. */
+/* Farbe — Quelle der Wahrheit. Erzeugt bg-, text- und border-Utilities. */
   --color-paper: #fcfaf0;
   --color-surface: #ffffff;
   --color-ink: #19191a;
