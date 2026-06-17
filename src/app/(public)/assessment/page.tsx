@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "Kurz-Assessment",
+  description:
+    "In drei Minuten herausfinden, ob eine Begleitung mit Somatic Breathwork und IFS zu dir passt.",
+};
+
 import Link from "next/link";
 import AssessmentForm from "@/components/forms/AssessmentForm";
 

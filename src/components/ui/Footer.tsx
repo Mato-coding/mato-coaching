@@ -8,7 +8,10 @@ export default function Footer() {
         {/* Markenname */}
         <div className="text-center mb-8">
           <span className="font-serif text-background/90 text-lg font-medium">
-            Lasse Klüver
+            Mato Coaching by Lasse Klüver
+            <p className="text-background/50 text-sm mt-2">
+  Somatic Breathwork, Coaching & IFS · Hamburg und online
+</p>
           </span>
         </div>
 

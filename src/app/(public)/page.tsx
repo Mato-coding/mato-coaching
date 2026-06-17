@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Breathwork & Coaching in Hamburg",
+  description:
+    "Somatic Breathwork und IFS-orientierte Begleitung in Hamburg und online. Finde bei innerer Unruhe, Anspannung und Erschöpfung zurück zur Ruhe.",
+};
 import Hero from "@/components/sections/Hero";
 import Transformation from "@/components/sections/Transformation";
 import Cause from "@/components/sections/Cause";

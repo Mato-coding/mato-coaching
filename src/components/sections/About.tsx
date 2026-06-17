@@ -18,7 +18,7 @@ export default function About() {
             <div className="flex justify-center lg:justify-end">
               <Image
                 src="/portrait-lasse-sw.jpg"
-                alt="Lasse Klüver — Somatic Breathwork & Prozessbegleitung"
+                alt="Lasse Klüver — Somatic Breathwork & IFS-Coach"
                 width={600}
                 height={800}
                 className="rounded-md object-cover"
@@ -45,12 +45,13 @@ export default function About() {
 
             <FadeIn delay={0.3}>
               <p className="text-primary/80 text-lg leading-relaxed mb-4">
-                Als Prozessbegleiter und Coach begegne ich dir auf Augenhöhe —
+                Als Prozessbegleiter und Coach in Hamburg begegne ich dir auf Augenhöhe —
                 mit einer klaren, strukturierten Haltung und tiefem Verständnis
                 für die Mechanismen von Stress und innerer Erschöpfung. Meine
                 Arbeit basiert auf der Überzeugung, dass echte Veränderung erst
                 dann beginnt, wenn wir den Körper einbeziehen und dem
-                Nervensystem erlauben, alte Alarmzustände loszulassen.
+                Nervensystem erlauben, alte Alarmzustände loszulassen. 
+                Meine Begleitung findet in Hamburg und online statt.
               </p>
               <p className="text-primary/80 text-lg leading-relaxed">
                 Gemeinsam schaffen wir einen unaufgeregten, sicheren Raum, in
