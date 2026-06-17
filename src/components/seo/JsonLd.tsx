@@ -25,17 +25,23 @@ const jsonLd = {
     "Internal Family Systems (IFS)",
     "Nervensystem-Regulation",
     "Stressbewältigung",
-    "Anxiety",
-    "Erschöpfung",
-    "Selbstfürsorge",
+    "Umgang mit innerer Unruhe",
+    "Umgang mit Erschöpfung",
+    "erholsamer Schlaf",
+    "Schlafstörungen",
+    "Schlafprobleme",
+    "Selbstregulation",
     "Persönlichkeitsentwicklung",
+    "Anxiety",
+    "Panikattacken",
   ],
   founder: {
     "@type": "Person",
     name: "Lasse Klüver",
     jobTitle: "Coach & Somatic Breathwork Begleiter",
+    sameAs: ["https://www.linkedin.com/in/lassekl%C3%BCver/"],
   },
-  // Sobald vorhanden hier deine Profile eintragen (Instagram, LinkedIn etc.):
+  // Profile des Unternehmens (z. B. berufliches Instagram), sobald vorhanden hier eintragen:
   sameAs: [],
 };
 
