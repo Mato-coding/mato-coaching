@@ -1,48 +1,47 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import Cal, { getCalApi } from "@calcom/embed-react";
-import { useEffect } from "react";
+import CalEmbed from "./CalEmbed";
+
+export const metadata: Metadata = {
+  title: "Erstgespräch vereinbaren",
+  description:
+    "Kostenfreies, unverbindliches Erstgespräch für Breathwork und Coaching in Hamburg und online.",
+};
 
 export default function BookingPage() {
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({});
-      cal("ui", {
-        theme: "light",
-        styles: { branding: { brandColor: "#09173b" } },
-        hideEventTypeDetails: false,
-        layout: "month_view"
-      });
-    })();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-background py-32 px-6 flex flex-col items-center">
-      <div className="max-w-4xl w-full">
-        <div className="mb-12">
-          <Link href="/" className="text-sm text-primary/60 hover:text-primary transition-colors">
+    <section className="bg-background py-16 md:py-24 px-6">
+      <div className="mx-auto max-w-4xl w-full">
+        <div className="mb-10">
+          <Link
+            href="/"
+            className="text-sm text-muted hover:text-primary transition-colors"
+          >
             ← Zurück zur Startseite
           </Link>
         </div>
-        
+
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl text-primary font-medium mb-4">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="h-px w-6 bg-umber" aria-hidden="true" />
+            <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
+              Erstgespräch
+            </span>
+            <span className="h-px w-6 bg-umber" aria-hidden="true" />
+          </div>
+          <h1 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-4">
             Erstgespräch vereinbaren
           </h1>
-          <p className="text-lg text-primary/80 max-w-2xl mx-auto">
-            Wähle einen passenden Zeitpunkt für unser kostenfreies Kennenlernen. Der Termin findet per Video-Call statt.
+          <p className="text-lg text-primary/80 max-w-2xl mx-auto leading-relaxed">
+            Wähle einen passenden Zeitpunkt für unser kostenfreies Kennenlernen.
+            Der Termin findet per Video-Call statt.
           </p>
         </div>
 
-        <div className="bg-surface rounded-2xl shadow-sm min-h-[600px] border border-primary/5 flex items-center justify-center p-4 overflow-hidden">
-          {/* Vorerst ein öffentlicher Cal.com Test-Link. Wird später durch deinen ersetzt. */}
-          <Cal 
-            calLink="lasse-kluever/erstgespraech" 
-            style={{ width: "100%", height: "100%", overflow: "scroll" }}
-          />
+        <div className="bg-surface rounded-md border border-primary/8 min-h-[600px] p-4 overflow-hidden">
+          <CalEmbed />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
