@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Markenname */}
         <div className="text-center mb-8">
           <span className="font-serif text-background/90 text-lg font-medium">
-            Mato Coaching by Lasse Klüver
+            Mato Coaching
             <p className="text-background/50 text-sm mt-2">
   Somatic Breathwork, Coaching & IFS · Hamburg und online
 </p>
@@ -50,7 +50,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="text-center">
           <p className="text-background/40 text-xs">
-            © 2026 Lasse Klüver. Alle Rechte vorbehalten.
+            © 2026 Mato Coaching. Alle Rechte vorbehalten.
           </p>
         </div>
 
