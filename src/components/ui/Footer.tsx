@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,6 +8,14 @@ export default function Footer() {
 
         {/* Markenname */}
         <div className="text-center mb-8">
+          <Image
+  src="/logo.svg"
+  alt=""
+  width={36}
+  height={36}
+  className="h-20 w-auto mx-auto mb-3"
+  style={{ width: "auto" }}
+/>
           <span className="font-serif text-background/90 text-lg font-medium">
             Mato Coaching
             <p className="text-background/50 text-sm mt-2">
