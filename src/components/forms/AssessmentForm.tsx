@@ -9,6 +9,7 @@ import {
   type Cluster,
   type Question,
 } from "@/lib/assessment-config";
+import ResultActions from "@/components/forms/ResultActions";
 
 interface StepRecord {
   questionId: string;
@@ -125,24 +126,15 @@ export default function AssessmentForm() {
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4 items-start">
-          <Link
-            href={result.ctaHref}
-            className="inline-block bg-accent text-background px-8 py-4 rounded-md font-medium hover:opacity-90 transition-opacity"
-          >
-            {result.ctaLabel}
-          </Link>
-          <button
-            onClick={() => {
-              setHistory([]);
-              setCluster(null);
-              setDone(false);
-            }}
-            className="text-sm text-muted hover:text-primary transition-colors pt-4 sm:pt-5"
-          >
-            Assessment neu starten
-          </button>
-        </div>
+       <ResultActions
+  ctaHref={result.ctaHref}
+  ctaLabel={result.ctaLabel}
+  onRestart={() => {
+    setHistory([]);
+    setCluster(null);
+    setDone(false);
+  }}
+/>
       </div>
     );
   }

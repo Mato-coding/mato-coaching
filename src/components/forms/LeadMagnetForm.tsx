@@ -1,15 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function LeadMagnetForm() {
+export default function LeadMagnetForm({
+  autoFocus = false,
+}: {
+  autoFocus?: boolean;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  // Beim Einblenden sanft hinscrollen und den Cursor ins erste Feld setzen.
+  useEffect(() => {
+    if (autoFocus && nameRef.current) {
+      nameRef.current.focus({ preventScroll: true });
+      nameRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [autoFocus]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -59,6 +72,7 @@ export default function LeadMagnetForm() {
         </label>
         <input
           id="name"
+          ref={nameRef}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
