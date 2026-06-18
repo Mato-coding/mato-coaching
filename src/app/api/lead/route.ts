@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     const greeting = safeName ? ` ${safeName}` : "";
 
     // Audio-Mail an den Interessenten
-    await resend.emails.send({
+    const { error: audioError } = await resend.emails.send({
       from: FROM,
       to: email,
       replyTo: REPLY_TO,
@@ -91,13 +91,21 @@ export async function POST(request: Request) {
       `,
     });
 
-    // Benachrichtigung an Lasse
+    if (audioError) {
+      console.error("Resend-Fehler (Audio-Mail):", audioError);
+      return NextResponse.json(
+        { error: "Die E-Mail konnte nicht versendet werden. Bitte versuche es später erneut." },
+        { status: 502 }
+      );
+    }
+
+    // 3. Benachrichtigung an Lasse (best effort, blockiert nicht)
     const notify = process.env.LEAD_NOTIFICATION_EMAIL;
     if (notify) {
       const timestamp = new Date().toLocaleString("de-DE", {
         timeZone: "Europe/Berlin",
       });
-      await resend.emails.send({
+      const { error: notifyError } = await resend.emails.send({
         from: FROM,
         to: notify,
         replyTo: email,
@@ -111,6 +119,9 @@ export async function POST(request: Request) {
           </div>
         `,
       });
+      if (notifyError) {
+        console.error("Resend-Fehler (Benachrichtigung):", notifyError);
+      }
     }
 
     return NextResponse.json({ ok: true });
