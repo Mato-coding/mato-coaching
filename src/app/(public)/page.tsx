@@ -5,6 +5,7 @@ import Method from "@/components/sections/Method";
 import About from "@/components/sections/About";
 import CTA from "@/components/sections/CTA";
 import FadeIn from "@/components/ui/FadeIn";
+import LeadMagnet from "@/components/sections/LeadMagnet";
 
 export const metadata = {
   title: "Breathwork & Coaching in Hamburg",
@@ -32,6 +33,9 @@ export default function Home() {
       </FadeIn>
       <FadeIn delay={0.2}>
         <CTA />
+      </FadeIn>
+      <FadeIn delay={0.2}>
+        <LeadMagnet />
       </FadeIn>
     </>
   );
