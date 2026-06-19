@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import CalEmbed from "./CalEmbed";
 
 export const metadata: Metadata = {
@@ -39,7 +40,9 @@ export default function BookingPage() {
         </div>
 
         <div className="bg-surface rounded-md border border-primary/8 min-h-[600px] p-4 overflow-hidden">
-          <CalEmbed />
+          <Suspense fallback={null}>
+            <CalEmbed />
+          </Suspense>
         </div>
       </div>
     </section>

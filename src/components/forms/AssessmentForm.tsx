@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   questions,
@@ -21,6 +21,7 @@ export default function AssessmentForm() {
   const [cluster, setCluster] = useState<Cluster | null>(null);
   const [history, setHistory] = useState<StepRecord[]>([]);
   const [done, setDone] = useState(false);
+  const submittedRef = useRef(false);
 
   const step = history.length;
 
@@ -40,6 +41,18 @@ export default function AssessmentForm() {
 
   // Alle gesammelten Tags aus der History
   const collectedTags = history.flatMap((h) => h.tags);
+
+  // Abschluss genau einmal anonym tracken, sobald das Ergebnis feststeht
+  useEffect(() => {
+    if (!done || !cluster || submittedRef.current) return;
+    submittedRef.current = true;
+    const route = calculateResult(collectedTags, cluster);
+    fetch("/api/assessment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cluster, route, answers: collectedTags }),
+    }).catch((err) => console.error("Assessment-Tracking-Fehler:", err));
+  }, [done, cluster, collectedTags]);
 
   const handleAnswer = (answer: (typeof currentQ.answers)[number]) => {
     const newCluster = answer.cluster ?? cluster;
@@ -129,10 +142,13 @@ export default function AssessmentForm() {
        <ResultActions
   ctaHref={result.ctaHref}
   ctaLabel={result.ctaLabel}
+  cluster={cluster}
+  result={route}
   onRestart={() => {
     setHistory([]);
     setCluster(null);
     setDone(false);
+    submittedRef.current = false;
   }}
 />
       </div>

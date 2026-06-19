@@ -25,7 +25,7 @@ export default function LeadMagnet() {
           </p>
 
           <div className="mt-10 max-w-md">
-            <LeadMagnetForm />
+            <LeadMagnetForm source="startseite" />
           </div>
         </FadeIn>
       </div>

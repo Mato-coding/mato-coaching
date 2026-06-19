@@ -10,15 +10,24 @@ const JOURNAL_URL = "/journal";
 type ResultActionsProps = {
   ctaHref: string;
   ctaLabel: string;
+  cluster: string;
+  result: string;
   onRestart: () => void;
 };
 
 export default function ResultActions({
   ctaHref,
   ctaLabel,
+  cluster,
+  result,
   onRestart,
 }: ResultActionsProps) {
   const [showAudio, setShowAudio] = useState(false);
+
+  const ctaHrefWithContext =
+    ctaHref === "/termin"
+      ? `/termin?cluster=${encodeURIComponent(cluster)}&result=${encodeURIComponent(result)}`
+      : ctaHref;
 
   return (
     <div className="mt-10 text-left">
@@ -41,7 +50,7 @@ export default function ResultActions({
             </p>
             <div className="mt-auto pt-6">
               <Link
-                href={ctaHref}
+                href={ctaHrefWithContext}
                 className="inline-block rounded-md bg-accent px-6 py-3 text-background transition hover:opacity-90"
               >
                 {ctaLabel}
@@ -100,7 +109,12 @@ export default function ResultActions({
             <p className="mb-4 text-center text-muted">
               Trag dich ein, dann kommt dein Audio direkt per E-Mail.
             </p>
-            <LeadMagnetForm autoFocus />
+            <LeadMagnetForm
+              autoFocus
+              source="assessment"
+              assessmentCluster={cluster}
+              assessmentResult={result}
+            />
           </div>
         )}
       </div>

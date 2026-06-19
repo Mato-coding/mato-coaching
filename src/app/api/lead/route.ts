@@ -30,6 +30,14 @@ export async function POST(request: Request) {
     const email = typeof body.email === "string" ? body.email.trim() : "";
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const consent = body.consent === true;
+    const source = typeof body.source === "string" ? body.source : "lead_magnet";
+    const pagePath = typeof body.pagePath === "string" ? body.pagePath : null;
+    const referrer = typeof body.referrer === "string" ? body.referrer : null;
+    const assessmentCluster =
+      typeof body.assessmentCluster === "string" ? body.assessmentCluster : null;
+    const assessmentResult =
+      typeof body.assessmentResult === "string" ? body.assessmentResult : null;
+    const userAgent = request.headers.get("user-agent") || "unbekannt";
 
     if (!isValidEmail(email)) {
       return NextResponse.json(
@@ -45,14 +53,23 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Kontakt in Supabase speichern
+    // 1. Kontakt in Supabase speichern (zuerst, damit bei Mail-Fehlern kein Kontakt verloren geht)
     const supabase = getSupabaseAdmin();
-    const { error: dbError } = await supabase.from("leads").insert({
-      email,
-      name: name || null,
-      source: "lead_magnet",
-      consent,
-    });
+    const { data: insertedLead, error: dbError } = await supabase
+      .from("leads")
+      .insert({
+        email,
+        name: name || null,
+        source,
+        page_path: pagePath,
+        referrer,
+        assessment_cluster: assessmentCluster,
+        assessment_result: assessmentResult,
+        audio_email_status: "pending",
+        consent,
+      })
+      .select("id")
+      .single();
 
     if (dbError) {
       console.error("Supabase-Fehler:", dbError);
@@ -61,6 +78,8 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
+    const leadId = insertedLead.id;
 
     // 2. Mails über Resend versenden
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -93,18 +112,30 @@ export async function POST(request: Request) {
 
     if (audioError) {
       console.error("Resend-Fehler (Audio-Mail):", audioError);
-      return NextResponse.json(
-        { error: "Die E-Mail konnte nicht versendet werden. Bitte versuche es später erneut." },
-        { status: 502 }
-      );
     }
 
-    // 3. Benachrichtigung an Lasse (best effort, blockiert nicht)
+    // 3. Versandstatus am Lead festhalten
+    const { error: statusError } = await supabase
+      .from("leads")
+      .update({ audio_email_status: audioError ? "failed" : "sent" })
+      .eq("id", leadId);
+
+    if (statusError) {
+      console.error("Supabase-Fehler (Status-Update):", statusError);
+    }
+
+    // 4. Benachrichtigung an Lasse (best effort, blockiert nicht; läuft auch bei fehlgeschlagenem Audio-Versand)
     const notify = process.env.LEAD_NOTIFICATION_EMAIL;
     if (notify) {
       const timestamp = new Date().toLocaleString("de-DE", {
         timeZone: "Europe/Berlin",
       });
+      const assessmentBlock =
+        assessmentCluster || assessmentResult
+          ? `<p style="margin:0 0 8px;">Assessment: Cluster ${escapeHtml(
+              assessmentCluster || "–"
+            )}, Ergebnis ${escapeHtml(assessmentResult || "–")}</p>`
+          : "";
       const { error: notifyError } = await resend.emails.send({
         from: FROM,
         to: notify,
@@ -115,6 +146,12 @@ export async function POST(request: Request) {
             <h2 style="font-size:18px;margin:0 0 16px;">Neue Anmeldung über das Breathwork-Audio</h2>
             <p style="margin:0 0 8px;">Name: ${safeName || "(nicht angegeben)"}</p>
             <p style="margin:0 0 8px;">E-Mail: ${safeEmail}</p>
+            <p style="margin:0 0 8px;">Quelle: ${escapeHtml(source)}</p>
+            <p style="margin:0 0 8px;">Seitenpfad: ${escapeHtml(pagePath || "–")}</p>
+            <p style="margin:0 0 8px;">Referrer: ${escapeHtml(referrer || "–")}</p>
+            ${assessmentBlock}
+            <p style="margin:0 0 8px;">Gerät/Browser: ${escapeHtml(userAgent)}</p>
+            <p style="margin:0 0 8px;">Audio-Versand: ${audioError ? "fehlgeschlagen" : "erfolgreich"}</p>
             <p style="margin:0;">Zeitpunkt: ${timestamp}</p>
           </div>
         `,
@@ -122,6 +159,13 @@ export async function POST(request: Request) {
       if (notifyError) {
         console.error("Resend-Fehler (Benachrichtigung):", notifyError);
       }
+    }
+
+    if (audioError) {
+      return NextResponse.json(
+        { error: "Die E-Mail konnte nicht versendet werden. Bitte versuche es später erneut." },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({ ok: true });
