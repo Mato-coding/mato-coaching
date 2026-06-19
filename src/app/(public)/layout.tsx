@@ -6,8 +6,8 @@ import JsonLd from "@/components/seo/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.mato-coaching.de"),
   title: {
-    default: "Somatic Breathwork & Coaching in Hamburg | Lasse Klüver",
-    template: "%s | Lasse Klüver",
+    default: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
+    template: "%s | Mato Coaching",
   },
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "de_DE",
     url: "https://www.mato-coaching.de",
-    siteName: "Lasse Klüver",
-    title: "Somatic Breathwork & Coaching in Hamburg | Lasse Klüver",
+    siteName: "Mato Coaching",
+    title: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
     description:
       "Begleitung bei innerer Unruhe, Anspannung und Erschöpfung. Somatic Breathwork, Coaching und IFS in Hamburg und online.",
     images: [
