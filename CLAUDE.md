@@ -21,6 +21,7 @@ Anmutung: "Quiet Luxury", ruhig, klar, autoritativ. Zielgruppe: zahlungskräftig
 - Framer Motion, zurückhaltend. Bestehende `ui/FadeIn.tsx` wiederverwenden (duration 0.8, easeOut, y:20, viewport once). Keine zweite Animationslösung einführen.
 - Cal.com via `@calcom/embed-react`, eingebettet unter `/termin`. Cal-Link aktuell `lasse-kluever/erstgespraech` (Platzhalter, vom Inhaber zu bestätigen).
 - Supabase (`@supabase/supabase-js`) und Resend für den Lead-Magneten.
+- `next-mdx-remote` (RSC-Variante) und `gray-matter` für das Journal, liest `.mdx`-Dateien aus `src/content/journal`.
 - Deploy: Vercel via GitHub `main`.
 - Schriften: Spectral (Display, `font-serif`, via next/font/google, 400/500 plus italic), Geist Sans (Body/UI, `font-sans`).
 
@@ -41,6 +42,11 @@ src/
 │       ├── layout.tsx             # Metadaten, OpenGraph, bindet <JsonLd/> ein; <main> hat pt-Offset für den fixen Header
 │       ├── page.tsx               # Startseite (Server, eigener metadata-Export)
 │       ├── assessment/page.tsx    # Assessment (Server-Wrapper, rendert <AssessmentForm/>)
+│       ├── journal/
+│       │   ├── page.tsx           # Listing, liest alle Einträge aus src/content/journal
+│       │   └── [slug]/
+│       │       ├── page.tsx           # Detail, MDXRemote-Rendering, eigenes Article-JSON-LD
+│       │       └── mdx-components.tsx # Styling-Mapping (h2/h3/p/ul/a/...) für MDX-Inhalt
 │       └── termin/
 │           ├── page.tsx           # Server, metadata
 │           └── CalEmbed.tsx       # Client, Cal.com-Embed
@@ -52,15 +58,19 @@ src/
 │   ├── forms/
 │   │   ├── AssessmentForm.tsx     # Branching-Funnel, Scoring, Ergebnis
 │   │   ├── LeadMagnetForm.tsx     # E-Mail-Formular, prop autoFocus (scrollt + fokussiert)
-│   │   └── ResultActions.tsx      # Drei Optionen auf der Ergebnisseite
+│   │   └── ResultActions.tsx      # Drei Optionen auf der Ergebnisseite, Journal-Karte hinter JOURNAL_READY
 │   ├── ui/
 │   │   ├── Header.tsx             # Logo /logo.svg (h-10) + Schriftzug "Mato Coaching", py-3
-│   │   ├── Footer.tsx             # Logo, Disclaimer, Hamburg-Tagline
+│   │   ├── Footer.tsx             # Logo, Disclaimer, Hamburg-Tagline, Nav inkl. Journal-Link
 │   │   └── FadeIn.tsx             # Standard-Animationswrapper
 │   └── seo/JsonLd.tsx             # ProfessionalService-Schema
 └── lib/
     ├── assessment-config.ts       # Fragen, Branching, Scoring, Ergebnis-Inhalte
+    ├── journal.ts                 # liest/parst .mdx aus src/content/journal (gray-matter)
     └── supabase.ts                # Server-only Admin-Client (lazy factory)
+
+src/content/
+└── journal/                       # Ein .mdx pro Artikel, Frontmatter: title, description, publishedAt (YYYY-MM-DD)
 
 public/
 ├── logo.svg                       # Symbol, dunkeltauglich
@@ -118,12 +128,25 @@ Es existieren neben `(public)` weitere Route-Gruppen (auth, protected). Marketin
 
 ---
 
+## Journal (`/journal`)
+
+- Gerüst steht, Inhalt fehlt noch: `src/content/journal/` ist leer (nur `.gitkeep`), Listing zeigt dann "Die ersten Artikel erscheinen in Kürze."
+- Ein Artikel = eine `.mdx`-Datei in `src/content/journal/<slug>.mdx`. Frontmatter zwingend: `title`, `description`, `publishedAt` (Format `YYYY-MM-DD`). Dateiname ohne Endung wird zum Slug und zur URL `/journal/<slug>`.
+- `src/lib/journal.ts` liest und parst die Dateien (gray-matter): `getAllJournalEntries()` für das Listing (neueste zuerst), `getJournalSlugs()` für `generateStaticParams` und die Sitemap, `getJournalEntryBySlug()` für die Detailseite.
+- Rendering über `next-mdx-remote/rsc` (`<MDXRemote source={content} components={mdxComponents} />`), kompatibel mit Server Components/RSC. `mdx-components.tsx` mappt h2/h3/p/ul/ol/a/strong/blockquote auf die Design-Tokens (Spectral-Headlines, 18px-Fließtext, Umber-Blockquote-Linie). Bei neuen Markdown-Elementen (z. B. Bilder, Code-Blocks) dort ergänzen, nicht in der Page.
+- Jede Detailseite hat eigenes `Article`-JSON-LD (headline, description, datePublished, author Lasse Klüver, publisher Mato Coaching) zusätzlich zum globalen `ProfessionalService`-Schema aus `JsonLd.tsx`.
+- `sitemap.ts` nimmt `/journal` sowie alle Slugs aus `getJournalSlugs()` automatisch auf, keine manuelle Pflege nötig.
+- Footer verlinkt `/journal` in der Nav-Zeile neben Impressum/Datenschutz.
+- Sobald der erste echte Artikel liegt: `JOURNAL_READY` in `ResultActions.tsx` auf `true` setzen, damit die dritte Ergebnis-Karte auf `/journal` verlinkt statt "Bald verfügbar" zu zeigen.
+
+---
+
 ## Lead-Magnet und Backend
 
 Ablauf: `LeadMagnetForm` (Client) sendet an `POST /api/lead` (Server). Die Route speichert in Supabase, sendet das Audio per Resend an die Person und eine Benachrichtigung an Lasse. Der Code prüft den von Resend zurückgegebenen `error` (nicht ignorieren).
 
 - Absender: `Mato Coaching <hello@mato-coaching.de>`, Reply-To `hello@mato-coaching.de` (echtes Strato-Postfach).
-- Audio-Link kommt aus `LEAD_AUDIO_URL`, mit Platzhalter-Fallback. Echte Datei nach `public/audio/` (z. B. `physiological-sigh.m4a` oder `.mp3`), dann `LEAD_AUDIO_URL` in Vercel setzen. Endung muss exakt passen.
+- Audio-Link kommt aus `LEAD_AUDIO_URL`. Echte Datei liegt unter `public/audio/physiological-sigh.m4a`, `LEAD_AUDIO_URL` ist in Vercel gesetzt. Lead-Magnet liefert die echte Datei aus, kein Platzhalter mehr.
 
 Supabase:
 - Projekt "Mato Coaching", Region EU (Frankfurt).
@@ -142,7 +165,7 @@ Vercel-Umgebungsvariablen (Werte nur in Vercel, nie im Code/Repo):
 | `SUPABASE_SERVICE_ROLE_KEY` | geheimer Service-Role-Key, nur Server |
 | `RESEND_API_KEY` | Resend API Key |
 | `LEAD_NOTIFICATION_EMAIL` | Benachrichtigungsadresse (hello@mato-coaching.de) |
-| `LEAD_AUDIO_URL` | öffentliche URL der Audiodatei (setzen, sobald Audio online) |
+| `LEAD_AUDIO_URL` | öffentliche URL der Audiodatei, gesetzt |
 
 ---
 
@@ -174,15 +197,14 @@ DSGVO:
 
 ## Offene Code-Aufgaben (Priorität absteigend)
 
-1. Journal/Blog (`/journal`): größter nachhaltiger SEO-Hebel. Schaltet danach in `ResultActions.tsx` die dritte Karte scharf (`JOURNAL_READY = true`). Themenideen erklären statt behandeln (z. B. "Was im Nervensystem bei einer Panikattacke passiert").
+1. Journal/Blog (`/journal`): technisches Gerüst steht (siehe Abschnitt "Journal" oben), Inhalt fehlt noch. Erste(n) Artikel als `.mdx` nach `src/content/journal/` legen (Themenideen erklären statt behandeln, z. B. "Was im Nervensystem bei einer Panikattacke passiert"), danach `JOURNAL_READY` in `ResultActions.tsx` auf `true` setzen.
 2. Dedizierte Service-Seiten (`/breathwork`, `/coaching`, `/ifs`): je eigene Metadaten und substanzielle Inhalte, je eigenes `Service`-Schema, interne Verlinkung zu Journal und Startseite.
-3. Echtes Audio aufnehmen, nach `public/audio/` legen, `LEAD_AUDIO_URL` setzen.
-4. ResultActions-Feinschliff: Bei Route `not_yet` trägt Karte 1 die Überschrift "Erstgespräch vereinbaren", der Button nutzt aber `ctaLabel`/`ctaHref` der Route ("Zurück zur Startseite", `/`). Diesen Sonderfall sauber abfangen.
-5. `AggregateRating`-Schema in `JsonLd.tsx`, sobald Google-Bewertungen vorhanden sind (Sterne im Suchergebnis).
-6. OG-Vorschaubild 1200x630 nach `public/` und in den Metadaten referenzieren.
-7. Berufliches Instagram, sobald live, in das Unternehmens-`sameAs` in `JsonLd.tsx` eintragen.
-8. Assessment-Videos: `videoUrl` je Route in `assessment-config.ts` füllen.
-9. Mehr echte Testimonials und ein kurzes Intro-Video auf der Startseite.
+3. ResultActions-Feinschliff: Bei Route `not_yet` trägt Karte 1 die Überschrift "Erstgespräch vereinbaren", der Button nutzt aber `ctaLabel`/`ctaHref` der Route ("Zurück zur Startseite", `/`). Diesen Sonderfall sauber abfangen.
+4. `AggregateRating`-Schema in `JsonLd.tsx`, sobald Google-Bewertungen vorhanden sind (Sterne im Suchergebnis).
+5. OG-Vorschaubild 1200x630 nach `public/` und in den Metadaten referenzieren.
+6. Berufliches Instagram, sobald live, in das Unternehmens-`sameAs` in `JsonLd.tsx` eintragen.
+7. Assessment-Videos: `videoUrl` je Route in `assessment-config.ts` füllen.
+8. Mehr echte Testimonials und ein kurzes Intro-Video auf der Startseite.
 
 ---
 

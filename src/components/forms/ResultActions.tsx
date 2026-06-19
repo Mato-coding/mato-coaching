@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import LeadMagnetForm from "@/components/forms/LeadMagnetForm";
 
-// Auf true setzen, sobald die Journal-Seiten existieren.
-const JOURNAL_READY = false;
+const JOURNAL_READY = true;
 const JOURNAL_URL = "/journal";
 
 type ResultActionsProps = {
