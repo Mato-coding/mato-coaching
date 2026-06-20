@@ -112,7 +112,7 @@ Neben `(public)` gibt es weitere Route-Gruppen (auth, protected). Marketing-Inha
 - Scoring (`calculateResult`): zählt `readiness_signal`-Tags. >=4 => `ready`, >=2 => `almost`, sonst `not_yet`.
 - Ergebnis-Routen-CTAs: `ready`/`almost` zeigen auf `/termin`; `not_yet` auf `/` mit "Zurück zur Startseite".
 - `AssessmentForm.tsx`: history-basierter State, Zurück, Überspringen, Umber-Fortschrittsbalken. Beim Erreichen des Ergebnisses wird der Abschluss EINMAL an `/api/assessment` gesendet (Doppel-Send über useRef verhindert). Gibt `cluster` und `result` an `ResultActions` weiter.
-- `ResultActions.tsx`: drei Karten (Desktop-Breakout-Band, mobil gestapelt). Karte 1 Erstgespräch (ergebnisabhängiger CTA, hängt bei `/termin` `?cluster=...&result=...` an), Karte 2 Audio (öffnet `LeadMagnetForm` mit Assessment-Kontext), Karte 3 Journal (Schalter `JOURNAL_READY`). Darunter zentriert "Assessment neu starten" mit Umber-Hairline.
+- `ResultActions.tsx`: drei Karten (Desktop-Breakout-Band, mobil gestapelt), gleich hoch, Buttons `mt-auto` unten bündig, feste Breite `w-72 mx-auto` statt voller Breite. Karte 1 Erstgespräch (ergebnisabhängiger CTA, hängt bei `/termin` `?cluster=...&result=...` an), Karte 2 Audio (öffnet `LeadMagnetForm` mit Assessment-Kontext), Karte 3 Journal (Schalter `JOURNAL_READY`). Kein Neustart-Link mehr (kein `onRestart`-Prop); großzügiges `pb-16 md:pb-24` unten zum Footer.
 
 ---
 

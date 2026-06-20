@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -87,6 +88,55 @@ export default function LeadMagnetForm({
             Dein Audio ist unterwegs zu dir. Falls es nicht gleich da ist, wirf
             auch einen Blick in den Spam-Ordner.
           </p>
+
+          <div className="mt-8 border-t border-umber/20 pt-8 text-left">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-px w-6 bg-umber" aria-hidden="true" />
+              <span className="text-sm uppercase tracking-widest text-umber">
+                Wie es für dich weitergehen kann
+              </span>
+            </div>
+
+            <ul className="space-y-4">
+              <li>
+                <p className="text-muted">
+                  Im Journal findest du Hintergründe zu Nervensystem, Somatic
+                  Breathwork und innerer Ruhe.
+                </p>
+                <Link
+                  href="/journal"
+                  className="text-accent underline underline-offset-2 hover:opacity-80"
+                >
+                  Zum Journal
+                </Link>
+              </li>
+              <li>
+                <p className="text-muted">
+                  Wenn du spürst, dass du dir Begleitung wünschst, lass uns
+                  unverbindlich sprechen.
+                </p>
+                <Link
+                  href="/termin"
+                  className="text-accent underline underline-offset-2 hover:opacity-80"
+                >
+                  Erstgespräch vereinbaren
+                </Link>
+              </li>
+            </ul>
+
+            {/* TODO: Instagram-Kanal aktivieren, sobald er existiert.
+            <p className="mt-4 text-sm text-muted">
+              Mehr Impulse findest du auf{" "}
+              <a
+                href="https://instagram.com/..."
+                className="text-accent underline underline-offset-2 hover:opacity-80"
+              >
+                Instagram
+              </a>
+              .
+            </p>
+            */}
+          </div>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -128,7 +178,7 @@ export default function LeadMagnetForm({
               className="mt-1 h-4 w-4 shrink-0 accent-accent"
             />
             <span>
-              Ja, schick mir das Audio per E-Mail. Ich bin damit einverstanden,
+              Ja, schick mir bitte das Audio per E-Mail. Ich bin damit einverstanden,
               dass meine Angaben zu diesem Zweck gespeichert werden. Mehr dazu in
               der{" "}
               <a href="/datenschutz" className="underline hover:text-accent">

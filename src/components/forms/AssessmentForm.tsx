@@ -144,12 +144,6 @@ export default function AssessmentForm() {
   ctaLabel={result.ctaLabel}
   cluster={cluster}
   result={route}
-  onRestart={() => {
-    setHistory([]);
-    setCluster(null);
-    setDone(false);
-    submittedRef.current = false;
-  }}
 />
       </div>
     );
