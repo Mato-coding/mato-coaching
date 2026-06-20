@@ -24,7 +24,7 @@ export default function CalEmbed() {
   const config =
     cluster && result
       ? {
-          notes: `Assessment: Cluster ${cluster}, Ergebnis ${result}`,
+          assessment: `Assessment: Cluster ${cluster}, Ergebnis ${result}`,
           "metadata[cluster]": cluster,
           "metadata[result]": result,
         }
