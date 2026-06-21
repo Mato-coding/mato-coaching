@@ -1,5 +1,5 @@
 import FadeIn from "@/components/ui/FadeIn";
-import LeadMagnetForm from "@/components/forms/LeadMagnetForm";
+import LeadMagnetCTA from "@/components/sections/LeadMagnetCTA";
 
 export default function LeadMagnet() {
   return (
@@ -17,16 +17,7 @@ export default function LeadMagnet() {
             Ein erster Schritt zurück zur Ruhe
           </h2>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-            Ein geführtes Breathwork-Audio, das dir in wenigen Minuten hilft,
-            dein Nervensystem zu beruhigen. Du kannst es jederzeit nutzen, wenn
-            die innere Anspannung größer wird. Trag dich ein, und du bekommst es
-            direkt per E-Mail.
-          </p>
-
-          <div className="mt-10 max-w-md">
-            <LeadMagnetForm source="startseite" />
-          </div>
+          <LeadMagnetCTA />
         </FadeIn>
       </div>
     </section>

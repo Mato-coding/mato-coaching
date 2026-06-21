@@ -21,6 +21,7 @@ export default function ResultActions({
   result,
 }: ResultActionsProps) {
   const [showAudio, setShowAudio] = useState(false);
+  const [audioSubmitted, setAudioSubmitted] = useState(false);
 
   const ctaHrefWithContext =
     ctaHref === "/termin"
@@ -104,14 +105,17 @@ export default function ResultActions({
         {/* Audio-Formular: klappt unterhalb der Karten auf */}
         {showAudio && (
           <div className="mt-8 mx-auto max-w-md">
-            <p className="mb-4 text-center text-muted">
-              Trag dich ein, dann kommt dein Audio direkt per E-Mail.
-            </p>
+            {!audioSubmitted && (
+              <p className="mb-4 text-center text-muted">
+                Trag dich ein, dann kommt dein Audio direkt per E-Mail.
+              </p>
+            )}
             <LeadMagnetForm
               autoFocus
               source="assessment"
               assessmentCluster={cluster}
               assessmentResult={result}
+              onSuccess={() => setAudioSubmitted(true)}
             />
           </div>
         )}

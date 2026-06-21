@@ -10,11 +10,13 @@ export default function LeadMagnetForm({
   source = "lead_magnet",
   assessmentCluster = null,
   assessmentResult = null,
+  onSuccess,
 }: {
   autoFocus?: boolean;
   source?: string;
   assessmentCluster?: string | null;
   assessmentResult?: string | null;
+  onSuccess?: () => void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,12 +36,16 @@ export default function LeadMagnetForm({
 
   // Bei Erfolg so weit nach oben scrollen, dass Eyebrow und Überschrift sichtbar sind.
   useEffect(() => {
-    if (status === "success" && rootRef.current) {
-      const section = rootRef.current.closest("section");
-      const target = section ?? rootRef.current;
-      const y = target.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: y, behavior: "smooth" });
+    if (status === "success") {
+      onSuccess?.();
+      if (rootRef.current) {
+        const section = rootRef.current.closest("section");
+        const target = section ?? rootRef.current;
+        const y = target.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   async function handleSubmit(e: React.FormEvent) {

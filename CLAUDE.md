@@ -52,10 +52,11 @@ src/
 ├── components/
 │   ├── sections/                  # Startseiten-Sektionen
 │   │   ├── Hero.tsx Transformation.tsx Cause.tsx Method.tsx About.tsx CTA.tsx
-│   │   └── LeadMagnet.tsx         # Audio-Sektion, nutzt <LeadMagnetForm source="startseite" />
+│   │   ├── LeadMagnet.tsx         # Server, Eyebrow+Headline, rendert <LeadMagnetCTA/>
+│   │   └── LeadMagnetCTA.tsx      # Client-Wrapper: Absatz + Formular, blendet Einladungssatz nach Erfolg aus
 │   ├── forms/
 │   │   ├── AssessmentForm.tsx     # Branching, Scoring, Ergebnis; POSTet Abschluss an /api/assessment
-│   │   ├── LeadMagnetForm.tsx     # E-Mail-Formular; props: autoFocus, source, assessmentCluster, assessmentResult
+│   │   ├── LeadMagnetForm.tsx     # E-Mail-Formular; props: autoFocus, source, assessmentCluster, assessmentResult, onSuccess
 │   │   └── ResultActions.tsx      # Drei Optionen; gibt cluster/result weiter
 │   ├── ui/
 │   │   ├── Header.tsx Footer.tsx FadeIn.tsx
@@ -112,7 +113,7 @@ Neben `(public)` gibt es weitere Route-Gruppen (auth, protected). Marketing-Inha
 - Scoring (`calculateResult`): zählt `readiness_signal`-Tags. >=4 => `ready`, >=2 => `almost`, sonst `not_yet`.
 - Ergebnis-Routen-CTAs: `ready`/`almost` zeigen auf `/termin`; `not_yet` auf `/` mit "Zurück zur Startseite".
 - `AssessmentForm.tsx`: history-basierter State, Zurück, Überspringen, Umber-Fortschrittsbalken. Beim Erreichen des Ergebnisses wird der Abschluss EINMAL an `/api/assessment` gesendet (Doppel-Send über useRef verhindert). Gibt `cluster` und `result` an `ResultActions` weiter.
-- `ResultActions.tsx`: drei Karten (Desktop-Breakout-Band, mobil gestapelt), gleich hoch, Buttons `mt-auto` unten bündig, feste Breite `w-72 mx-auto` statt voller Breite. Karte 1 Erstgespräch (ergebnisabhängiger CTA, hängt bei `/termin` `?cluster=...&result=...` an), Karte 2 Audio (öffnet `LeadMagnetForm` mit Assessment-Kontext), Karte 3 Journal (Schalter `JOURNAL_READY`). Kein Neustart-Link mehr (kein `onRestart`-Prop); großzügiges `pb-16 md:pb-24` unten zum Footer.
+- `ResultActions.tsx`: drei Karten (Desktop-Breakout-Band, mobil gestapelt), gleich hoch, Buttons `mt-auto` unten bündig, feste Breite `max-w-62 mx-auto` (15.5rem, passt "Erstgespräch vereinbaren" einzeilig) statt voller Breite. Karte 1 Erstgespräch (ergebnisabhängiger CTA, hängt bei `/termin` `?cluster=...&result=...` an), Karte 2 Audio (öffnet `LeadMagnetForm` mit Assessment-Kontext, Lead-in-Satz verschwindet nach `onSuccess`), Karte 3 Journal (Schalter `JOURNAL_READY`). Kein Neustart-Link mehr (kein `onRestart`-Prop); großzügiges `pb-16 md:pb-24` unten zum Footer.
 
 ---
 
@@ -133,7 +134,7 @@ Ablauf: `LeadMagnetForm` (Client) sendet an `POST /api/lead`. Die Route speicher
 - Absender `Lasse Klüver · Mato Coaching <hello@lassekluever.de>`, Reply-To `hello@lassekluever.de` (gilt für Audio-Mail und Benachrichtigungsmail, beide nutzen dieselbe `FROM`-Konstante).
 - Audio-Mail hat eine Signatur (Tabellen-Layout für E-Mail-Client-Kompatibilität): rundes Porträt links, rechts Name/Tagline/Link, Bild als absolute URL (`https://www.lassekluever.de/portrait-lasse-sw.jpg`, vorerst das bestehende Porträt). Fußzeile zweizeilig: Marke/Ort, dann Disclaimer.
 - Audio-Link aus `LEAD_AUDIO_URL` (Datei liegt in `public/audio/`), Fallback zeigt auf `https://www.lassekluever.de/audio/breathwork-reset.mp3`.
-- `LeadMagnetForm`: props `autoFocus`, `source`, `assessmentCluster`, `assessmentResult`. Scrollt bei Erfolg so weit nach oben, dass Eyebrow und Überschrift sichtbar sind. Schickt zusätzlich `pagePath` und `referrer` mit.
+- `LeadMagnetForm`: props `autoFocus`, `source`, `assessmentCluster`, `assessmentResult`, `onSuccess` (feuert einmalig beim Wechsel auf `status === "success"`, genutzt um einladende Sätze bei den Aufrufern auszublenden). Scrollt bei Erfolg so weit nach oben, dass Eyebrow und Überschrift sichtbar sind. Schickt zusätzlich `pagePath` und `referrer` mit.
 - `/api/assessment`: speichert anonyme Abschlüsse, versendet KEINE Mail.
 
 Supabase:
