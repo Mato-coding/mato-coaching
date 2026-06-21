@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
 // Absender und Antwortadresse
-const FROM = "Mato Coaching <hello@lassekluever.de>";
+const FROM = "Lasse Klüver · Mato Coaching <hello@lassekluever.de>";
 const REPLY_TO = "hello@lassekluever.de";
 
 // Link zum gefuehrten Breathwork-Audio.
@@ -98,14 +98,26 @@ export async function POST(request: Request) {
           <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:8px;padding:40px 32px;">
             <p style="font-size:16px;line-height:1.7;margin:0 0 16px;">Hallo${greeting},</p>
             <p style="font-size:16px;line-height:1.7;margin:0 0 16px;">schön, dass du da bist. Hier ist dein geführtes Breathwork-Audio.</p>
-            <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Nimm dir ein paar ruhige Minuten, setz dich bequem hin und lass dich durch die Atmung führen. Am besten mit Kopfhörern und an einem Ort, an dem du ungestört bist.</p>
+            <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Nimm dir ein paar ruhige Minuten und finde einen Ort, an dem du für ein paar Minuten ungestört bist. Setze dich bequem hin oder lege dich auf den Rücken und lass dich durch diese sanfte Atmung führen. Ich empfehle dir, Kopfhörer zu nutzen, um wirklich ganz einzutauchen, aber natürlich funktioniert es auch gut ohne.</p>
             <p style="margin:0 0 28px;">
               <a href="${AUDIO_URL}" style="display:inline-block;background:#09173b;color:#fcfaf0;text-decoration:none;padding:14px 28px;border-radius:6px;font-size:16px;">Audio anhören</a>
             </p>
-            <p style="font-size:16px;line-height:1.7;margin:0 0 16px;">Wenn du magst, schreib mir gern, wie es für dich war.</p>
-            <p style="font-size:16px;line-height:1.7;margin:0;">Herzlich,<br/>Lasse</p>
+            <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Schon diese kurze Übung kann dir helfen, dein Nervensystem etwas zur Ruhe zu bringen. Du würdest mir eine Freude machen, wenn du mir später schreibst und teilst, wie es dir mit der Übung ging.</p>
+            <p style="font-size:16px;line-height:1.7;margin:0 0 20px;">Lieben Gruß,<br/>Lasse</p>
+            <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0;">
+              <tr>
+                <td style="vertical-align:middle;padding-right:14px;">
+                  <img src="https://www.lassekluever.de/portrait-lasse-sw.jpg" width="52" height="52" alt="" style="display:block;width:52px;height:52px;border-radius:50%;object-fit:cover;" />
+                </td>
+                <td style="vertical-align:middle;">
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#19191a;">Lasse Klüver</p>
+                  <p style="margin:2px 0 0;font-size:13px;color:#6b6e72;">Mato Coaching · Somatic Breathwork &amp; Coaching</p>
+                  <p style="margin:2px 0 0;font-size:13px;"><a href="https://www.lassekluever.de" style="color:#09173b;text-decoration:none;">www.lassekluever.de</a></p>
+                </td>
+              </tr>
+            </table>
           </div>
-          <p style="max-width:520px;margin:20px auto 0;font-size:12px;line-height:1.6;color:#6b6e72;text-align:center;">Mato Coaching · Hamburg · Diese Begleitung ersetzt keine psychotherapeutische oder ärztliche Behandlung.</p>
+          <p style="max-width:520px;margin:20px auto 0;font-size:12px;line-height:1.6;color:#6b6e72;text-align:center;">Mato Coaching von Lasse Klüver · Hamburg<br/>Diese Begleitung ersetzt keine psychotherapeutische oder ärztliche Behandlung.</p>
         </div>
       `,
     });
