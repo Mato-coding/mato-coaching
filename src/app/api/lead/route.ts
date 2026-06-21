@@ -3,14 +3,14 @@ import { Resend } from "resend";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
 // Absender und Antwortadresse
-const FROM = "Mato Coaching <hello@mato-coaching.de>";
-const REPLY_TO = "hello@mato-coaching.de";
+const FROM = "Mato Coaching <hello@lassekluever.de>";
+const REPLY_TO = "hello@lassekluever.de";
 
 // Link zum gefuehrten Breathwork-Audio.
 // Sobald die echte Datei online ist, in Vercel die Variable LEAD_AUDIO_URL setzen.
 const AUDIO_URL =
   process.env.LEAD_AUDIO_URL ||
-  "https://www.mato-coaching.de/audio/breathwork-reset.mp3";
+  "https://www.lassekluever.de/audio/breathwork-reset.mp3";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

@@ -130,8 +130,8 @@ Neben `(public)` gibt es weitere Route-Gruppen (auth, protected). Marketing-Inha
 
 Ablauf: `LeadMagnetForm` (Client) sendet an `POST /api/lead`. Die Route speichert den Lead zuerst (mit `audio_email_status: "pending"`), versucht dann das Audio per Resend zu senden, aktualisiert `audio_email_status` auf `sent`/`failed` und verschickt danach IMMER die Benachrichtigung an Lasse (auch wenn der Audio-Versand fehlschlug) — erst danach antwortet die Route ggf. mit Fehler. Resend-Fehler werden geprüft (nicht ignoriert).
 
-- Absender `Mato Coaching <hello@mato-coaching.de>`, Reply-To `hello@mato-coaching.de` (Strato-Postfach).
-- Audio-Link aus `LEAD_AUDIO_URL` (Datei liegt in `public/audio/`).
+- Absender `Mato Coaching <hello@lassekluever.de>`, Reply-To `hello@lassekluever.de`. Anzeigename bleibt vorerst "Mato Coaching", nur die Domain wurde umgestellt (Markenwechsel im Text folgt separat).
+- Audio-Link aus `LEAD_AUDIO_URL` (Datei liegt in `public/audio/`), Fallback zeigt auf `https://www.lassekluever.de/audio/breathwork-reset.mp3`.
 - `LeadMagnetForm`: props `autoFocus`, `source`, `assessmentCluster`, `assessmentResult`. Scrollt bei Erfolg so weit nach oben, dass Eyebrow und Überschrift sichtbar sind. Schickt zusätzlich `pagePath` und `referrer` mit.
 - `/api/assessment`: speichert anonyme Abschlüsse, versendet KEINE Mail.
 
