@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getJournalSlugs } from "@/lib/journal";
+import { SITE_URL } from "@/lib/site";
 
-const baseUrl = "https://www.mato-coaching.de";
+const baseUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [

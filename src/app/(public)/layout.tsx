@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import JsonLd from "@/components/seo/JsonLd";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.mato-coaching.de"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
     template: "%s | Mato Coaching",
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "de_DE",
-    url: "https://www.mato-coaching.de",
+    url: SITE_URL,
     siteName: "Mato Coaching",
     title: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
     description:

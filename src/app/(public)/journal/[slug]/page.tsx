@@ -5,8 +5,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import FadeIn from "@/components/ui/FadeIn";
 import { getJournalEntryBySlug, getJournalSlugs } from "@/lib/journal";
 import { mdxComponents } from "./mdx-components";
+import { SITE_URL } from "@/lib/site";
 
-const baseUrl = "https://www.mato-coaching.de";
+const baseUrl = SITE_URL;
 
 type Props = {
   params: Promise<{ slug: string }>;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Spectral } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -12,7 +13,7 @@ const spectral = Spectral({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.mato-coaching.de"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Lasse Klüver · Breathwork & Coaching in Hamburg",
     template: "%s | Lasse Klüver",
