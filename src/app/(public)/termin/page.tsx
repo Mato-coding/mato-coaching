@@ -39,7 +39,7 @@ export default function BookingPage() {
           </p>
         </div>
 
-        <div className="bg-surface rounded-md border border-primary/8 min-h-[600px] p-4 overflow-hidden">
+        <div className="bg-surface rounded-md border border-primary/8 min-h-150 p-4 overflow-hidden">
           <Suspense fallback={null}>
             <CalEmbed />
           </Suspense>

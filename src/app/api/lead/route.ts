@@ -98,7 +98,7 @@ export async function POST(request: Request) {
           <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:8px;padding:40px 32px;">
             <p style="font-size:16px;line-height:1.7;margin:0 0 16px;">Hallo${greeting},</p>
             <p style="font-size:16px;line-height:1.7;margin:0 0 16px;">schön, dass du da bist. Hier ist dein geführtes Breathwork-Audio.</p>
-            <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Nimm dir ein paar ruhige Minuten und finde einen Ort, an dem du für ein paar Minuten ungestört bist. Setze dich bequem hin oder lege dich auf den Rücken und lass dich durch diese sanfte Atmung führen. Ich empfehle dir, Kopfhörer zu nutzen, um wirklich ganz einzutauchen, aber natürlich funktioniert es auch gut ohne.</p>
+            <p style="font-size:16px;line-height:1.7;margin:0 0 24px;">Nimm dir einen kurzen Moment für dich und finde einen Ort, an dem du für ein paar Minuten ungestört bist. Setze dich bequem hin oder lege dich auf den Rücken und lass dich durch diese sanfte Atmung führen. Ich empfehle dir, Kopfhörer zu nutzen, um wirklich ganz einzutauchen, aber natürlich funktioniert es auch gut ohne.</p>
             <p style="margin:0 0 28px;">
               <a href="${AUDIO_URL}" style="display:inline-block;background:#09173b;color:#fcfaf0;text-decoration:none;padding:14px 28px;border-radius:6px;font-size:16px;">Audio anhören</a>
             </p>
