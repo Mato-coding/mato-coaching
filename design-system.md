@@ -1,123 +1,113 @@
-# Design System — mato-coaching (Lasse Klüver)
+# Design System, mato-coaching (Lasse Klüver)
 
-**Marke:** Persönliche Brand, Name-forward (Lasse Klüver), Domain mato-coaching.de
-**Anmutung:** Stille Eleganz / Quiet Luxury · Vertrauen · Klarheit · Autorität · Ruhe
+**Marke:** Persönliche Brand, Name-forward (Lasse Klüver), Domain in Migration auf www.lassekluever.de.
+**Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
 **Was vermieden wird:** Verspieltheit, Esoterik-Optik und der generische KI-Look
-(Creme + hochkontrastige Serife + lautes Terrakotta). Boldness wird an *einer*
+(Creme + lautes Terrakotta + überladene Defaults). Charakter wird an *einer*
 Stelle ausgegeben, alles andere bleibt diszipliniert und leise.
+
+Quelle der Wahrheit: Tokens leben in `globals.css` (`@theme`, Tailwind v4). Dieses
+Dokument hält Prinzipien, Absicht und Richtwerte. Bei Konflikt gewinnt `@theme`
+für Werte, dieses Dokument für Haltung.
 
 ---
 
-## 1. Farbe (Tokens)
+## 1. Farbe
 
-Tokens leben in `globals.css` via `@theme` — das ist die einzige Quelle der Wahrheit.
-Tailwind generiert daraus automatisch `bg-*`, `text-*`, `border-*`-Utilities.
-
-| Token (CSS-Variable)       | Tailwind-Klasse    | Hex       | Rolle |
-|----------------------------|--------------------|-----------|-------|
-| `--color-background`       | `bg-background`    | `#FCFAF0` | Hintergrund (warmes Papierweiß) |
-| `--color-surface`          | `bg-surface`       | `#FFFFFF` | Karten / leicht erhöhte Flächen |
-| `--color-primary`          | `text-primary`     | `#19191A` | Primäre Textfarbe |
-| `--color-accent`           | `bg-accent`        | `#09173B` | Primär: Autorität, CTAs, Akzentflächen |
-| `--color-muted`            | `text-muted`       | `#6B6E72` | Sekundärtext, Hairlines, Captions |
-| `--color-umber`            | `bg-umber`         | `#7C6A57` | EINZIGER warmer Zier-Akzent. Sehr sparsam: dünne Linie, Eyebrow-Strich. |
+| Token | Hex | Rolle |
+|-------|-----|-------|
+| `--color-paper` | `#FCFAF0` | Hintergrund (warmes Papierweiß) |
+| `--color-surface` | `#FFFFFF` | Karten, leicht erhöhte Flächen |
+| `--color-ink` | `#19191A` | Primäre Textfarbe |
+| `--color-navy` | `#09173B` | Primär: Autorität, CTAs, Akzentflächen |
+| `--color-muted` | `#6B6E72` | Sekundärtext, Captions |
+| `--color-umber` | `#7C6A57` | Einziger warmer Zier-Akzent. Sehr sparsam: dünne Linie, Eyebrow-Strich, kleine Marke. |
+| `--color-hairline` | `muted @ 30%` | Abgeleitet, für Hairlines (`color-mix`). |
 
 Regeln:
-- CTAs: Fläche `bg-accent`, Text `text-background`. Sekundär-CTA: Outline in `accent`.
-- `text-primary/70` etc. für Opazitätsstufen (Tailwind v4 unterstützt das nativ).
-- `--color-umber` ist Signal, nicht Dekoration — selten und absichtsvoll einsetzen.
-- Umber nie für Fließtext verwenden.
+- CTAs: Fläche `--color-navy`, Text `--color-paper`. Sekundär-CTA: Outline in `--color-navy`.
+- `--color-umber` ist Signal, nicht Dekoration. Selten und absichtsvoll.
+- Navy bleibt der Anker, Umber ist warm, aber nie laut. Nie beide als Flächen konkurrieren lassen.
+- Umber nie für Fließtext. Kontrast immer prüfen.
 
 ---
 
 ## 2. Typografie
 
-**Pairing (final): Display = Spectral · Body/UI = Geist Sans**
-- **Spectral** (via `next/font/google`) für Überschriften — ruhig, kontrastarm, literarisch.
-  Echte Kursive vorhanden (`font-style: italic`): für Betonungen und das Testimonial-Zitat.
-- **Geist Sans** für Fließtext, UI und Buttons (bereits verdrahtet).
-- Im Code: `font-serif` (Spectral) und `font-sans` (Geist) als Tailwind-Utilities.
+**Pairing (final): Display = Cormorant · Body/UI = Hanken Grotesk**
+
+- **Cormorant** (via `next/font/google`) für Überschriften. Hochkontrastige,
+  literarische Serife, bewusst gewählt und diszipliniert eingesetzt: große
+  Display-Größen, schlanke Gewichte, viel Ruhe drumherum. Das ist die Stelle, an
+  der die Marke Charakter zeigt. Echte Kursive vorhanden, für Betonungen und das
+  Testimonial-Zitat nutzen.
+- **Hanken Grotesk** für Fließtext, UI und Buttons.
+- Gewichte schlank halten: Cormorant 400/500/600 (+ italic), Hanken Grotesk 400/500.
+- Disziplin als Gegengewicht: weil Cormorant kontrastreich ist, bleiben Layout,
+  Farbe und Bewegung umso ruhiger.
 
 Type-Skala (Richtwerte, `clamp()` für responsive Größen):
-| Rolle          | Größe                          | Font     | Gewicht | Line-height |
-|----------------|--------------------------------|----------|---------|-------------|
-| Display (Hero) | `clamp(2.5rem, 5vw, 4rem)`     | Spectral | 400–500 | 1.1 |
-| H1 / Section   | `clamp(2rem, 3.5vw, 2.75rem)`  | Spectral | 500     | 1.15 |
-| H2             | `1.5rem`                       | Spectral | 500     | 1.25 |
-| Body           | `1.125rem` (18px)              | Geist    | 400     | 1.6 |
-| Small          | `0.9375rem`                    | Geist    | 400     | 1.55 |
-| Eyebrow        | `0.8125rem`, uppercase, `tracking-[0.15em]` | Geist | 500 | 1.4 |
 
-Eyebrows tragen beidseitig einen dünnen `bg-umber`-Hairline-Strich (Signature-Detail).
+| Rolle | Größe | Font | Gewicht | Line-height |
+|-------|-------|------|---------|-------------|
+| Display (Hero) | `clamp(2.5rem, 5vw, 4rem)` | Cormorant | 400 bis 500 | 1.1 |
+| H1 / Section | `clamp(2rem, 3.5vw, 2.75rem)` | Cormorant | 500 | 1.15 |
+| H2 | `1.5rem` | Cormorant | 500 (600 falls Striche zu dünn wirken) | 1.25 |
+| Body | `1.125rem` (18px) | Hanken Grotesk | 400 | 1.6 |
+| Small | `0.9375rem` | Hanken Grotesk | 400 | 1.55 |
+| Eyebrow | `0.625rem` (10px), uppercase, `letter-spacing: 0.14em` | Hanken Grotesk | 500 | 1.4 |
+
+Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signature-Detail).
 
 ---
 
-## 3. Spacing & Layout — der „Atem-Rhythmus"
+## 3. Spacing & Layout, der „Atem-Rhythmus"
 
 Basiseinheit 4px. Skala: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128 · 160`.
 
 - **Großzügige, gleichmäßige vertikale Rhythmik** ist das Markenzeichen: die Seite „atmet".
-- Sektions-Innenabstand (vertikal): Desktop `96–160px`, Mobil `64–96px`.
-- Content-Container: max. `~1140px`; Textspalten max. `~68ch` für ruhigen Lesefluss.
-- Radius: `rounded-sm` (4px) für Inputs, `rounded-md` (8px) für Karten/Buttons.
-- Hairlines: 1px in `border-primary/10` (dezente Trennlinie).
+- Sektions-Innenabstand (vertikal): Desktop `96 bis 160px`, Mobil `64 bis 96px`.
+- Content-Container: max. `~1140px`. Textspalten max. `~68ch` für ruhigen Lesefluss.
+- Radius: `rounded-sm` (4px) für Inputs, `rounded-md` (8px) für Karten und Buttons.
+- Hairlines: 1px in `--color-hairline` (muted bei ~30% Deckkraft).
 
 ---
 
 ## 4. Motion (Framer Motion)
 
-Leise, langsam, absichtsvoll — kein Bounce, kein Spring, keine Streueffekte.
-- Bestehender Wrapper: `src/components/ui/FadeIn.tsx` — immer wiederverwenden, nie duplizieren.
-- Einblendungen: `duration: 0.8`, `ease: "easeOut"`, Y-Versatz `20px`.
-- Gestaffelte Hero-Einblendung via `delay`-Prop (0 / 0.1 / 0.2 / 0.3).
-- Scroll-Reveals: `viewport={{ once: true, margin: "-100px" }}` — einmalig, nie bei Re-Enter.
-- `prefers-reduced-motion`: in `globals.css` global abgefangen (Transitions auf 0.01ms).
+Leise, langsam, absichtsvoll. Kein Bounce, kein Spring, keine Streueffekte.
+
+- Einblendungen: `600ms` und `900ms` (Tokens `--duration-med` und `--duration-slow`), Easing `cubic-bezier(0.16, 1, 0.3, 1)`.
+- Bewegung minimal: Opazität plus kleiner Y-Versatz (`8 bis 16px`).
+- **Eine** orchestrierte Hero-Einblendung beim Laden („settle"), danach Stille.
+- Scroll-Reveals dezent und einmalig, nicht bei jedem Re-Enter.
+- `prefers-reduced-motion`: Transforms aus, nur sanfte Opazität oder keine Bewegung.
 
 ---
 
 ## 5. Signature-Element
 
-**„Der Atem-Rhythmus":** Pacing über großzügige, konsistente Abstände plus eine einzige
-langsame Hero-Einblendung. Wiederkehrendes visuelles Signal: beidseitige `bg-umber`-Hairlines
-flankieren die Eyebrow-Dachzeile. Das ist die *eine* Stelle, an der Charakter sichtbar wird —
-sonst Stille.
+**„Der Atem-Rhythmus":** Pacing über großzügige, konsistente Abstände plus eine
+einzige langsame Hero-Einblendung. Wiederkehrendes Signal: ein dünner
+`--color-umber`-Keyline- oder Eyebrow-Strich. Das ist die *eine* Stelle, an der
+Charakter sichtbar wird, sonst Stille.
 
 ---
 
-## 6. Angebot (zwei Stufen)
+## 6. Quality-Floor (immer)
 
-- **„Erdung"** — Gruppen-Breathwork-Reihe, hybrid (online + Präsenz), Einstieg (~190–390 € p. P.)
-- **„Neuausrichtung"** — 1:1-Prozessbegleitung ~10–12 Wochen, hybrid, Premium (~2.900–4.500 €,
-  Einmalzahlung oder 2–3 Raten)
-
----
-
-## 7. Copy-Regeln (wichtig — auch rechtlich)
-
-- KEINE Heilversprechen, KEINE klinischen Diagnosen als Zielgruppen-Label.
-- Framing: stressbedingte innere Unruhe, Nervensystem-Regulation, Persönlichkeitsentwicklung.
-- Disclaimer nahe Angebot und im Footer:
-  „Diese Arbeit dient der Persönlichkeitsentwicklung und Stressregulation und ersetzt keine
-  psychotherapeutische oder ärztliche Behandlung."
-- Sentence case in der UI. Aktive Verben. Keine Floskeln.
-- Buttons sagen, was passiert: „Erstgespräch vereinbaren", „Zum Kurz-Assessment".
+- Responsive bis Mobil, sichtbarer Tastatur-Fokus, `prefers-reduced-motion` respektiert.
+- Sentence-Case in der UI, aktive Verben, keine Floskeln, keine Gedankenstriche.
+- Buttons sagen, was passiert („Erstgespräch vereinbaren"), konsistent durch den Flow.
 
 ---
 
-## 8. Quality-Floor (immer)
+## 7. Technische Notiz für die Umsetzung
 
-- Responsive bis Mobil; sichtbarer Tastatur-Fokus (`focus-visible`).
-- `prefers-reduced-motion` ist in `globals.css` global abgefangen.
-- Kein neues Animations-System einführen — nur `FadeIn.tsx` verwenden.
-- Tokens nicht neu erfinden — ausschließlich aus `globals.css` verwenden.
-
----
-
-## 9. Technische Notiz
-
-- Tailwind v4: Tokens in `globals.css` via `@theme`, keine `tailwind.config.ts` (gelöscht).
-- Schriften via `next/font/google`: Spectral (weight 400/500, style normal/italic) +
-  Geist Sans — als CSS-Variablen `--font-spectral` und `--font-geist-sans` gemappt,
-  beide als Klassen auf `<body>` in `layout.tsx`.
-- `h1`, `h2`, `h3` erben `font-family: var(--font-serif)` global aus `globals.css`.
-  Im JSX zusätzlich `font-serif` als Tailwind-Klasse setzen, falls nötig.
+- `globals.css` nutzt Tailwind v4 (`@theme`) und ist die Quelle der Wahrheit für Tokens.
+- Keine `tailwind.config.ts`. In v4 ist die JS-Config optional, Tokens leben im `@theme`.
+- Schriften über `next/font/google` (Cormorant + Hanken Grotesk) laden, als
+  `--font-serif-src` und `--font-sans-src` mappen, in `@theme` zu `--font-serif`
+  und `--font-sans` komponieren. Die Komponenten nutzen `font-serif` (Display) und
+  `font-sans` (Body), diese Namen nicht ändern.
+- In `next/font/google` heißt die Familie `Cormorant`, nicht `Cormorant_Garamond`.

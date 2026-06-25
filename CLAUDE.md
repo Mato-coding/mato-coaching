@@ -20,7 +20,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - Tailwind v4, config-less. Tokens in globals.css via @theme sind die Quelle. KEINE tailwind.config.ts.
 - Framer Motion sparsam, ui/FadeIn.tsx wiederverwenden.
 - Cal.com via @calcom/embed-react unter /termin. Supabase und Resend fürs Backend. MDX fürs Journal.
-- Deploy: Vercel via GitHub main. Schriften: Spectral (font-serif, Display), Geist Sans (font-sans, Body).
+- Deploy: Vercel via GitHub main. Schriften: Cormorant (font-serif, Display), Hanken Grotesk (font-sans, Body).
 
 ## Repo (Kurzüberblick)
 - src/app/: layout.tsx (Root, Fonts, metadataBase), icon.svg, sitemap.ts, robots.ts
@@ -33,7 +33,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 
 ## Design (Details in design-system.md)
 - Farben: background #fcfaf0, surface #ffffff, primary #19191a, accent #09173b (CTAs), muted #6b6e72, umber #7c6a57 (warmer Akzent, sparsam, Eyebrows und Hairlines).
-- Display Spectral, Body Geist. Section-Padding py-16 md:py-24. Buttons rounded-md, keine Schatten. Eyebrow = Umber-Hairline plus Uppercase-Label.
+- Display Cormorant, Body Hanken Grotesk. Section-Padding py-16 md:py-24. Buttons rounded-md, keine Schatten. Eyebrow = Umber-Hairline plus Uppercase-Label.
 
 ## Assessment (/assessment)
 - Inhalt und Logik getrennt in src/lib/assessment-config.ts. Cluster = exhaustion|tension|panic, ResultRoute = ready|almost|not_yet.

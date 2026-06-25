@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Spectral } from "next/font/google";
+import { Cormorant, Hanken_Grotesk } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const spectral = Spectral({
-  variable: "--font-spectral",
+const cormorant = Cormorant({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif-src",
+  display: "swap",
+});
+
+const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500"],
-  style: ["normal", "italic"],
+  variable: "--font-sans-src",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Lasse Klüver · Breathwork & Coaching in Hamburg",
-    template: "%s | Lasse Klüver",
+    default: "Mato Coaching · Breathwork & Coaching in Hamburg",
+    template: "%s | Mato Coaching",
   },
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
@@ -30,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${geistSans.variable} ${geistMono.variable} ${spectral.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

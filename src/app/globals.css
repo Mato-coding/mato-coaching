@@ -1,18 +1,76 @@
 @import "tailwindcss";
 
 @theme {
-  /* Farb-Tokens */
-  --color-background: #fcfaf0;
-  --color-surface: #ffffff;
-  --color-primary: #19191a;
-  --color-accent: #09173b;
-  --color-muted: #6b6e72;
-  --color-umber: #7c6a57;
+  /* ── Farben (unverändert) ─────────────────── */
+  --color-paper: #FCFAF0;
+  --color-surface: #FFFFFF;
+  --color-ink: #19191A;
+  --color-navy: #09173B;
+  --color-muted: #6B6E72;
+  --color-umber: #7C6A57;
+  --color-hairline: color-mix(in srgb, var(--color-muted) 30%, transparent);
+  --opacity-hairline: 0.3;
 
-  /* Schriften */
-  --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-spectral);
-  --font-mono: var(--font-geist-mono);
+  /* Aliase für bestehenden Komponenten-Code */
+  --color-background: var(--color-paper);
+  --color-primary: var(--color-ink);
+  --color-accent: var(--color-navy);
+
+  /* ── Schriften ────────────────────────────── */
+  /* Familien aus next/font (layout.tsx) als *-src-Variablen, hier komponiert */
+  --font-serif: var(--font-serif-src), Georgia, "Times New Roman", serif;            /* Display: Cormorant */
+  --font-sans: var(--font-sans-src), system-ui, -apple-system, "Segoe UI", sans-serif; /* Body/UI: Hanken Grotesk */
+  --font-display: var(--font-serif-src), Georgia, "Times New Roman", serif;          /* Alias für Komponenten die font-display nutzen */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;   /* nur Cormorant */
+  --font-weight-display: 500;    /* Headlines */
+  --font-weight-hero: 400;       /* sehr großes Hero-Display */
+
+  /* ── Type Scale ───────────────────────────── */
+  --text-display: clamp(2.5rem, 5vw, 4rem);
+  --text-h1: clamp(2rem, 3.5vw, 2.75rem);
+  --text-h2: 1.5rem;
+  --text-body: 1.125rem;         /* 18px */
+  --text-small: 0.9375rem;       /* 15px */
+  --text-eyebrow: 0.625rem;      /* 10px */
+
+  --leading-display: 1.1;
+  --leading-h1: 1.15;
+  --leading-h2: 1.25;
+  --leading-body: 1.6;
+  --leading-small: 1.55;
+
+  --tracking-eyebrow: 0.14em;
+
+  /* ── Spacing (Basis 4px) ──────────────────── */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+  --spacing-40: 160px;
+  --spacing-eyebrow-headline: 12px;
+  --spacing-headline-body: 24px;
+
+  /* ── Radien ───────────────────────────────── */
+  --radius-sm: 4px;              /* Inputs */
+  --radius-md: 8px;              /* Karten / Buttons */
+
+  /* ── Layout ───────────────────────────────── */
+  --container-max: 1140px;
+  --measure: 68ch;
+
+  /* ── Motion ───────────────────────────────── */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-slow: 900ms;
+  --duration-med: 600ms;
 }
 
 body {
