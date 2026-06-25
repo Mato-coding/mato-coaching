@@ -6,7 +6,7 @@ Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten.
 
 ## Marke (in Umstellung)
-- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" wird zur Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Logo).
+- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" wird zur Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Bärenenergie als Markenkonzept, nicht als Bildzeichen).
 - Die inhaltliche Umstellung (Lasse vorn in Header, Metadaten, Schema; Mato dahinter) ist noch NICHT umgesetzt, eigene Aufgabe. Aktuell zeigt die Seite noch "Mato Coaching".
 - Nie "Mato Coaching by Lasse Klüver".
 
@@ -76,7 +76,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 2. Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
 3. Service-Seiten /breathwork, /coaching, /ifs (eigene Metadaten, Service-Schema, interne Links).
 4. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
-5. Neues Logo (Bär-Symbolik), danach BIMI fürs Absender-Avatar.
+5. Neues Logo (abstraktes Bildzeichen, keine Wortmarke), danach BIMI fürs Absender-Avatar.
 6. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
 
 ## Perspektivisch
