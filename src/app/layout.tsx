@@ -21,8 +21,8 @@ const hankenGrotesk = Hanken_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Mato Coaching · Breathwork & Coaching in Hamburg",
-    template: "%s | Mato Coaching",
+    default: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
+    template: "%s · Lasse Klüver",
   },
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",

@@ -58,7 +58,7 @@ export default async function JournalArticlePage({ params }: Props) {
     },
     publisher: {
       "@type": "Organization",
-      name: "Mato Coaching",
+      name: "Lasse Klüver",
     },
     mainEntityOfPage: `${baseUrl}/journal/${slug}`,
   };

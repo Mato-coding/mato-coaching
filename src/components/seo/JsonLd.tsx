@@ -1,13 +1,14 @@
 import { SITE_URL, absoluteUrl } from "@/lib/site";
 
 // JSON-LD strukturierte Daten für lokales SEO.
-// Geschäftsname: Mato Coaching. Lasse Klüver als founder (die Person dahinter).
+// name: Lasse Klüver (primäre Identität), alternateName: Mato Coaching (Methoden-/Markenebene).
 // Service-Area-Business: Hamburg als Einzugsgebiet, keine öffentliche Straße.
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Mato Coaching",
+  name: "Lasse Klüver",
+  alternateName: "Mato Coaching",
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
   url: SITE_URL,

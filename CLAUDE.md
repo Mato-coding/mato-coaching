@@ -7,7 +7,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 
 ## Marke (in Umstellung)
 - Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" wird zur Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Bärenenergie als Markenkonzept, nicht als Bildzeichen).
-- Die inhaltliche Umstellung (Lasse vorn in Header, Metadaten, Schema; Mato dahinter) ist noch NICHT umgesetzt, eigene Aufgabe. Aktuell zeigt die Seite noch "Mato Coaching".
+- Umgesetzt: Header zeigt "Lasse Klüver" plus Umber-Eyebrow "Somatic Breathwork · IFS Coaching". Footer führt bewusst "Lasse Klüver · Mato Coaching" (Lasse vorn, Mato als zweite Ebene). JSON-LD nutzt name "Lasse Klüver" und alternateName "Mato Coaching".
 - Nie "Mato Coaching by Lasse Klüver".
 
 ## Domain (in Migration)
@@ -73,7 +73,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 
 ## Offene Aufgaben
 1. Domain-Migration abschließen: Code kanonisieren (metadataBase, sitemap.ts, robots.ts, JsonLd.tsx und journal/[slug]/page.tsx zeigen noch hart auf mato-coaching.de), Vercel-Redirect, Search Console, Google Business. migrations-plan.md ist referenziert, existiert aber noch nicht im Repo.
-2. Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
+2. ~~Inhaltliche Marken-Umstellung~~ (erledigt). Mato-Methoden-Naming noch offen (separater Task).
 3. Service-Seiten /breathwork, /coaching, /ifs (eigene Metadaten, Service-Schema, interne Links).
 4. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
 5. Neues Logo (abstraktes Bildzeichen, keine Wortmarke), danach BIMI fürs Absender-Avatar.

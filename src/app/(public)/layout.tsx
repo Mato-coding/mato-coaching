@@ -7,8 +7,8 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
-    template: "%s | Mato Coaching",
+    default: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
+    template: "%s · Lasse Klüver",
   },
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "de_DE",
     url: SITE_URL,
-    siteName: "Mato Coaching",
-    title: "Somatic Breathwork & Coaching in Hamburg | Mato Coaching",
+    siteName: "Lasse Klüver",
+    title: "Somatic Breathwork & Coaching in Hamburg | Lasse Klüver",
     description:
       "Begleitung bei innerer Unruhe, Anspannung und Erschöpfung. Somatic Breathwork, Coaching und IFS in Hamburg und online.",
     images: [

@@ -111,13 +111,13 @@ export async function POST(request: Request) {
                 </td>
                 <td style="vertical-align:middle;">
                   <p style="margin:0;font-size:15px;font-weight:600;color:#19191a;">Lasse Klüver</p>
-                  <p style="margin:2px 0 0;font-size:13px;color:#6b6e72;">Mato Coaching · Somatic Breathwork &amp; Coaching</p>
+                  <p style="margin:2px 0 0;font-size:13px;color:#6b6e72;">Lasse Klüver · Somatic Breathwork und IFS-Coaching</p>
                   <p style="margin:2px 0 0;font-size:13px;"><a href="https://www.lassekluever.de" style="color:#09173b;text-decoration:none;">www.lassekluever.de</a></p>
                 </td>
               </tr>
             </table>
           </div>
-          <p style="max-width:520px;margin:20px auto 0;font-size:12px;line-height:1.6;color:#6b6e72;text-align:center;">Mato Coaching von Lasse Klüver · Hamburg<br/>Diese Begleitung ersetzt keine psychotherapeutische oder ärztliche Behandlung.</p>
+          <p style="max-width:520px;margin:20px auto 0;font-size:12px;line-height:1.6;color:#6b6e72;text-align:center;">Lasse Klüver · Mato Coaching · Hamburg<br/>Diese Begleitung ersetzt keine psychotherapeutische oder ärztliche Behandlung.</p>
         </div>
       `,
     });
