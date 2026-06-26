@@ -38,7 +38,7 @@ export default function Method() {
           {/* Rechte Spalte: Testimonial Card */}
           <FadeIn delay={0.15}>
             <div className="bg-surface border border-primary/8 rounded-md p-8 md:p-10">
-              {/* Zitat in Spectral-Kursive als Signature-Element */}
+              {/* Zitat in Cormorant-Kursive als Signature-Element */}
               <p className="font-serif italic text-primary/90 text-lg leading-relaxed mb-8">
                 „Es fühlte sich an, als würde eine schwere Käseglocke von mir
                 genommen. Ich habe eine innere Ruhe und einen tiefen Schlaf

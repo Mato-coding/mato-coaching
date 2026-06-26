@@ -17,10 +17,10 @@ export default function Hero() {
           </div>
         </FadeIn>
 
-        {/* Hauptaussage in Spectral */}
+        {/* Hauptaussage in Cormorant */}
         <FadeIn delay={0.1}>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary leading-[1.1] mb-8">
-            Wenn ständige Anspannung den Alltag bestimmt.
+            Wenn ständige Anspannung deinen Alltag bestimmt.
           </h1>
         </FadeIn>
 

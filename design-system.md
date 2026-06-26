@@ -3,7 +3,7 @@
 **Marke:** Persönliche Brand, Name-forward (Lasse Klüver), Domain in Migration auf www.lassekluever.de.
 **Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
 **Was vermieden wird:** Verspieltheit, Esoterik-Optik und der generische KI-Look
-(Creme + lautes Terrakotta + überladene Defaults). Charakter wird an *einer*
+(Creme + lautes Terrakotta + liebloses Default-Pairing). Charakter wird an *einer*
 Stelle ausgegeben, alles andere bleibt diszipliniert und leise.
 
 Quelle der Wahrheit: Tokens leben in `globals.css` (`@theme`, Tailwind v4). Dieses
@@ -36,10 +36,10 @@ Regeln:
 
 **Pairing (final): Display = Cormorant · Body/UI = Hanken Grotesk**
 
-- **Cormorant** (via `next/font/google`) für Überschriften. Hochkontrastige,
-  literarische Serife, bewusst gewählt und diszipliniert eingesetzt: große
-  Display-Größen, schlanke Gewichte, viel Ruhe drumherum. Das ist die Stelle, an
-  der die Marke Charakter zeigt. Echte Kursive vorhanden, für Betonungen und das
+- **Cormorant** (via `next/font/google`) für Überschriften. Kontrastreiche, aber
+  zurückhaltend gesetzte Serife, deren Ruhe über Größe, Gewicht und Abstand
+  entsteht, nicht über niedrigen Kontrast. Das ist die Stelle, an der die Marke
+  Charakter zeigt. Echte Kursive vorhanden, für Betonungen und das
   Testimonial-Zitat nutzen.
 - **Hanken Grotesk** für Fließtext, UI und Buttons.
 - Gewichte schlank halten: Cormorant 400/500/600 (+ italic), Hanken Grotesk 400/500.
