@@ -45,7 +45,7 @@ export default function About() {
 
             <FadeIn delay={0.3}>
               <p className="text-primary/80 text-lg leading-relaxed mb-4">
-                Als Prozessbegleiter und Coach in Hamburg begegne ich dir auf Augenhöhe —
+                Ich bin Lasse Klüver, Prozessbegleiter und Coach in Hamburg. Ich begegne dir auf Augenhöhe,
                 mit einer klaren, strukturierten Haltung und tiefem Verständnis
                 für die Mechanismen von Stress und innerer Erschöpfung. Meine
                 Arbeit basiert auf der Überzeugung, dass echte Veränderung erst

@@ -8,6 +8,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 ## Marke (in Umstellung)
 - Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" wird zur Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Bärenenergie als Markenkonzept, nicht als Bildzeichen).
 - Umgesetzt: Header zeigt "Lasse Klüver" plus Umber-Eyebrow "Somatic Breathwork · IFS Coaching". Footer führt bewusst "Lasse Klüver · Mato Coaching" (Lasse vorn, Mato als zweite Ebene). JSON-LD nutzt name "Lasse Klüver" und alternateName "Mato Coaching".
+- Header-Lockup: Header.tsx nutzt seit dem SVG-Lockup-Umbau public/header-lockup-outlined.svg (ab sm, Lockup mit Mark + Name + Eyebrow) und public/mark-symbol-tight.svg (mobil, nur Bildmarke). Name und Eyebrow stehen zusätzlich als sr-only-Span im Link (SEO, Screenreader). Die frühere Eyebrow-plus-translate-Konstruktion mit Text-Spans ist abgelöst. LogoMark.tsx bleibt, da vom Footer genutzt.
 - Nie "Mato Coaching by Lasse Klüver".
 
 ## Domain (in Migration)
