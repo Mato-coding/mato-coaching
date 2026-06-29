@@ -18,15 +18,15 @@ export default function BreathworkResonance() {
         <FadeIn delay={0.2}>
           <div className="space-y-5 max-w-[68ch]">
             <p className="text-primary/80 text-lg leading-relaxed">
-              Du bist leistungsfähig, verlässlich, im Außen ruhig. Innen läuft
-              etwas weiter, das nicht zur Ruhe kommt. Anspannung, die sich über den Tag
-              aufbaut. Schlaf, der nicht trägt. Eine Wachsamkeit, die nie ganz nachlässt.
+              Du bist nach außen leistungsfähig, verlässlich. Wirkst auf die meisten Menschen, als hättest du alles im Griff. 
+              Aber in dir läuft etwas immer weiter, das nicht zur Ruhe kommt. Anspannung, die immer da ist. Die sich über den Tag
+              aufbaut. Erschöpfung, die dich trotzdem nicht in einen erholsamen Schlaf finden lässt. Immer die Sensoren an. Eine Wachsamkeit, die nie ganz nachlässt.
             </p>
             <p className="text-primary/80 text-lg leading-relaxed">
-              Das ist keine Charakterfrage. Es ist ein Nervensystem, das gelernt
-              hat, dauerhaft in Bereitschaft zu bleiben. Der Atem ist einer der wenigen
-              direkten Zugänge zu diesem System, bewusst steuerbar und zugleich tief mit dem
-              Unwillkürlichen verbunden.
+              Anxiety macht viele Menschen zu sehr guten "Funktionierern". Aber das kommt nicht aus Überzeugung, aus Leidenschaft und Freude. Es ist ein Nervensystem, das gelernt
+              hat, dauerhaft in Alarmbereitschaft zu bleiben. Und es laugt dich aus.
+              Der Atem ist einer der wenigen direkten Zugänge zu diesem System, bewusst steuerbar und zugleich tief mit dem
+              deinem Nervensystem verbunden.
             </p>
           </div>
         </FadeIn>

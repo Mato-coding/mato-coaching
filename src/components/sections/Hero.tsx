@@ -20,14 +20,15 @@ export default function Hero() {
         {/* Hauptaussage in Cormorant */}
         <FadeIn delay={0.1}>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary leading-[1.1] mb-8">
-            Wenn ständige Anspannung deinen Alltag bestimmt.
+            Wenn dauerhafte Anspannung deinen Alltag bestimmt.
           </h1>
         </FadeIn>
 
         {/* Subline */}
         <FadeIn delay={0.2}>
           <p className="text-xl md:text-2xl text-primary/70 font-light leading-relaxed mb-12 max-w-2xl mx-auto">
-            Ein unaufgeregter Raum, in dem dein Nervensystem zur Ruhe kommt.
+            Ich zeige dir einen Weg, auf dem du zur Ruhe kommst.
+            <br />
             Finde aus dem Gedankenkarussell zurück in eine spürbare, körperliche Erdung.
           </p>
         </FadeIn>
@@ -49,7 +50,7 @@ export default function Hero() {
             </Link>
           </div>
           <p className="mt-5 text-sm text-muted">
-            Das Assessment dauert ca. 3 Minuten.
+            Das Assessment dauert nur ca. 3 Minuten.
           </p>
         </FadeIn>
 

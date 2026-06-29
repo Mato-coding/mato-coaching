@@ -45,20 +45,24 @@ export default function About() {
 
             <FadeIn delay={0.3}>
               <p className="text-primary/80 text-lg leading-relaxed mb-4">
-                Ich bin Lasse Klüver, Prozessbegleiter und Coach in Hamburg. Ich begegne dir auf Augenhöhe,
+                Ich bin Lasse Klüver, dein Prozessbegleiter und Coach in Hamburg. Ich begegne dir auf Augenhöhe,
                 mit einer klaren, strukturierten Haltung und tiefem Verständnis
-                für die Mechanismen von Stress und innerer Erschöpfung. Meine
-                Arbeit basiert auf der Überzeugung, dass echte Veränderung erst
+                für die Mechanismen von Stress, Anxiety und innerer Erschöpfung. 
+              </p> 
+
+              <p className="text-primary/80 text-lg leading-relaxed mb-4">
+                Meine Arbeit basiert auf der Überzeugung, dass echte Veränderung erst
                 dann beginnt, wenn wir den Körper einbeziehen und dem
                 Nervensystem erlauben, alte Alarmzustände loszulassen. 
                 Meine Begleitung findet in Hamburg und online statt.
               </p>
+             
               <p className="text-primary/80 text-lg leading-relaxed">
                 Gemeinsam schaffen wir einen unaufgeregten, sicheren Raum, in
                 dem analytische Klarheit und somatische Tiefe zusammenfließen.
                 Hier musst du nichts beweisen. Du darfst ankommen, sortieren
                 und Schritt für Schritt die Kontrolle über dein eigenes
-                Wohlbefinden zurückgewinnen.
+                Leben zurückgewinnen.
               </p>
             </FadeIn>
 

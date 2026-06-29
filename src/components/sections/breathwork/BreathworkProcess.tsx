@@ -4,16 +4,15 @@ import Eyebrow from "@/components/ui/Eyebrow";
 const steps = [
   {
     title: "Ankommen.",
-    body: "Wir klären kurz, wie es dir geht und worauf wir achten. Du liegst bequem, nichts musst du können oder vorbereiten.",
+    body: "Wir klären zu Beginn, wie es dir gerade geht und worauf wir heute achten. Du kommst einfach genau so, wie du gerade bist. Du brauchst nichts zu können, wissen oder vorzubereiten.",
   },
   {
-    /* TODO Dauer: Sitzungsdauer 1:1 eintragen, z.B. "90 Minuten" */
     title: "Atmen.",
-    body: "Über etwa {{DAUER_1ZU1}} führe ich dich durch die Atemarbeit. Musik trägt den Prozess, ich bleibe die ganze Zeit an deiner Seite.",
+    body: "Über etwa 60-90 Minuten führe ich dich durch die Atemarbeit. Ich halte den Raum für deinen Prozess und bleibe die ganze Zeit an deiner Seite. Du kannst ganz loslassen und dich tragen lassen. Es gibt für dich nichts zu tun und nichts zu leisten.",
   },
   {
     title: "Nachklang.",
-    body: "Am Ende kommst du in Stille an und wir geben dem Erlebten Raum. Was auftaucht, ordnen wir gemeinsam ein.",
+    body: "Am Ende kommst du in Stille an und wir geben dem Erlebten Raum. Was sich zeigen möchte, darf sich zeige. Wir ordnen es gemeinsam liebevoll ein.",
   },
 ];
 
@@ -50,7 +49,7 @@ export default function BreathworkProcess() {
 
         <FadeIn delay={0.3}>
           <p className="mt-10 text-primary/60 text-base leading-relaxed max-w-[68ch]">
-            Einzeln arbeiten wir ganz in deinem Tempo. In der Gruppe trägt
+            In Einzelsessions arbeiten wir ganz in deinem Tempo und so, wie es für dich individuell am besten ist. In der Gruppe trägt
             zusätzlich die gemeinsame Erfahrung.
           </p>
         </FadeIn>

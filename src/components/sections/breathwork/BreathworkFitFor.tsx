@@ -18,15 +18,16 @@ export default function BreathworkFitFor() {
         <FadeIn delay={0.2}>
           <div className="space-y-5 max-w-[68ch]">
             <p className="text-primary/80 text-lg leading-relaxed">
-              Diese Arbeit passt für dich, wenn du im Leben funktionierst und
-              trotzdem spürst, dass etwas nicht zur Ruhe kommt. Wenn du bereit bist, dem
-              Körper zuzuhören, statt nur über das Problem nachzudenken.
+              Diese Arbeit passt für dich, wenn du zwar im Leben weitestgehend funktionierst und
+              trotzdem spürst, dass etwas in dir nicht zur Ruhe kommt. Vielleicht kennst du schon dieses Gefühl, dass sich etwas in deinem Körper meldet, wenn du mental und emotional am Anschlag bist. 
+              Wenn du funktionierende Hilfe suchst, die sich gut mit deinem normalen Alltag verbinden lässt, und nicht nur auf einem abgeschiedenen Retreat weit weg von zu Hause funktioniert.
             </p>
             <p className="text-primary/80 text-lg leading-relaxed">
-              Aus Sorgfalt arbeite ich nicht mit allem. Bei bestimmten gesundheitlichen
-              Themen, etwa Herz-Kreislauf-Erkrankungen, Epilepsie, einer Schwangerschaft
-              oder akuten psychischen Belastungen, brauchen wir vorab eine ärztliche
-              Abklärung oder einen anderen Weg. Im Erstgespräch klären wir das ehrlich.
+              Diese Arbeit passt für dich, wenn du spürst, dass du selbst etwas tun musst, weil es nicht von alleine passieren wird. Und schon gar nicht, in dem du weiter so machst, wie bisher. 
+              Wenn du bereit bist zu lernen, deinem Körper zuzuhören, statt nur über das Problem nachzudenken.
+            </p>
+            <p className="text-primary/80 text-lg leading-relaxed">
+              Noch ein Wort zur Zusammenarbeit von meiner Seite. Aus Sorgfalt arbeite ich nicht mit allen medizinischen Themen und Vorbedingungen. Wenn du unsicher bist, klären wir das ehrlich im Erstgespräch. Ich möchte, dass du dich bei mir sicher aufgehoben fühlst und die beste Heilung bekommst, die du brauchst.
             </p>
           </div>
         </FadeIn>

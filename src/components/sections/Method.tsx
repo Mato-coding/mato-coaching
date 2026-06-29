@@ -40,14 +40,15 @@ export default function Method() {
             <div className="bg-surface border border-primary/8 rounded-md p-8 md:p-10">
               {/* Zitat in Cormorant-Kursive als Signature-Element */}
               <p className="font-serif italic text-primary/90 text-lg leading-relaxed mb-8">
-                „Es fühlte sich an, als würde eine schwere Käseglocke von mir
-                genommen. Ich habe eine innere Ruhe und einen tiefen Schlaf
+                „Es hat sich angefühlt, als würde eine Käseglocke von mir
+                genommen werden und ich konnte die Welt das erste Mal wieder richtig spüren. 
+                Ich habe eine innere Ruhe und einen tiefen Schlaf
                 gefunden, den ich seit Jahren nicht mehr kannte."
               </p>
               <div className="flex items-center gap-3">
                 <span className="h-px w-4 bg-umber shrink-0" aria-hidden="true" />
                 <p className="text-muted text-sm">
-                  Klientin, 1:1 Prozessbegleitung
+                  Gerry, IFS-Klientin, 1:1 Prozessbegleitung
                 </p>
               </div>
             </div>

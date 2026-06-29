@@ -13,14 +13,14 @@ export default function BreathworkHero() {
         <FadeIn delay={0.1}>
           {/* Alternative H1: "Somatic Breathwork für ein ruhigeres Nervensystem" */}
           <h1 className="font-serif text-5xl md:text-6xl font-medium text-primary leading-[1.1] mb-8">
-            Ruhe, die im Atem beginnt
+            Echte Ruhe, die du im Körper spürst
           </h1>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           <p className="text-xl text-primary/70 leading-relaxed mb-12 max-w-2xl mx-auto">
             Begleitete Atemsitzungen für Menschen, die nach außen funktionieren
-            und innen keine Ruhe finden. Einzeln oder in der Gruppe, in Hamburg und
+            und innen keine Ruhe finden können. Einzeln oder in der Gruppe, in Hamburg und
             online.
           </p>
         </FadeIn>
@@ -37,7 +37,7 @@ export default function BreathworkHero() {
               href="#audio-reset"
               className="w-full sm:w-auto border border-accent/25 text-accent px-8 py-4 rounded-md font-medium hover:border-accent/50 transition-colors"
             >
-              Audio-Reset kostenlos anhören
+              Kostenloses Audio sichern
             </a>
           </div>
         </FadeIn>

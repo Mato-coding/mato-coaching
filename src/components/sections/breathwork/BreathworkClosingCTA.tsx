@@ -12,7 +12,7 @@ export default function BreathworkClosingCTA() {
 
         <FadeIn delay={0.1}>
           <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
-            Ein ruhiges Gespräch zum Anfang
+            Ein ruhiges Gespräch zum gemeinsamen Kennenlernen
           </h2>
         </FadeIn>
 

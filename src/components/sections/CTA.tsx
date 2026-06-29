@@ -18,16 +18,16 @@ export default function CTA() {
 
         <FadeIn delay={0.1}>
           <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
-            Bereit für echte innere Arbeit?
+            Bist du bereit für echte innere Arbeit?
           </h2>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           <p className="text-primary/80 text-lg leading-relaxed mb-10">
             Diese Begleitung ist kein Quick-Fix. Sie erfordert Mut, Zeit und
-            die Bereitschaft, sich den eigenen Emotionen zuzuwenden. Im
-            kostenfreien Erstgespräch klären wir unverbindlich, wo du stehst
-            und ob wir ein gutes Match für diesen Weg sind.
+            die Bereitschaft, sich den eigenen Emotionen zuzuwenden. 
+            Im kostenfreien Erstgespräch klären wir unverbindlich, wo du gerade stehst
+            und ob wir ein gutes Match für deinen Weg sind.
           </p>
         </FadeIn>
 
@@ -47,7 +47,7 @@ export default function CTA() {
             </Link>
           </div>
           <p className="text-muted mt-5 text-sm">
-            Das Assessment dauert ca. 3 Minuten.
+            Das Assessment dauert nur ca. 3 Minuten.
           </p>
         </FadeIn>
 

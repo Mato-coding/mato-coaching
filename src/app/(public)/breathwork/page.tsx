@@ -9,7 +9,7 @@ import BreathworkResonance from "@/components/sections/breathwork/BreathworkReso
 import BreathworkMethod from "@/components/sections/breathwork/BreathworkMethod";
 import BreathworkProcess from "@/components/sections/breathwork/BreathworkProcess";
 import BreathworkFitFor from "@/components/sections/breathwork/BreathworkFitFor";
-import BreathworkAbout from "@/components/sections/breathwork/BreathworkAbout";
+import BreathworkAbout from "@/components/sections/About";
 import BreathworkFAQ from "@/components/sections/breathwork/BreathworkFAQ";
 import BreathworkClosingCTA from "@/components/sections/breathwork/BreathworkClosingCTA";
 
