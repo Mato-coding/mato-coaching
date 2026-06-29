@@ -23,7 +23,7 @@ export default function Transformation() {
 
         <FadeIn delay={0.1}>
           <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary mb-6 leading-[1.15]">
-            Zurück in ein Leben, das von Klarheit statt von Alarm geführt wird.
+            Zurück in ein Leben, das von Klarheit statt von dauerhaftem Alarmzustand geführt wird.
           </h2>
         </FadeIn>
 

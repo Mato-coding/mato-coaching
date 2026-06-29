@@ -3,7 +3,7 @@
 import { useState } from "react";
 import LeadMagnetForm from "@/components/forms/LeadMagnetForm";
 
-export default function LeadMagnetCTA() {
+export default function LeadMagnetCTA({ source = "startseite" }: { source?: string }) {
   const [submitted, setSubmitted] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ export default function LeadMagnetCTA() {
       </p>
 
       <div className="mt-10 max-w-md">
-        <LeadMagnetForm source="startseite" onSuccess={() => setSubmitted(true)} />
+        <LeadMagnetForm source={source} onSuccess={() => setSubmitted(true)} />
       </div>
     </>
   );
