@@ -7,6 +7,7 @@ const baseUrl = SITE_URL;
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/breathwork",
     "/assessment",
     "/termin",
     "/journal",
