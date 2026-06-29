@@ -1,3 +1,4 @@
+import Link from "next/link";
 import FadeIn from "../ui/FadeIn";
 
 export default function Method() {
@@ -32,6 +33,14 @@ export default function Method() {
                 Navigation neu und stichst anschließend gestärkt und
                 selbstwirksam wieder ins Leben.
               </p>
+            </FadeIn>
+            <FadeIn delay={0.3}>
+              <Link
+                href="/breathwork"
+                className="mt-8 inline-block font-sans font-medium text-[--color-navy] underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+              >
+                Wie Somatic Breathwork wirkt
+              </Link>
             </FadeIn>
           </div>
 

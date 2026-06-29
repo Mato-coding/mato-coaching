@@ -75,7 +75,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 ## Offene Aufgaben
 1. ~~Domain-Migration~~ (erledigt). Alle Phasen abgeschlossen, Details in migrations-plan.md.
 2. Restliche Service-Seiten /coaching und /ifs. Am /breathwork-Muster orientieren: Server-Komponente, eigene Metadaten über absoluteUrl (title, description, openGraph, alternates.canonical), Service-JSON-LD inline auf der Seite (nicht über JsonLd.tsx), Sitemap erweitern.
-   Offen bei /breathwork: interne Verlinkung fehlt. Seite ist live, aber nur über Sitemap und direkte URL erreichbar (Funnel-Sackgasse). Anbindung über kontextuellen Link in der Method-Section plus dezenten Footer-Link. Bewusst KEIN Header-Nav-Link, der Header bleibt auf den /termin-CTA reduziert. Echte Header-Navigation erst entscheiden, wenn alle drei Service-Seiten stehen.
+   Echte Header-Navigation erst entscheiden, wenn alle drei Service-Seiten stehen. Bewusst KEIN Header-Nav-Link für einzelne Seiten; Header bleibt auf den /termin-CTA reduziert.
 3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
 4. Neues Logo (Bär-Symbolik), danach BIMI fürs Absender-Avatar.
 5. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
@@ -83,6 +83,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 ## Erledigt
 - Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
 - Service-Seite /breathwork: umgesetzt und live auf www.lassekluever.de.
+- /breathwork intern verlinkt: kontextueller Textlink in der Method-Section ("Wie Somatic Breathwork wirkt") und dezenter Footer-Link ("Somatic Breathwork"). Bewusst kein Header-Link.
 
 ## Perspektivisch
 Datenschutzfreundliche Analytics (Plausible, cookieless). Double-Opt-in vorbereiten. Lead-Dedup nach E-Mail. Resend-Webhook für "delivered". Cal.com-Webhook für Buchung in Supabase. Lokale Testumgebung (.env.local plus .env.local.example): separates Supabase-Dev-Projekt oder diszipliniert gegen Produktion (echte Tests schreiben in die DB und versenden echte Mails).

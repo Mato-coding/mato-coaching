@@ -36,6 +36,12 @@ export default function Footer() {
         {/* Navigation */}
         <div className="flex flex-col items-center justify-center gap-6 sm:flex-row mb-8">
           <Link
+            href="/breathwork"
+            className="text-background/60 hover:text-background text-sm transition-colors"
+          >
+            Somatic Breathwork
+          </Link>
+          <Link
             href="/journal"
             className="text-background/60 hover:text-background text-sm transition-colors"
           >
