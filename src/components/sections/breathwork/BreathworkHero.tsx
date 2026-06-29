@@ -20,8 +20,9 @@ export default function BreathworkHero() {
         <FadeIn delay={0.2}>
           <p className="text-xl text-primary/70 leading-relaxed mb-12 max-w-2xl mx-auto">
             Begleitete Atemsitzungen für Menschen, die nach außen funktionieren
-            und innen keine Ruhe finden können. Einzeln oder in der Gruppe, in Hamburg und
-            online.
+            und innen keine Ruhe finden können. 
+            <br />
+            Einzeln oder in der Gruppe, in Hamburg und online.
           </p>
         </FadeIn>
 

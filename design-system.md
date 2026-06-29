@@ -1,4 +1,4 @@
-# Design System, mato-coaching (Lasse Klüver)
+# Design System, Lasse Klüver
 
 **Marke:** Persönliche Brand, Name-forward (Lasse Klüver), Domain in Migration auf www.lassekluever.de.
 **Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
