@@ -2,19 +2,19 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei.
 
+> Stand: 29.06.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten.
 
-## Marke (in Umstellung)
-- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" wird zur Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Bärenenergie als Markenkonzept, nicht als Bildzeichen).
-- Umgesetzt: Header zeigt "Lasse Klüver" plus Umber-Eyebrow "Somatic Breathwork · IFS Coaching". Footer führt bewusst "Lasse Klüver · Mato Coaching" (Lasse vorn, Mato als zweite Ebene). JSON-LD nutzt name "Lasse Klüver" und alternateName "Mato Coaching".
-- Header-Lockup: Header.tsx nutzt seit dem SVG-Lockup-Umbau public/header-lockup-outlined.svg (ab sm, Lockup mit Mark + Name + Eyebrow) und public/mark-symbol-tight.svg (mobil, nur Bildmarke). Name und Eyebrow stehen zusätzlich als sr-only-Span im Link (SEO, Screenreader). Die frühere Eyebrow-plus-translate-Konstruktion mit Text-Spans ist abgelöst. LogoMark.tsx bleibt, da vom Footer genutzt.
+## Marke
+- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" ist die Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Logo).
+- Umgesetzt: Lasse Klüver steht vorn in Header, Metadaten, Schema und Footer; Mato dahinter als Methode. Die Seite zeigt "Lasse Klüver", nicht mehr "Mato Coaching".
 - Nie "Mato Coaching by Lasse Klüver".
 
-## Domain (in Migration)
-- Neue kanonische Domain: www.lassekluever.de. mato-coaching.de wird per 301 darauf umgeleitet.
-- Stand: Domain in Vercel live, E-Mail migriert. Offen: Code kanonisieren (metadataBase, sitemap, robots, Schema- und OG-URLs), Vercel auf primär/Redirect umschalten, Search-Console-Adressänderung, Google Business. Details in migrations-plan.md.
-- Alle absoluten URLs im Code sollen auf https://www.lassekluever.de zeigen.
+## Domain (Migration abgeschlossen)
+- Kanonische Domain: www.lassekluever.de. mato-coaching.de leitet dauerhaft per 301 auf www.lassekluever.de um.
+- Alle absoluten URLs im Code zeigen auf https://www.lassekluever.de (über SITE_URL in src/lib/site.ts). Code kanonisiert, Vercel umgeschaltet, Search Console und Google Business aktualisiert. Details in migrations-plan.md.
 
 ## Stack
 - Next.js 16.2.9, App Router, src/app, Turbopack, TypeScript.
@@ -26,7 +26,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 ## Repo (Kurzüberblick)
 - src/app/: layout.tsx (Root, Fonts, metadataBase), icon.svg, sitemap.ts, robots.ts
 - src/app/api/: lead/route.ts (Lead-Magnet: Supabase + Resend, Versandstatus), assessment/route.ts (anonyme Abschlüsse)
-- src/app/(public)/: layout.tsx (Metadaten, JsonLd), page.tsx (Startseite), assessment/page.tsx, termin/ (page.tsx + CalEmbed.tsx), journal/ (page.tsx + [slug]/page.tsx)
+- src/app/(public)/: layout.tsx (Metadaten, JsonLd), page.tsx (Startseite), assessment/page.tsx, breathwork/page.tsx (Service-Seite, live), termin/ (page.tsx + CalEmbed.tsx), journal/ (page.tsx + [slug]/page.tsx)
 - src/components/sections/ (Hero, Transformation, Cause, Method, About, CTA, LeadMagnet, LeadMagnetCTA)
 - src/components/forms/ (AssessmentForm, LeadMagnetForm, ResultActions)
 - src/components/ui/ (Header, Footer, FadeIn), src/components/seo/JsonLd.tsx
@@ -73,12 +73,16 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 - DSGVO: Einwilligung im Formular. Die Datenschutzerklärung muss source, page_path, referrer, assessment_cluster, assessment_result und audio_email_status abdecken. Vor Newsletter Double-Opt-in. Auftragsverarbeitung mit Supabase und Resend.
 
 ## Offene Aufgaben
-1. Domain-Migration abschließen: Code kanonisieren (metadataBase, sitemap.ts, robots.ts, JsonLd.tsx und journal/[slug]/page.tsx zeigen noch hart auf mato-coaching.de), Vercel-Redirect, Search Console, Google Business. migrations-plan.md ist referenziert, existiert aber noch nicht im Repo.
-2. ~~Inhaltliche Marken-Umstellung~~ (erledigt). Mato-Methoden-Naming noch offen (separater Task).
-3. Service-Seiten /breathwork, /coaching, /ifs (eigene Metadaten, Service-Schema, interne Links).
-4. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
-5. Neues Logo (abstraktes Bildzeichen, keine Wortmarke), danach BIMI fürs Absender-Avatar.
-6. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
+1. ~~Domain-Migration~~ (erledigt). Alle Phasen abgeschlossen, Details in migrations-plan.md.
+2. Restliche Service-Seiten /coaching und /ifs. Am /breathwork-Muster orientieren: Server-Komponente, eigene Metadaten über absoluteUrl (title, description, openGraph, alternates.canonical), Service-JSON-LD inline auf der Seite (nicht über JsonLd.tsx), Sitemap erweitern.
+   Offen bei /breathwork: interne Verlinkung fehlt. Seite ist live, aber nur über Sitemap und direkte URL erreichbar (Funnel-Sackgasse). Anbindung über kontextuellen Link in der Method-Section plus dezenten Footer-Link. Bewusst KEIN Header-Nav-Link, der Header bleibt auf den /termin-CTA reduziert. Echte Header-Navigation erst entscheiden, wenn alle drei Service-Seiten stehen.
+3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
+4. Neues Logo (Bär-Symbolik), danach BIMI fürs Absender-Avatar.
+5. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
+
+## Erledigt
+- Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
+- Service-Seite /breathwork: umgesetzt und live auf www.lassekluever.de.
 
 ## Perspektivisch
 Datenschutzfreundliche Analytics (Plausible, cookieless). Double-Opt-in vorbereiten. Lead-Dedup nach E-Mail. Resend-Webhook für "delivered". Cal.com-Webhook für Buchung in Supabase. Lokale Testumgebung (.env.local plus .env.local.example): separates Supabase-Dev-Projekt oder diszipliniert gegen Produktion (echte Tests schreiben in die DB und versenden echte Mails).
