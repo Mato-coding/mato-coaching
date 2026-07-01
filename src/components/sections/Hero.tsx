@@ -29,7 +29,7 @@ export default function Hero() {
           <p className="text-xl md:text-2xl text-primary/70 font-light leading-relaxed mb-12 max-w-2xl mx-auto">
             Ich zeige dir einen Weg, auf dem du zur Ruhe kommst.
             <br />
-            Finde aus dem Gedankenkarussell zurück in eine spürbare, körperliche Erdung.
+            Finde aus dem Gedankenkarussell zurück in eine spürbare körperliche und emotionaleErholung.
           </p>
         </FadeIn>
 
