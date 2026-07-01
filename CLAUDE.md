@@ -2,13 +2,13 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei.
 
-> Stand: 29.06.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 01.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten.
 
 ## Marke
-- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" ist die Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik (Logo).
+- Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" ist die Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik, der aber nicht bildlich im Logo gezeigt wird.
 - Umgesetzt: Lasse Klüver steht vorn in Header, Metadaten, Schema und Footer; Mato dahinter als Methode. Die Seite zeigt "Lasse Klüver", nicht mehr "Mato Coaching".
 - Nie "Mato Coaching by Lasse Klüver".
 
@@ -89,7 +89,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 Datenschutzfreundliche Analytics (Plausible, cookieless). Double-Opt-in vorbereiten. Lead-Dedup nach E-Mail. Resend-Webhook für "delivered". Cal.com-Webhook für Buchung in Supabase. Lokale Testumgebung (.env.local plus .env.local.example): separates Supabase-Dev-Projekt oder diszipliniert gegen Produktion (echte Tests schreiben in die DB und versenden echte Mails).
 
 ## Off-Code (keine Claude-Code-Aufgaben)
-Google Business verifiziert (wird auf "Lasse Klüver" umbenannt), Bewertungen einsammeln ist der lokale Hebel. Search Console pending. Keine bezahlten Anzeigen, bis der Funnel konvertiert.
+Google Business auf "Lasse Klüver" umbenannt, verifiziert. Search Console verifiziert, Sitemap eingereicht, Adressänderung ausgeführt. Bewertungen einsammeln ist der lokale Hebel. Keine bezahlten Anzeigen, bis der Funnel konvertiert.
 
 ## Arbeitsweise
 - Kleine Aufgaben, ein Feature pro Sitzung. Tokens, Schriften, Spacing aus globals.css und design-system.md. FadeIn wiederverwenden. Häufig committen, vor Größerem ein Branch.

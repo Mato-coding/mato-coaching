@@ -1,5 +1,7 @@
 # Migrations- und Changeplan: Domainwechsel zu lassekluever.de
 
+> Status: abgeschlossen und archiviert. Dieses Dokument ist reine Referenz für das Domain- und Mail-Setup (DNS, Resend, Vercel). Es ist kein aktives Arbeitsdokument mehr und muss nicht zu Sitzungsbeginn gelesen werden. Aktueller Projektstand steht in CLAUDE.md.
+
 Status-Legende: [erledigt] · [offen] · [in Arbeit]
 
 ## Ziel
@@ -7,7 +9,7 @@ Kanonische Hauptdomain wird www.lassekluever.de. mato-coaching.de leitet dauerha
 
 ## Phase 0 – Entscheidungen [erledigt]
 - E-Mail zieht auf @lassekluever.de um. [erledigt]
-- Google Business Profil wird auf "Lasse Klüver" umbenannt, aber erst in Phase 6. [offen]
+- Google Business Profil auf "Lasse Klüver" umbenannt (Phase 6). [erledigt]
 
 ## Phase 1 – Neue Domain erreichbar und E-Mail
 - Vercel: lassekluever.de und www hinzugefügt, www kanonisch, apex 308 auf www, alle "Valid Configuration". Läuft parallel zur alten Domain. [erledigt]
