@@ -1,6 +1,6 @@
 # Design System, Lasse Klüver
 
-**Marke:** Persönliche Brand, Name-forward (Lasse Klüver), Domain in Migration auf www.lassekluever.de.
+**Marke:** Persönliche Brand, Name-forward (Lasse Klüver), kanonische Domain www.lassekluever.de.
 **Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
 **Was vermieden wird:** Verspieltheit, Esoterik-Optik und der generische KI-Look
 (Creme + lautes Terrakotta + liebloses Default-Pairing). Charakter wird an *einer*
