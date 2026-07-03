@@ -1,11 +1,11 @@
 # CLAUDE.md
 
-Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei.
+Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen.
 
-> Stand: 01.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 03.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
-Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten.
+Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
 
 ## Marke
 - Entscheidung: Lasse Klüver ist die primäre Identität. "Mato" ist die Methoden- und Markenebene, die später eigenständiger werden kann. Der Bär ist die verbindende Symbolik, der aber nicht bildlich im Logo gezeigt wird.
