@@ -37,18 +37,24 @@ Ton für die Nutzung in Copy: bodenständig, physiologisch fundiert, unaufgeregt
 - Einnahmen daraus aktuell gering. Freelancing (Vertrieb, Organisations- und Teamentwicklung) trägt den Lebensunterhalt.
 - Noch keine Podcast- oder Presseauftritte.
 
-## 5. Angebot (geplant, noch nicht final entschieden)
+## 5. Angebot (Pilotrunde entschieden am 03.07.2026)
 
-- Kernidee 1:1: Begleitung über 2 bis 3 Monate mit wöchentlicher 1:1-Session plus weiteren Berührungspunkten (Gruppensessions innerhalb einer Kohorte, voraufgezeichnetes Material).
-- Ergänzend: thematische Gruppenformate, z.B. 4 bis 6 Wochenend-Termine über ein Jahr verteilt.
-- Preisgefühl: 3.500 bis 4.500 Euro für das Hauptprogramm, Einzelsessions 180 bis 220 Euro.
-- [offen] Finale Angebotsarchitektur, Name, Kohortengröße und Konditionen der ersten Runde (Pilotkohorte). Eigener Arbeitsauftrag.
+- Hauptprogramm: 10 Wochen 1:1-Begleitung. Wöchentliche Session von 75 Minuten, remote oder in Hamburg vor Ort. Dazu voraufgezeichnetes Audio-Material für die tägliche Praxis zwischen den Sessions.
+- Gründungsrunde: 4 Plätze, fest kommuniziert ("Ich nehme in dieser ersten Runde vier Personen"). Rollierender Start, jeder beginnt, wenn er bereit ist. Bewusst kein Gruppenelement im Piloten; Kohorten-Gruppensessions frühestens ab Runde zwei.
+- Preis: 2.900 Euro in der Gründungsrunde, regulärer Preis ab 3.900 Euro. Beides wird offen kommuniziert. Die Kondition begründet sich durch ausführliches Feedback und die Erlaubnis, mit dem Ergebnis zu arbeiten (anonymisiert oder mit Vornamen). Framing als Tausch, nicht als Rabatt. Untergrenze 2.500 Euro.
+- Zahlung: Einmalzahlung oder zwei Raten, keine weiteren Modelle.
+- Einzelsessions: 180 bis 220 Euro. Möglicher Einstieg, wird nicht aktiv beworben.
+- Kein Programmname im Piloten. Beschreibung schlicht: "10 Wochen 1:1-Begleitung". Namensentscheidung (ggf. unter der Mato-Ebene) erst nach der Pilotrunde mit realen Ergebnissen.
+- Erstgespräch: genau ein Ziel, gemeinsam prüfen, ob die Begleitung passt. Kein Verkaufsdruck, am Ende ein klares Angebot mit Platz, Preis und Startzeitpunkt.
+- Einladung am Kursende (sinngemäß): "Ich begleite ab [Startmonat] vier Menschen über zehn Wochen einzeln, bei Themen wie innerer Unruhe, Anspannung und Erschöpfung. Wenn dich das anspricht, sprich mich an oder buch dir ein Erstgespräch über meine Website."
+- Ergänzend später: thematische Gruppenformate (4 bis 6 Wochenend-Termine über ein Jahr verteilt). Nicht Teil des Piloten.
+- [offen] Startmonat der Gründungsrunde festlegen.
 
 ## 6. Ziele
 
 - Coaching und Breathwork sollen Haupteinnahmequelle werden, Ziel ist Vollzeit.
 - 12-Monats-Ziel: monatlich deutlich über 10.000 Euro Umsatz.
-- Aktueller Status: noch keine zahlenden Coachingkunden. Erste Priorität ist eine Pilotkohorte von 3 bis 5 Personen, gewonnen primär aus den bestehenden Breathwork-Kursen.
+- Aktueller Status: noch keine zahlenden Coachingkunden. Erste Priorität ist die Gründungsrunde mit 4 Plätzen, gewonnen primär aus den bestehenden Breathwork-Kursen und Erstgesprächen. Details in Abschnitt 5.
 
 ## 7. Zielgruppe
 
