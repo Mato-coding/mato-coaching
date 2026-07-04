@@ -42,6 +42,12 @@ export default function Footer() {
             Somatic Breathwork
           </Link>
           <Link
+            href="/coaching"
+            className="text-background/60 hover:text-background text-sm transition-colors"
+          >
+            1:1 Begleitung
+          </Link>
+          <Link
             href="/journal"
             className="text-background/60 hover:text-background text-sm transition-colors"
           >
