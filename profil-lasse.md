@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 03.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
+> Stand: 04.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -21,6 +21,7 @@ Pflegehinweis: Abschnitte 5 bis 8 (Angebot, Ziele, Zielgruppe, Kanäle) ändern 
 - Zertifizierter IFS-informed Coach, Abschluss bei Coaches Rising, nach ICF anerkannt. Lehrer dort u.a. Richard Schwartz persönlich, außerdem Loch Kelly, Amanda Blake, Marcella Cox und weitere.
 - Langjähriges, tiefes Selbststudium zu Körper, Anatomie, Orthopädie und Sportwissenschaft.
 - Breathwork-Praxis als Lehrer seit 3 Jahren.
+- 1:1-Erfahrungsbasis: Übungsklienten und supervidierte Einzelarbeit in der IFS-Ausbildung, unbezahlte Begleitungen im persönlichen Umfeld, Einzelarbeit im Retreatkontext. Öffentliches Framing dazu (entschieden am 03.07.2026): Einzelbegleitung als Teil der Ausbildung, Retreats und persönliches Umfeld benennen, keine Klientenzahlen, kein Begriff Übungsklienten in der Außendarstellung.
 - [offen] Grobe Gesamtzahl der bisherigen Sessions und Teilnehmer (für Beweisführung in Copy nützlich, sobald geschätzt).
 
 ## 3. Herkunftsgeschichte (öffentlich erzählbar)
