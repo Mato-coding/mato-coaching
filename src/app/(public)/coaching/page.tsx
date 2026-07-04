@@ -295,7 +295,7 @@ export default function CoachingPage() {
                     von vier Plätzen.
                   </p>
                   <p className="text-primary/80 text-lg leading-relaxed">
-                    Davor: zwanzig Jahre Verantwortung in Konzernen und Start-ups,
+                    Davor: Fünfzehn Jahre Verantwortung in Konzernen und Start-ups,
                     sechs Jahre Selbstständigkeit. Ich kenne die Welt, aus der du
                     kommst, aus eigener Erfahrung. Und ich kenne den Punkt, an dem immer weiter
                     Funktionieren nicht mehr trägt.
