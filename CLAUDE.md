@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen.
 
-> Stand: 03.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 04.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -77,13 +77,13 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 2. Restliche Service-Seiten /coaching und /ifs. Am /breathwork-Muster orientieren: Server-Komponente, eigene Metadaten über absoluteUrl (title, description, openGraph, alternates.canonical), Service-JSON-LD inline auf der Seite (nicht über JsonLd.tsx), Sitemap erweitern.
    Echte Header-Navigation erst entscheiden, wenn alle drei Service-Seiten stehen. Bewusst KEIN Header-Nav-Link für einzelne Seiten; Header bleibt auf den /termin-CTA reduziert.
 3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
-4. Neues Logo (Bär-Symbolik), danach BIMI fürs Absender-Avatar.
-5. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
+4. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
 
 ## Erledigt
 - Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
 - Service-Seite /breathwork: umgesetzt und live auf www.lassekluever.de.
 - /breathwork intern verlinkt: kontextueller Textlink in der Method-Section ("Wie Somatic Breathwork wirkt") und dezenter Footer-Link ("Somatic Breathwork"). Bewusst kein Header-Link.
+- PNG-Favicons ergänzt: src/app/icon.png (512×512) und src/app/apple-icon.png (180×180) neben icon.svg, damit Google in den Suchergebnissen zuverlässig das Icon zeigt. Next.js erzeugt automatisch <link rel="icon"> und <link rel="apple-touch-icon">.
 
 ## Perspektivisch
 Datenschutzfreundliche Analytics (Plausible, cookieless). Double-Opt-in vorbereiten. Lead-Dedup nach E-Mail. Resend-Webhook für "delivered". Cal.com-Webhook für Buchung in Supabase. Lokale Testumgebung (.env.local plus .env.local.example): separates Supabase-Dev-Projekt oder diszipliniert gegen Produktion (echte Tests schreiben in die DB und versenden echte Mails).
