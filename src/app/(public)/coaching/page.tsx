@@ -248,34 +248,39 @@ export default function CoachingPage() {
       {/* Sektion 5: Wer dich begleitet */}
       <section className="bg-background px-6 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-0">
 
-            {/* Porträt */}
-            <FadeIn>
-              <div className="flex justify-center lg:justify-end">
-                <Image
-                  src="/portrait-lasse-sw.jpg"
-                  alt="Lasse Klüver — Somatic Breathwork & IFS-Coach"
-                  width={600}
-                  height={800}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="rounded-md object-cover"
-                />
-              </div>
-            </FadeIn>
-
-            {/* Text */}
-            <div>
+            {/* Header: mobil zuoberst, auf Desktop oben in der Textspalte */}
+            <div className="lg:col-start-2 lg:row-start-1 lg:self-end">
               <FadeIn delay={0.1}>
-                <Eyebrow label="Dein Guide" />
+                <Eyebrow label="Über mich" />
               </FadeIn>
 
               <FadeIn delay={0.2}>
-                <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-8">
+                <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] lg:mb-8">
                   Wer dich begleitet
                 </h2>
               </FadeIn>
+            </div>
 
+            {/* Porträt */}
+            <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2">
+              <FadeIn>
+                <div className="flex justify-center lg:justify-end">
+                  <Image
+                    src="/portrait-lasse-sw.jpg"
+                    alt="Lasse Klüver — Somatic Breathwork & IFS-Coach"
+                    width={600}
+                    height={800}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              </FadeIn>
+            </div>
+
+            {/* Fließtext */}
+            <div className="lg:col-start-2 lg:row-start-2 lg:self-start">
               <FadeIn delay={0.3}>
                 <div className="space-y-5">
                   <p className="text-primary/80 text-lg leading-relaxed">

@@ -11,38 +11,43 @@ export default function About() {
   return (
     <section className="bg-surface py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-0">
 
-          {/* Linke Spalte: Porträtfoto — Unsplash-Platzhalter, gegen echtes Foto ersetzen */}
-          <FadeIn>
-            <div className="flex justify-center lg:justify-end">
-              <Image
-                src="/portrait-lasse-sw.jpg"
-                alt="Lasse Klüver — Somatic Breathwork & IFS-Coach"
-                width={600}
-                height={800}
-                className="rounded-md object-cover"
-              />
-            </div>
-          </FadeIn>
-
-          {/* Rechte Spalte: Text und Qualifikationen */}
-          <div>
+          {/* Header: mobil zuoberst, auf Desktop oben in der Textspalte */}
+          <div className="lg:col-start-2 lg:row-start-1 lg:self-end">
             <FadeIn delay={0.1}>
               <div className="flex items-center gap-3 mb-6">
                 <span className="h-px w-6 bg-umber" aria-hidden="true" />
                 <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-                  Der Guide
+                  Über mich
                 </span>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
+              <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] lg:mb-6">
                 Klarheit im Geist, Erdung im Körper.
               </h2>
             </FadeIn>
+          </div>
 
+          {/* Porträtfoto — Unsplash-Platzhalter, gegen echtes Foto ersetzen */}
+          <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2">
+            <FadeIn>
+              <div className="flex justify-center lg:justify-end">
+                <Image
+                  src="/portrait-lasse-sw.jpg"
+                  alt="Lasse Klüver — Somatic Breathwork & IFS-Coach"
+                  width={600}
+                  height={800}
+                  className="rounded-md object-cover"
+                />
+              </div>
+            </FadeIn>
+          </div>
+
+          {/* Fließtext und Qualifikationen */}
+          <div className="lg:col-start-2 lg:row-start-2 lg:self-start">
             <FadeIn delay={0.3}>
               <p className="text-primary/80 text-lg leading-relaxed mb-4">
                 Ich bin Lasse Klüver, dein Prozessbegleiter und Coach in Hamburg. Ich begegne dir auf Augenhöhe,
