@@ -3,7 +3,7 @@ import LeadMagnetCTA from "@/components/sections/LeadMagnetCTA";
 
 export default function LeadMagnet() {
   return (
-    <section className="bg-background py-16 md:py-24">
+    <section id="audio" className="bg-background py-16 md:py-24">
       <div className="mx-auto max-w-3xl px-6">
         <FadeIn>
           <div className="mb-4 flex items-center gap-3">
