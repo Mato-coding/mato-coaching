@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen.
 
-> Stand: 04.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 05.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -63,11 +63,16 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 
 ## SEO
 - sitemap.ts und robots.ts in src/app. JsonLd: ProfessionalService, areaServed Hamburg, founder Lasse Klüver (sameAs LinkedIn). Unternehmens-sameAs leer (später Instagram).
-- knowsAbout enthält bewusst "Anxiety" und "Panikattacken" als Wissensgebiete (Inhaberentscheidung, nicht entfernen, keine Behandlungsversprechen im sichtbaren Text).
+- knowsAbout enthält bewusst "Anxiety" und "Panikattacken" als Wissensgebiete (Inhaberentscheidung, nicht entfernen). Die Begriffe dürfen jetzt auch im sichtbaren Text nach der Ampel-Logik der Copy-Regeln genutzt werden.
 - Bei neuen Seiten die Sitemap erweitern. Per-Page-Metadaten nur in Server-Komponenten.
 
 ## Copy- und Rechtsregeln
-- KEINE Heilversprechen, Diagnosen oder Behandlungszusagen im sichtbaren Text. Framing: Nervensystem-Regulation, Persönlichkeitsentwicklung, Stressregulation.
+- Anxiety und Panikattacken dürfen im sichtbaren Text genannt werden, aber nur nach dieser Ampel-Logik:
+
+  Grün: Erleben der Zielgruppe beschreiben ('Für Menschen, die innere Unruhe, Anxiety oder Panikattacken kennen'), edukative Journal-Inhalte, gekennzeichnete Teilnehmerstimmen im Originalton, themenbenennende Metadaten.
+  Rot, nie: 'Hilfe gegen / Behandlung von' plus klinischer Begriff als Leistungsversprechen. Nie löst, heilt, beseitigt, befreit von, überwindet in Verbindung mit Anxiety oder Panikattacken. Keine Ergebniszusagen mit klinischen Begriffen.
+  Brücken-Muster: Erleben benennen, dann Angebot als Nervensystem-Regulation framen ('Du kennst Anxiety oder Panikattacken? Ich arbeite an dem, was darunter liegt: der Regulation deines Nervensystems.').
+  Weiterhin keine Heilversprechen, Diagnosen oder Behandlungszusagen. Framing des Angebots bleibt Nervensystem-Regulation, Stressregulation, Persönlichkeitsentwicklung.
 - Footer-Disclaimer sinngemäß: "...ersetzt keine psychotherapeutische oder ärztliche Behandlung."
 - Stil: Sentence case, aktive Verben, keine Floskeln, KEINE Gedankenstriche.
 - DSGVO: Einwilligung im Formular. Die Datenschutzerklärung muss source, page_path, referrer, assessment_cluster, assessment_result und audio_email_status abdecken. Vor Newsletter Double-Opt-in. Auftragsverarbeitung mit Supabase und Resend.

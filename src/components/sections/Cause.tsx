@@ -27,7 +27,7 @@ export default function Cause() {
           <div className="flex items-center">
             <FadeIn delay={0.2}>
               <p className="text-primary/80 text-lg leading-relaxed">
-                Chronische innere Unruhe oder Zustände akuter Überwältigung
+                Chronische innere Unruhe, Anspannung, Anxiety oder Zustände akuter Überwältigung bis hin zu Panikattacken
                 kommen nicht aus dem Nichts. Sie sind oft der laute Ausdruck
                 von unterdrückter Trauer, alten Verletzungen oder noch nicht
                 verarbeiteten Erfahrungen. Dein Nervensystem hat gelernt,

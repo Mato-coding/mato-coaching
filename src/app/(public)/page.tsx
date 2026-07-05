@@ -10,7 +10,7 @@ import LeadMagnet from "@/components/sections/LeadMagnet";
 export const metadata = {
   title: "Breathwork & Coaching in Hamburg",
   description:
-    "Somatic Breathwork und IFS-orientierte Begleitung in Hamburg und online. Finde bei innerer Unruhe, Anspannung und Erschöpfung zurück zur Ruhe.",
+    "Somatic Breathwork und IFS-orientierte Begleitung in Hamburg und online. Finde bei innerer Unruhe, Anspannung, Anxiety und Erschöpfung zurück zur Ruhe.",
 };
 
 export default function Home() {

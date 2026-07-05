@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 04.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
+> Stand: 05.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -77,7 +77,7 @@ Ausschlüsse: keine benannt.
 
 Erholung. Zur Ruhe kommen. Tiefer und erholsamer Schlaf. Klarheit in der Sicht aufs Leben, Ausrichtung. Das Gefühl, wieder das eigene Leben zu gestalten, statt nur zu funktionieren. Weniger Anspannung, Anxiety, Panikattacken. Ein Gefühl von Erdung und Sicherheit.
 
-Hinweis: Formulierungen immer im erlaubten Framing nutzen (Nervensystem-Regulation, Stressregulation, Persönlichkeitsentwicklung), keine Heilversprechen. Regeln in CLAUDE.md.
+Hinweis: Teilnehmerworte wie "weniger Anxiety, Panikattacken" dürfen als gekennzeichnete Erfahrungsberichte sichtbar genutzt werden. Die Ampel-Logik steht in CLAUDE.md.
 
 ## 9. Kanäle und Assets
 

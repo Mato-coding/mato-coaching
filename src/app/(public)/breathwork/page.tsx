@@ -16,14 +16,14 @@ import BreathworkClosingCTA from "@/components/sections/breathwork/BreathworkClo
 export const metadata: Metadata = {
   title: "Somatic Breathwork in Hamburg und online",
   description:
-    "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Erstgespräch kostenfrei und unverbindlich.",
+    "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Für Menschen mit Anspannung, Anxiety oder innerer Erschöpfung.",
   alternates: {
     canonical: absoluteUrl("/breathwork"),
   },
   openGraph: {
     title: "Somatic Breathwork in Hamburg und online",
     description:
-      "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Erstgespräch kostenfrei und unverbindlich.",
+      "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Für Menschen mit Anspannung, Anxiety oder innerer Erschöpfung.",
     url: absoluteUrl("/breathwork"),
   },
 };

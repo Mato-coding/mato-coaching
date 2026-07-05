@@ -137,7 +137,7 @@ export default function CoachingPage() {
                 Kalender ist voll, die Verantwortung wächst. Innen sieht es
                 anders aus: Die Anspannung geht nicht mehr weg, der Schlaf ist
                 flach und unruhig, die Gedanken kreisen non-stop. Momente echter Ruhe sind selten
-                geworden, echte Freude noch seltener.
+                geworden, echte Freude noch seltener. Manche kennen Anxiety, manche Panikattacken.
               </p>
               <p className="text-primary/80 text-lg leading-relaxed">
                 Vielleicht kennst du das Gefühl, dein Leben nur noch zu verwalten statt

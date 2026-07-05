@@ -26,7 +26,7 @@ export default function BreathworkMethod() {
             </p>
             <p className="text-primary/80 text-lg leading-relaxed">
               Die Sitzungen bestehen aus einer Kombination von Atemübungen, Körperwahrnehmung und sanften Bewegungen.
-              Durch die gezielte Arbeit mit dem Atem wird das Nervensystem reguliert, aufgebaute Spannung und Anxiety abgebaut und die Selbstwahrnehmung gestärkt.
+              Durch die gezielte Arbeit mit dem Atem wird das Nervensystem reguliert, aufgebaute Spannung abgebaut und die Selbstwahrnehmung gestärkt.
             </p>
              <p className="text-primary/80 text-lg leading-relaxed">
               Mit Somatic Breathwork lernst du eine Methode, die dich deinen Körper wieder wirklich spüren lässt.
