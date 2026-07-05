@@ -67,12 +67,12 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 - Bei neuen Seiten die Sitemap erweitern. Per-Page-Metadaten nur in Server-Komponenten.
 
 ## Copy- und Rechtsregeln
-- Anxiety und Panikattacken dürfen im sichtbaren Text genannt werden, aber nur nach dieser Ampel-Logik:
+- Anxiety und Panikattacken im sichtbaren Text nach dieser Ampel-Logik (v2):
 
-  Grün: Erleben der Zielgruppe beschreiben ('Für Menschen, die innere Unruhe, Anxiety oder Panikattacken kennen'), edukative Journal-Inhalte, gekennzeichnete Teilnehmerstimmen im Originalton, themenbenennende Metadaten.
-  Rot, nie: 'Hilfe gegen / Behandlung von' plus klinischer Begriff als Leistungsversprechen. Nie löst, heilt, beseitigt, befreit von, überwindet in Verbindung mit Anxiety oder Panikattacken. Keine Ergebniszusagen mit klinischen Begriffen.
-  Brücken-Muster: Erleben benennen, dann Angebot als Nervensystem-Regulation framen ('Du kennst Anxiety oder Panikattacken? Ich arbeite an dem, was darunter liegt: der Regulation deines Nervensystems.').
-  Weiterhin keine Heilversprechen, Diagnosen oder Behandlungszusagen. Framing des Angebots bleibt Nervensystem-Regulation, Stressregulation, Persönlichkeitsentwicklung.
+  Grün: Erlebens-Nennungen überall ('für Menschen mit Panikattacken', 'wenn du Anxiety kennst'). Edukative Journal-Artikel vollständig frei, inklusive hoffnungsvoller Aussagen, solange sie nicht als Versprechen des Programms formuliert sind. Teilnehmerstimmen als gekennzeichnete Zitate. Themenbenennende Metadaten. 'Hilfe bei Anxiety' und 'Begleitung bei Anxiety' sind erlaubt.
+  Rot, nie: heilt, löst auf, beseitigt, befreit von, überwindet plus klinischer Begriff. Ergebniszusagen mit klinischen Begriffen. 'Behandlung von' oder 'Therapie für' plus klinischer Begriff. 'Hilfe bei Panikattacken' als Leistungsversprechen, stattdessen das für-Menschen-mit-Muster.
+  Edukations-Leitplanke: In Journal-Artikeln keine direkte Verknüpfung von klinischem Begriff, Wirkzusage und dem Angebot im selben Absatz.
+  Weiterhin keine Diagnosen oder Behandlungszusagen. Framing des Angebots bleibt Nervensystem-Regulation, Stressregulation, Persönlichkeitsentwicklung.
 - Footer-Disclaimer sinngemäß: "...ersetzt keine psychotherapeutische oder ärztliche Behandlung."
 - Stil: Sentence case, aktive Verben, keine Floskeln, KEINE Gedankenstriche.
 - DSGVO: Einwilligung im Formular. Die Datenschutzerklärung muss source, page_path, referrer, assessment_cluster, assessment_result und audio_email_status abdecken. Vor Newsletter Double-Opt-in. Auftragsverarbeitung mit Supabase und Resend.

@@ -8,14 +8,14 @@ import Eyebrow from "@/components/ui/Eyebrow";
 export const metadata: Metadata = {
   title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
   description:
-    "Zehn Wochen intensive Einzelbegleitung für Menschen, die viel tragen: zur Ruhe kommen, besser schlafen, das eigene Leben wieder aktiv gestalten statt nur zu funktionieren. Remote oder in Hamburg.",
+    "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
   alternates: {
     canonical: absoluteUrl("/coaching"),
   },
   openGraph: {
     title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
     description:
-      "Zehn Wochen intensive Einzelbegleitung für Menschen, die viel tragen: zur Ruhe kommen, besser schlafen, das eigene Leben wieder aktiv gestalten statt nur zu funktionieren. Remote oder in Hamburg.",
+      "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
     url: absoluteUrl("/coaching"),
   },
 };
@@ -26,7 +26,7 @@ const serviceJsonLd = {
   name: "1:1 Begleitung über zehn Wochen",
   serviceType: "Coaching und Somatic Breathwork",
   description:
-    "Zehn Wochen intensive Einzelbegleitung für Menschen, die viel tragen: zur Ruhe kommen, besser schlafen, das eigene Leben wieder aktiv gestalten statt nur zu funktionieren. Remote oder in Hamburg.",
+    "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
   provider: {
     "@type": "ProfessionalService",
     name: "Lasse Klüver",
