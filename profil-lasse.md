@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 05.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
+> Stand: 06.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -42,11 +42,12 @@ Ton für die Nutzung in Copy: bodenständig, physiologisch fundiert, unaufgeregt
 
 - Hauptprogramm: 10 Wochen 1:1-Begleitung. Wöchentliche Session von 75 Minuten, remote oder in Hamburg vor Ort. Dazu voraufgezeichnetes Audio-Material für die tägliche Praxis zwischen den Sessions.
 - Gründungsrunde: 4 Plätze, fest kommuniziert ("Ich nehme in dieser ersten Runde vier Personen"). Rollierender Start, jeder beginnt, wenn er bereit ist. Bewusst kein Gruppenelement im Piloten; Kohorten-Gruppensessions frühestens ab Runde zwei.
-- Preis: 2.900 Euro in der Gründungsrunde, regulärer Preis ab 3.900 Euro. Beides wird offen kommuniziert. Die Kondition begründet sich durch ausführliches Feedback und die Erlaubnis, mit dem Ergebnis zu arbeiten (anonymisiert oder mit Vornamen). Framing als Tausch, nicht als Rabatt. Untergrenze 2.500 Euro.
+- Preis: 2.900 Euro in der Gründungsrunde, regulärer Preis ab 3.900 Euro. Beides wird offen kommuniziert. Die Kondition begründet sich durch ausführliches Feedback und die Erlaubnis, mit dem Ergebnis zu arbeiten (anonymisiert oder mit Vornamen). Framing als Tausch, nicht als Rabatt. Der Gründungspreis von 2.900 Euro ist zugleich die absolute Untergrenze, keine Verhandlung, in keiner Runde.
 - Zahlung: Einmalzahlung oder zwei Raten, keine weiteren Modelle.
+- Ausfallregel: Sessions können verschoben oder hinten angehängt werden, das Programm läuft maximal 12 Wochen.
+- Erstgespräch: etwa 45 Minuten, Ablauf und Haltung in erstgespraech-leitfaden.md. Genau ein Ziel, gemeinsam prüfen, ob die Begleitung passt. Kein Verkaufsdruck, am Ende ein klares Angebot mit Platz, Preis und Startzeitpunkt.
 - Einzelsessions: 180 bis 220 Euro. Möglicher Einstieg, wird nicht aktiv beworben.
 - Kein Programmname im Piloten. Beschreibung schlicht: "10 Wochen 1:1-Begleitung". Namensentscheidung (ggf. unter der Mato-Ebene) erst nach der Pilotrunde mit realen Ergebnissen.
-- Erstgespräch: genau ein Ziel, gemeinsam prüfen, ob die Begleitung passt. Kein Verkaufsdruck, am Ende ein klares Angebot mit Platz, Preis und Startzeitpunkt.
 - Einladung am Kursende (sinngemäß): "Ich begleite ab [Startmonat] vier Menschen über zehn Wochen einzeln, bei Themen wie innerer Unruhe, Anspannung und Erschöpfung. Wenn dich das anspricht, sprich mich an oder buch dir ein Erstgespräch über meine Website."
 - Ergänzend später: thematische Gruppenformate (4 bis 6 Wochenend-Termine über ein Jahr verteilt). Nicht Teil des Piloten.
 - [offen] Startmonat der Gründungsrunde festlegen.

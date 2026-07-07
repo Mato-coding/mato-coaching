@@ -37,6 +37,9 @@ export default function BookingPage() {
             Wähle einen passenden Zeitpunkt für unser kostenfreies Kennenlernen.
             Der Termin findet per Video-Call statt.
           </p>
+          <p className="mt-3 text-sm text-muted">
+            Das Erstgespräch dauert etwa 45 Minuten.
+          </p>
         </div>
 
         <div className="bg-surface rounded-md border border-primary/8 min-h-150 p-4 overflow-hidden">

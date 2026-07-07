@@ -364,12 +364,15 @@ export default function CoachingPage() {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <p className="text-primary/80 text-lg leading-relaxed mb-10 max-w-[68ch] mx-auto">
+            <p className="text-primary/80 text-lg leading-relaxed mb-4 max-w-[68ch] mx-auto">
               Am Anfang steht ein kostenfreies Erstgespräch. Wir schauen
               gemeinsam, wo du stehst, was du brauchst und ob diese Begleitung
               das Richtige dafür ist. Du lernst meine Arbeitsweise kennen, ich
               deine Situation. Am Ende weißt du, ob du starten willst, und ich,
               ob ich dich aufnehmen kann.
+            </p>
+            <p className="text-sm text-muted mb-10">
+              Das Erstgespräch dauert etwa 45 Minuten.
             </p>
           </FadeIn>
 
