@@ -20,8 +20,8 @@ export default function Header() {
 
         {/* Header-Lockup SVG */}
         <Link href="/" onClick={handleLogoClick} aria-label="Lasse Klüver, zur Startseite" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent rounded-sm">
-          <img src="/header-lockup-outlined.svg" alt="" aria-hidden="true" className="hidden sm:block h-10 w-auto" />
-          <img src="/mark-symbol-tight.svg" alt="" aria-hidden="true" className="block sm:hidden h-9 w-auto" />
+          <img src="/header-lockup-outlined.svg" alt="" aria-hidden="true" width="239" height="40" className="hidden sm:block h-10 w-auto" />
+          <img src="/mark-symbol-tight.svg" alt="" aria-hidden="true" width="19" height="36" className="block sm:hidden h-9 w-auto" />
           <span className="sr-only">Lasse Klüver. Somatic Breathwork und IFS Coaching.</span>
         </Link>
 
