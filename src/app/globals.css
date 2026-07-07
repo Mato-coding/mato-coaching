@@ -98,3 +98,29 @@ h1, h2, h3 {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Hero-Einblendung via CSS (startet sofort mit CSS-Load, kein Hydration-Wait) ── */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes hero-fade-up {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+.hero-item {
+  animation: hero-fade-up var(--duration-slow) var(--ease-settle) both;
+}
+.hero-d1 { animation-delay: 100ms; }
+.hero-d2 { animation-delay: 200ms; }
+.hero-d3 { animation-delay: 300ms; }

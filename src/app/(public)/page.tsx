@@ -16,9 +16,7 @@ export const metadata = {
 export default function Home() {
   return (
     <>
-      <FadeIn>
-        <Hero />
-      </FadeIn>
+      <Hero />
       <FadeIn delay={0.2}>
         <Transformation />
       </FadeIn>
