@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen.
 
-> Stand: 06.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 07.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -91,6 +91,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 - /breathwork intern verlinkt: kontextueller Textlink in der Method-Section ("Wie Somatic Breathwork wirkt") und dezenter Footer-Link ("Somatic Breathwork"). Bewusst kein Header-Link.
 - Service-Seite /coaching: live, mit Gründungsrunden-Konditionen (4 Plätze, 2.900 Euro, regulär ab 3.900 Euro) im sichtbaren Text. Copy-Prinzip der Seite: Outcomes vorn, Methoden als Begründung in eigener Sektion. Nach Abschluss der Gründungsrunde muss die Seite aktualisiert werden.
 - PNG-Favicons ergänzt: src/app/icon.png (512×512) und src/app/apple-icon.png (180×180) neben icon.svg, damit Google in den Suchergebnissen zuverlässig das Icon zeigt. Next.js erzeugt automatisch <link rel="icon"> und <link rel="apple-touch-icon">.
+- Lighthouse-Fixes (07.07.2026): Footer-Kontrast auf WCAG AA angehoben (/40 und /50 → /60 auf dunkelgrundigen Texten), Header-Logo-imgs mit width/height-Attributen dimensioniert (unsized-images), Hero-Einblendung von Framer Motion auf CSS-Animation umgestellt für früheres LCP (Keyframe hero-fade-up in globals.css, gestaffelte .hero-d1/.hero-d2/.hero-d3-Delays, FadeIn-Wrapper im Hero entfernt).
 
 ## Perspektivisch
 Datenschutzfreundliche Analytics (Plausible, cookieless). Double-Opt-in vorbereiten. Lead-Dedup nach E-Mail. Resend-Webhook für "delivered". Cal.com-Webhook für Buchung in Supabase. Lokale Testumgebung (.env.local plus .env.local.example): separates Supabase-Dev-Projekt oder diszipliniert gegen Produktion (echte Tests schreiben in die DB und versenden echte Mails).

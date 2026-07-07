@@ -73,14 +73,14 @@ Basiseinheit 4px. Skala: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 12
 
 ---
 
-## 4. Motion (Framer Motion)
+## 4. Motion (Framer Motion + CSS)
 
 Leise, langsam, absichtsvoll. Kein Bounce, kein Spring, keine Streueffekte.
 
 - Einblendungen: `600ms` und `900ms` (Tokens `--duration-med` und `--duration-slow`), Easing `cubic-bezier(0.16, 1, 0.3, 1)`.
 - Bewegung minimal: Opazität plus kleiner Y-Versatz (`8 bis 16px`).
-- **Eine** orchestrierte Hero-Einblendung beim Laden („settle"), danach Stille.
-- Scroll-Reveals dezent und einmalig, nicht bei jedem Re-Enter.
+- **Hero-Einblendung läuft als reine CSS-Animation** (Keyframe `hero-fade-up` in `globals.css`), damit der LCP-Text sofort mit dem CSS-Load startet und nicht auf JS-Hydration wartet. Gestaffelte Delays über `.hero-d1`/`.hero-d2`/`.hero-d3`-Klassen.
+- Scroll-Reveals (alle Sektionen unterhalb des Hero) nutzen weiterhin `FadeIn.tsx` mit Framer Motion `whileInView`.
 - `prefers-reduced-motion`: Transforms aus, nur sanfte Opazität oder keine Bewegung.
 
 ---
