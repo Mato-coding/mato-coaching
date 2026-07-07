@@ -11,7 +11,7 @@ export default function Footer() {
           <LogoMark className="h-10 w-10 mx-auto mb-3" />
           <span className="font-serif text-background/90 text-lg font-medium">
             Lasse Klüver · Mato Coaching
-            <p className="text-background/50 text-sm mt-2">
+            <p className="text-background/60 text-sm mt-2">
   Somatic Breathwork, Coaching & IFS · Hamburg und online
 </p>
           </span>
@@ -19,7 +19,7 @@ export default function Footer() {
 
         {/* Disclaimer */}
         <div className="flex justify-center mb-8">
-          <p className="text-background/50 text-xs leading-relaxed text-center max-w-md">
+          <p className="text-background/60 text-xs leading-relaxed text-center max-w-md">
             Diese Arbeit dient der Persönlichkeitsentwicklung und
             Stressregulation und ersetzt keine psychotherapeutische oder
             ärztliche Behandlung.
@@ -69,7 +69,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="text-center">
-          <p className="text-background/40 text-xs">
+          <p className="text-background/60 text-xs">
             © 2026 Lasse Klüver · Mato Coaching. Alle Rechte vorbehalten.
           </p>
         </div>
