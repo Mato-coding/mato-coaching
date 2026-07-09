@@ -57,7 +57,7 @@ export default function Method() {
               <div className="flex items-center gap-3">
                 <span className="h-px w-4 bg-umber shrink-0" aria-hidden="true" />
                 <p className="text-muted text-sm">
-                  Gerry, IFS-Klientin, 1:1 Prozessbegleitung
+                  Kim, IFS-Klientin, 1:1 Prozessbegleitung
                 </p>
               </div>
             </div>
