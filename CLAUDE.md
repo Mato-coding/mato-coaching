@@ -84,6 +84,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
    Echte Header-Navigation erst entscheiden, wenn alle drei Service-Seiten stehen. Bewusst KEIN Header-Nav-Link für einzelne Seiten; Header bleibt auf den /termin-CTA reduziert.
 3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
 4. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
+5. Robuster Env-Umgang für LEAD_AUDIO_URL: In src/app/api/lead/route.ts keinen stillen Fallback auf eine hart verdrahtete Audio-URL verwenden. Fehlt die Env-Variable, eine Warnung ins Server-Log schreiben, statt lautlos eine Datei-URL zu raten. Grund: Ein stiller Fallback hat beim Domainwechsel einen falschen Link verdeckt.
 
 ## Erledigt
 - Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
