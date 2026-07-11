@@ -10,7 +10,7 @@ const REPLY_TO = "hello@lassekluever.de";
 // Sobald die echte Datei online ist, in Vercel die Variable LEAD_AUDIO_URL setzen.
 const AUDIO_URL =
   process.env.LEAD_AUDIO_URL ||
-  "https://www.lassekluever.de/audio/breathwork-reset.mp3";
+  "https://www.lassekluever.de/audio/physiological-sigh.m4a";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
