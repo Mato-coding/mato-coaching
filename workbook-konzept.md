@@ -1,6 +1,6 @@
 # Workbook-Konzept: Digitales IFS-Workbook
 
-> Stand: 17.07.2026 (Auftrag 1 abgeschlossen). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
+> Stand: 17.07.2026 (Mitgliederbereich auf gemeinsames Header/Footer-Layout umgestellt). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
 
 ## 1. Zweck und Status
 
@@ -93,7 +93,7 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 - Klienten-Reflexionen sind sensible Daten (Gesundheitsbezug). Vor Livegang mit echten Klienten: eigener Datenschutz-Absatz, explizite Einwilligung, Entscheidung und Transparenz darüber, ob Lasse Einträge einsehen kann. Coach-Ansicht ist Ausbaustufe 2 und nur mit expliziter Einwilligung.
 
 **Entschiedene Routen-Struktur (Auftrag 1):**
-- Geschützter Hub: `/programme` (Route Group `(members)`, kein Public-Layout)
+- Geschützter Hub: `/programme` (Route Group `(members)`, teilt Header und Footer mit der öffentlichen Website)
 - Login: `/programme/login` (öffentlich, aber noindex)
 - Erstes Programm: `/programme/ifs`
 - Auth-Callback: `/auth/callback` (Code-Exchange, bleibt für Kompatibilität, wird im normalen Flow nicht mehr genutzt)
@@ -101,6 +101,8 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 - Nicht in Sitemap. `robots: noindex, nofollow` im Members-Layout. `/programme/` und `/auth/` in robots.ts disallowed.
 
 ## 11. Design und Ton
+
+Layout-Entscheidung (17.07.2026, ersetzt das frühere reduzierte Eigenlayout): Der Mitgliederbereich nutzt denselben Header und Footer wie die öffentliche Website. Ein Header, drei Zustände: nicht eingeloggt zeigt den Erstgespräch-CTA, eingeloggt außerhalb von /programme zeigt den CTA "Mein Programm", eingeloggt innerhalb von /programme zeigt einen leisen Abmelden-Textlink. Der Auth-Status wird clientseitig im Header-Slot geprüft (HeaderAuthSlot), damit die öffentlichen Seiten statisch bleiben. Die Session lebt in Cookies und gilt domainweit, eingeloggte Klienten können die gesamte Website nutzen, ohne den Status zu verlieren. Der Footer ist überall identisch und ohne Auth-Logik. Die Route des geschützten Bereichs ist entschieden: /programme.
 
 - design-system.md gilt vollständig: Tokens aus globals.css, Cormorant/Hanken Grotesk, Atem-Rhythmus, FadeIn wiederverwenden, Motion leise.
 - Copy-Regeln aus CLAUDE.md gelten auch im Workbook (Ampel-Logik, sentence case, aktive Verben, keine Gedankenstriche, keine Heilversprechen).

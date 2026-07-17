@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { smoothScrollToTop } from "@/lib/scroll";
+import HeaderAuthSlot from "@/components/ui/HeaderAuthSlot";
 
 export default function Header() {
   const pathname = usePathname();
@@ -25,13 +26,8 @@ export default function Header() {
           <span className="sr-only">Lasse Klüver. Somatic Breathwork und IFS Coaching.</span>
         </Link>
 
-        {/* Primär-CTA */}
-        <Link
-          href="/termin"
-          className="bg-accent text-background rounded-md px-5 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-        >
-          Erstgespräch
-        </Link>
+        {/* Primär-CTA / Auth-Status */}
+        <HeaderAuthSlot />
 
       </div>
     </header>
