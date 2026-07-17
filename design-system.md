@@ -111,3 +111,9 @@ Charakter sichtbar wird, sonst Stille.
   und `--font-sans` komponieren. Die Komponenten nutzen `font-serif` (Display) und
   `font-sans` (Body), diese Namen nicht ändern.
 - In `next/font/google` heißt die Familie `Cormorant`, nicht `Cormorant_Garamond`.
+
+---
+
+## 8. Workbook-Blöcke
+
+Regeln folgen, Quelle ist der Designregeln-Auftrag im Workbook-Fahrplan.
