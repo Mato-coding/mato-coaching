@@ -1,6 +1,6 @@
 # Workbook-Konzept: Digitales IFS-Workbook
 
-> Stand: 17.07.2026 (Mitgliederbereich auf gemeinsames Header/Footer-Layout umgestellt). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
+> Stand: 17.07.2026 (Auftrag 1 abgeschlossen, Konzept auf Programm-Bereich-Schritt-Block-Hierarchie erweitert). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
 
 ## 1. Zweck und Status
 
@@ -8,7 +8,7 @@ Interaktives digitales IFS-Workbook für Klienten der 1:1-Begleitung. Eigenentwi
 
 Alle Inhalte sind Eigenkreationen in Lasses Sprache. Keine Übernahme von Texten, Übungsformulierungen oder Strukturen aus fremden Workbooks (Urheberrecht). Die IFS-Methodik selbst (Parts, Self, Manager, Firefighter, Exiles, 6 F's) ist frei nutzbar.
 
-Status: Konzept steht, Umsetzung startet mit Auftrag 1 (siehe Abschnitt 12).
+Status: Auftrag 1 (Fundament) ist umgesetzt. Es existieren: ein geschützter Bereich unter /programme mit Programmliste, /programme/ifs mit Bereichsübersicht, Auth per E-Mail-Code über Supabase (bewusste Entscheidung statt Magic Link, weil robuster gegenüber Mail-Clients), ein gemeinsamer Header mit drei Zuständen je nach Login-Status, ein gemeinsamer Footer, Middleware mit Session-Refresh sowie die Tabellen workbook_responses und workbook_access mit RLS. Klienten-Anlage erfolgt manuell in Supabase. Nächster Schritt ist Auftrag 2 (siehe Abschnitt 12).
 
 ## 2. Branch-Regel (verbindlich)
 
@@ -16,7 +16,13 @@ Das gesamte Feature entsteht auf dem Branch `feature/workbook`. Kein Workbook-Co
 
 ## 3. Inhaltliche Struktur
 
-Fünf Bereiche, sequenziell aufgebaut:
+Hierarchie: **Programm → Bereich → Schritt → Block**. URL-Struktur: /programme/[programm-slug]/[bereich-slug]/[schritt-slug]. Das erste Programm hat den Slug ifs.
+
+Die Anzahl der Bereiche ist eine Eigenschaft der jeweiligen Programm-Config, keine Systemregel. Kein Code darf eine feste Bereichszahl annehmen, Iteration, Fortschritt und Sperrlogik leiten sich aus der Config ab.
+
+Jedes Programm hat einen Introbereich als Bereich 0 mit dem Slug einstieg. Er ist immer freigeschaltet, sobald der Klient für das Programm freigeschaltet ist (siehe Abschnitt 4).
+
+Das Programm ifs hat den Einstiegsbereich plus fünf inhaltliche Bereiche, sequenziell aufgebaut:
 
 1. Lerne deine Anteile und dein Selbst kennen
 2. Würdige deine überarbeiteten Manager-Anteile
@@ -24,7 +30,7 @@ Fünf Bereiche, sequenziell aufgebaut:
 4. Nimm deine belasteten Verbannten an
 5. Erschließe dir ein selbstgeführtes Leben
 
-Hierarchie: **Bereich → Schritt → Block**. Ein Bereich enthält mehrere Schritte (je eine Seite oder Sektion). Ein Schritt besteht aus einer geordneten Liste von Blöcken. Medien-Blöcke (Audio, Video) sind keine eigenen Schritte, sondern frei zwischen anderen Blöcken platzierbar (z.B. Erklärvideo vor einer Tabelle, Meditations-Audio am Schluss).
+Ein Bereich enthält mehrere Schritte (je eine Seite oder Sektion). Ein Schritt besteht aus einer geordneten Liste von Blöcken. Medien-Blöcke (Audio, Video) sind keine eigenen Schritte, sondern frei zwischen anderen Blöcken platzierbar (z.B. Erklärvideo vor einer Tabelle, Meditations-Audio am Schluss).
 
 Typische Schritt-Inhalte: Einführung, Self-Assessment, Meditation, Bestandsaufnahme, Reflexion, Inspirationstext, Visualisierungsimpuls.
 
@@ -33,12 +39,14 @@ Typische Schritt-Inhalte: Einführung, Self-Assessment, Meditation, Bestandsaufn
 - Bereiche sequenziell: Bereich n+1 öffnet nach Abschluss von Bereich n.
 - Innerhalb eines Bereichs freie Bewegung zwischen den Schritten.
 - Manuelle Freischaltung pro Klient durch Lasse möglich (Steuerung passend zum Sessionstand).
+- Freischaltung läuft auf Bereichsebene über `workbook_access.unlocked_areas` (Int-Array). Das Array steuert nur Bereiche ab 1.
+- Bereich 0 (Einstieg) ist implizit offen, sobald eine `workbook_access`-Zeile für das Programm existiert (Variante A, dokumentierte Regel im Code statt manueller Datenpflege). Existiert keine Zeile, gibt es keinen Zugriff auf das Programm.
 
 ## 5. Inhalte als Konfiguration
 
 Inhalte leben getrennt vom Code als typisierte Config-Dateien (Muster wie `assessment-config.ts`):
 
-- `src/content/workbook/bereich-1.ts` bis `bereich-5.ts` (bzw. gemeinsamer Index).
+- `src/content/workbook/<programm-slug>/bereich-0-einstieg.ts` plus `bereich-1.ts` bis `bereich-n.ts` je nach Programm (bzw. gemeinsamer Index pro Programm).
 - Jede Datei definiert Schritte und Blöcke deklarativ. Textänderungen erfordern keine Code-Aufgabe.
 - TypeScript-Typen für alle Blocktypen in `src/lib/workbook-types.ts` (o.ä.), damit Configs beim Build validiert werden.
 
@@ -79,11 +87,19 @@ Alle Antworten in einer Tabelle, ein Schema für alle Typen (siehe 9). Neue Bloc
 
 Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 
-- `workbook_responses`: id, client_id (uuid, Supabase Auth User-ID), **program** (text), block_id (stabiler String aus der Config, z.B. `b1.s2.reflexion-1`), value (jsonb), created_at, updated_at. Unique-Constraint auf (client_id, program, block_id). Upsert pro dieses Tripel. Ein Schema für alle Blocktypen.
-- `workbook_access`: client_id (uuid), **program** (text), unlocked_areas (int[]), updated_at. Primary Key (client_id, program). Für manuelle Freischaltung pro Klient und Programm durch Lasse im Dashboard.
-- Block-IDs sind stabil und werden nie umbenannt, sonst verwaisen Antworten. Neue Blöcke bekommen neue IDs.
+- `workbook_responses`: id (uuid), client_id (uuid, Supabase Auth User-ID), program (text), block_id (text, stabiler String aus der Config, z.B. `b1.s2.reflexion-1`), value (jsonb), created_at, updated_at. Unique-Constraint auf (client_id, program, block_id). Upsert pro dieses Tripel. Ein Schema für alle Blocktypen.
+- `workbook_access`: client_id (uuid), program (text), unlocked_areas (int-Array), updated_at. Primary Key (client_id, program). Für manuelle Freischaltung pro Klient und Programm durch Lasse im Dashboard.
+- Block-IDs müssen nur innerhalb eines Programms eindeutig sein, weil program eine eigene Spalte ist. Kein Programm-Präfix in der ID. Muster bleibt `b1.s2.reflexion-1`, für den Einstiegsbereich `b0.s1....`. IDs sind stabil und werden nie umbenannt, sonst verwaisen Antworten. Neue Blöcke bekommen neue IDs.
 - RLS an, kein Public-Zugriff. Klienten: select/insert/update eigene Zeilen in workbook_responses, select eigene Zeile in workbook_access. Keine Delete-Policy. Freischaltung nur über Service-Role.
 - Autosave: Speichern bei Eingabe (debounced), kein expliziter Speichern-Button als einzige Option.
+
+### Fortschrittsdefinition
+
+- Ein Block zählt als beantwortet, wenn ein Wert in workbook_responses liegt. Reine text-Blöcke zählen nicht, sie haben keinen Wert.
+- Schrittfortschritt = beantwortete Blöcke durch zählende Blöcke. Ein Schritt ist abgeschlossen, wenn alle zählenden Blöcke beantwortet sind.
+- Bereichsfortschritt = abgeschlossene Schritte durch Gesamtschritte.
+- Fortschrittsbalken auf Bereichs- und Schrittebene, Umber-Muster analog AssessmentForm.
+- Offen (Entscheidung bei Auftrag 3): Marker für Schritte ohne zählende Blöcke, z.B. ein listened-Flag beim Audio oder ein Gelesen-Marker, damit solche Schritte abschließbar sind.
 
 ## 10. Auth und Datenschutz
 
@@ -112,12 +128,19 @@ Layout-Entscheidung (17.07.2026, ersetzt das frühere reduzierte Eigenlayout): D
 ## 12. Ausbaustufen und Auftragsfahrplan
 
 **MVP (Pilotrunde):**
-1. Fundament: Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit OTP-Code (kein Magic-Link-Klick, Mail-Scanner-robust), leere Bereichsübersicht.
-2. Block-Renderer-Grundgerüst plus Blocktypen `text`, `freetext`, `scale`, `choice` mit Autosave.
+1. ~~Fundament~~ (erledigt): Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit OTP-Code (kein Magic-Link-Klick, Mail-Scanner-robust), leere Bereichsübersicht.
+2. Block-Renderer mit diesem festen Zuschnitt:
+   - `workbook-types.ts` mit Typen für alle 12 Blocktypen plus Struktur Programm (variable Bereichsliste, Bereich 0 = Einstieg), Schritte, Blöcke.
+   - Dummy-Config für ifs: Einstieg plus zwei bis drei Test-Schritte, klar als Platzhalter markiert.
+   - Routen /programme/ifs/[bereich-slug] (Schrittliste) und /programme/ifs/[bereich-slug]/[schritt-slug] (Block-Renderer), aufbauend auf der bestehenden Übersicht.
+   - Renderer für `text`, `freetext`, `scale`, `choice` mit debounced Autosave (Upsert über client_id, program, block_id), dezenter Speicher-Status.
+   - Sperrlogik lesend nach unlocked_areas, Einstieg immer offen bei vorhandener Zeile.
+   - Fortschrittsbalken auf beiden Ebenen nach der Fortschrittsdefinition (Abschnitt 9), Umber-Muster aus AssessmentForm wiederverwenden oder als gemeinsame Komponente extrahieren.
+   - Nicht enthalten: Freischalt-Schreiblogik (Auftrag 6), Audio, Video, Bodymap, echte Inhalte.
 3. Blocktypen `table`, `wordlist`, `audio` (inkl. Storage-Anbindung und Player).
 4. Blocktyp `bodymap` (eigener Auftrag, aufwendigster Block).
 5. Blocktyp `video` (Vimeo-Embed im Seitendesign).
-6. Freischaltlogik und Fortschrittsanzeige.
+6. Freischalt-Schreiblogik (Klienten-Freischaltung durch Lasse, Dashboard oder Admin-Aktion).
 7. Inhalte Bereich 1 (Config-Datei aus dem Strategie-Chat).
 
 **Stufe 2 (nach Pilotstart):** `cloze`, `association`, Foto-Upload für `visual`, Coach-Ansicht (mit Einwilligungskonzept), Verlaufsdarstellung Bodymap.

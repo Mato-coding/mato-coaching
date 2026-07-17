@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen. Bei Aufgaben zum digitalen Workbook zusätzlich workbook-konzept.md lesen.
 
-> Stand: 17.07.2026 (Workbook: proxy.ts überspringt getUser() für anonyme Besucher ohne Auth-Cookie, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 17.07.2026 (Workbook-Konzept auf Programm-Bereich-Schritt-Block-Hierarchie erweitert, Auftrag 1 abgeschlossen, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -92,7 +92,10 @@ NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_K
 3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
 4. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
 5. Robuster Env-Umgang für LEAD_AUDIO_URL: In src/app/api/lead/route.ts keinen stillen Fallback auf eine hart verdrahtete Audio-URL verwenden. Fehlt die Env-Variable, eine Warnung ins Server-Log schreiben, statt lautlos eine Datei-URL zu raten. Grund: Ein stiller Fallback hat beim Domainwechsel einen falschen Link verdeckt.
-6. Digitales IFS-Workbook für Klienten. Konzept, Architektur und Auftragsfahrplan stehen in workbook-konzept.md. Entwicklung ausschließlich auf dem Branch feature/workbook, Merge auf main erst nach MVP-Abschluss.
+6. Digitales IFS-Workbook für Klienten. Auftrag 1 (Fundament) ist umgesetzt auf feature/workbook, Details in workbook-konzept.md. Nächster Schritt: Auftrag 2 (Block-Renderer mit text, freetext, scale, choice und Autosave). Entwicklung ausschließlich auf dem Branch feature/workbook, Merge auf main erst nach MVP-Abschluss.
+7. Datenschutz-Auftrag Workbook: eigener Datenschutz-Absatz und explizite Einwilligung, zwingend vor dem ersten echten Klienten im Workbook. Klienten-Reflexionen sind gesundheitsbezogene Daten.
+8. Startmonat der Gründungsrunde festlegen (steht auch in profil-lasse.md als offen). Er bestimmt die Deadline für den Workbook-MVP und die Priorisierung der Aufträge 3 bis 7.
+9. Marker-Entscheidung für Workbook-Schritte ohne zählende Blöcke (z.B. listened-Flag oder Gelesen-Marker), fällig bei Auftrag 3.
 
 ## Erledigt
 - Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
