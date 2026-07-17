@@ -161,18 +161,29 @@ export type WorkbookBlock =
   | BodymapBlock
   | VisualBlock;
 
-// ── Step and area structures ───────────────────────────────────────────────
+// ── Program, area and step structures ──────────────────────────────────────
+// Die Bereichsliste ist variabel lang (Eigenschaft der Program-Config, keine
+// Systemregel). Bereich 0 ist immer der Einstieg, index >= 1 sind die
+// inhaltlichen Bereiche.
 
 export interface WorkbookStep {
-  id: string;
+  slug: string;
   title: string;
   blocks: WorkbookBlock[];
 }
 
 export interface WorkbookArea {
-  id: 1 | 2 | 3 | 4 | 5;
+  index: number;
+  slug: string;
   title: string;
+  description?: string;
   steps: WorkbookStep[];
+}
+
+export interface WorkbookProgram {
+  slug: string;
+  title: string;
+  areas: WorkbookArea[];
 }
 
 // ── Answer value types (one per block type) ────────────────────────────────

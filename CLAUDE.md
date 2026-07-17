@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen. Bei Aufgaben zum digitalen Workbook zusätzlich workbook-konzept.md lesen.
 
-> Stand: 17.07.2026 (Workbook-Konzept auf Programm-Bereich-Schritt-Block-Hierarchie erweitert, Auftrag 1 abgeschlossen, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 17.07.2026 (Workbook Auftrag 2 abgeschlossen: Block-Renderer, Routen, Autosave, lesende Sperrlogik, Fortschritt, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -32,10 +32,13 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - src/components/forms/ (AssessmentForm, LeadMagnetForm, ResultActions, MagicLinkForm)
 - src/components/ui/ (Header, Footer, FadeIn), src/components/seo/JsonLd.tsx
 - src/components/ui/HeaderAuthSlot.tsx: Client-Komponente, rechter Header-Slot mit drei Auth-Zuständen (Erstgespräch-CTA, "Mein Programm"-CTA, Abmelden-Textlink innerhalb von /programme). Prüft die Session clientseitig über den Supabase-Browser-Client, damit der Header selbst weiter statisch bleibt.
-- src/app/(members)/: Route Group für Klienten-Bereich. Layout nutzt denselben Header und Footer wie die öffentliche Website. Routen: /programme (Hub), /programme/login (offen), /programme/ifs (erster Bereich). Auth via Supabase OTP-Code (kein Magic-Link-Klick). Session-Refresh site-weit in src/proxy.ts (Next.js Proxy-Konvention, ersetzt middleware.ts), getUser() läuft nur, wenn ein sb-*-auth-token-Cookie vorhanden ist, sonst kein Supabase-Roundtrip für anonyme Besucher.
+- src/app/(members)/: Route Group für Klienten-Bereich. Layout nutzt denselben Header und Footer wie die öffentliche Website. Routen: /programme (redirect auf /programme/ifs, solange es nur ein Programm gibt), /programme/login (offen), /programme/ifs (Bereichsübersicht), /programme/ifs/[bereichSlug] (Schrittliste), /programme/ifs/[bereichSlug]/[schrittSlug] (Block-Renderer). Auth via Supabase OTP-Code (kein Magic-Link-Klick). Session-Refresh site-weit in src/proxy.ts (Next.js Proxy-Konvention, ersetzt middleware.ts), getUser() läuft nur, wenn ein sb-*-auth-token-Cookie vorhanden ist, sonst kein Supabase-Roundtrip für anonyme Besucher.
 - src/lib/supabase/: client.ts (Browser-Client, Anon Key), server.ts (Server-Client mit Cookie-Handling). Der Service-Role-Client bleibt in src/lib/supabase.ts, nur für API-Routen.
-- src/lib/workbook-programs.ts: PROGRAMS-Konstante, ProgramSlug-Typ.
-- src/lib/workbook-types.ts: Alle Block-Typen, Antwort-Typen, WorkbookResponse.
+- src/lib/workbook-types.ts: Typen für alle 12 Blocktypen, Antwort-Typen, WorkbookResponse sowie WorkbookProgram/WorkbookArea/WorkbookStep (variable Bereichsliste, Bereich 0 = Einstieg).
+- src/lib/workbook.ts: reine, DB-freie Helper (getProgram-Lookup über Slug, findArea, findStep, Fortschrittsberechnung). src/lib/workbook-access.ts und src/lib/workbook-responses.ts: Server-only Supabase-Zugriffe (Sperrlogik, gespeicherte Antworten laden).
+- src/content/workbook/ifs.ts: Program-Config fürs Programm ifs (aktuell Platzhalter-Inhalte für Einstieg und Bereich 1).
+- src/components/workbook/: BlockRenderer plus Renderer für text, freetext, scale, choice (Unterordner blocks/), WorkbookStepView (Autosave-Client-Komponente), NoAccessNotice, AreaLockedNotice.
+- src/components/ui/ProgressBar.tsx: aus AssessmentForm extrahierte Umber-Fortschrittsanzeige, von AssessmentForm und Workbook gemeinsam genutzt.
 - src/app/auth/callback/route.ts: Code-Exchange nach Magic-Link-Klick.
 - supabase/migrations/: SQL-Migrations (manuell im SQL Editor ausführen).
 - src/content/journal/<slug>.mdx; src/lib/ (assessment-config.ts, journal.ts, supabase.ts, scroll.ts)
@@ -92,7 +95,7 @@ NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_K
 3. Hör-Tracking des Audios (eigene Hörseite plus Token pro Lead, DSGVO-sensibel, eigener Auftrag mit Datenschutz-Absatz).
 4. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
 5. Robuster Env-Umgang für LEAD_AUDIO_URL: In src/app/api/lead/route.ts keinen stillen Fallback auf eine hart verdrahtete Audio-URL verwenden. Fehlt die Env-Variable, eine Warnung ins Server-Log schreiben, statt lautlos eine Datei-URL zu raten. Grund: Ein stiller Fallback hat beim Domainwechsel einen falschen Link verdeckt.
-6. Digitales IFS-Workbook für Klienten. Auftrag 1 (Fundament) ist umgesetzt auf feature/workbook, Details in workbook-konzept.md. Nächster Schritt: Auftrag 2 (Block-Renderer mit text, freetext, scale, choice und Autosave). Entwicklung ausschließlich auf dem Branch feature/workbook, Merge auf main erst nach MVP-Abschluss.
+6. Digitales IFS-Workbook für Klienten. Auftrag 1 (Fundament) und Auftrag 2 (Block-Renderer, Routen, Autosave, lesende Sperrlogik, Fortschritt) sind umgesetzt auf feature/workbook, Details in workbook-konzept.md. Nächster Schritt: Auftrag 3 (Blocktypen table, wordlist, audio). Entwicklung ausschließlich auf dem Branch feature/workbook, Merge auf main erst nach MVP-Abschluss.
 7. Datenschutz-Auftrag Workbook: eigener Datenschutz-Absatz und explizite Einwilligung, zwingend vor dem ersten echten Klienten im Workbook. Klienten-Reflexionen sind gesundheitsbezogene Daten.
 8. Startmonat der Gründungsrunde festlegen (steht auch in profil-lasse.md als offen). Er bestimmt die Deadline für den Workbook-MVP und die Priorisierung der Aufträge 3 bis 7.
 9. Marker-Entscheidung für Workbook-Schritte ohne zählende Blöcke (z.B. listened-Flag oder Gelesen-Marker), fällig bei Auftrag 3.

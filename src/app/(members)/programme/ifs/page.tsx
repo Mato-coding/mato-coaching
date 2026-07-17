@@ -1,107 +1,147 @@
-import { createClient } from "@/lib/supabase/server";
-import { PROGRAMS } from "@/lib/workbook-programs";
+import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
+import ProgressBar from "@/components/ui/ProgressBar";
+import NoAccessNotice from "@/components/workbook/NoAccessNotice";
+import { createClient } from "@/lib/supabase/server";
+import { getProgram, computeAreaProgress } from "@/lib/workbook";
+import { getWorkbookAccess, isAreaUnlocked } from "@/lib/workbook-access";
+import { getResponseValues } from "@/lib/workbook-responses";
+
+const PROGRAM_SLUG = "ifs";
 
 export const metadata = {
   title: "10 Wochen 1:1-Begleitung",
   robots: { index: false, follow: false },
 };
 
-const AREAS = [
-  { id: 1, title: "Lerne deine Anteile und dein Selbst kennen" },
-  { id: 2, title: "Würdige deine überarbeiteten Manager-Anteile" },
-  { id: 3, title: "Schließe Freundschaft mit deinen aktivierten Firefightern" },
-  { id: 4, title: "Nimm deine belasteten Verbannten an" },
-  { id: 5, title: "Erschließe dir ein selbstgeführtes Leben" },
-] as const;
+export default async function ProgramOverviewPage() {
+  const program = getProgram(PROGRAM_SLUG);
+  if (!program) notFound();
 
-const PROGRAM_SLUG = PROGRAMS.ifs.slug;
-const DEFAULT_UNLOCKED: number[] = [1];
-
-export default async function IfsOverviewPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/programme/login");
 
-  let unlockedAreas = DEFAULT_UNLOCKED;
+  const access = await getWorkbookAccess(user.id, program.slug);
 
-  if (user) {
-    const { data } = await supabase
-      .from("workbook_access")
-      .select("unlocked_areas")
-      .eq("client_id", user.id)
-      .eq("program", PROGRAM_SLUG)
-      .maybeSingle();
-
-    if (data?.unlocked_areas) {
-      unlockedAreas = data.unlocked_areas;
-    }
+  if (!access) {
+    return (
+      <div className="space-y-10">
+        <Header title={program.title} />
+        <NoAccessNotice />
+      </div>
+    );
   }
+
+  const allBlockIds = program.areas.flatMap((area) =>
+    area.steps.flatMap((step) => step.blocks.map((block) => block.id))
+  );
+  const values = await getResponseValues(user.id, program.slug, allBlockIds);
+  const answeredBlockIds = new Set(Object.keys(values));
 
   return (
     <div className="space-y-10">
-      <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <span className="block h-px w-6 bg-umber" aria-hidden="true" />
-          <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
-            Programm
-          </span>
-        </div>
-        <h1 className="font-serif text-h1 font-medium leading-h1 text-ink">
-          {PROGRAMS.ifs.title}
-        </h1>
-      </div>
+      <Header title={program.title} />
 
       <ol className="space-y-4">
-        {AREAS.map((area, index) => {
-          const isUnlocked = unlockedAreas.includes(area.id);
+        {program.areas.map((area, index) => {
+          const unlocked = isAreaUnlocked(access, area.index);
+          const areaProgress = computeAreaProgress(area, answeredBlockIds);
+          const eyebrow = area.index === 0 ? "Einstieg" : `Bereich ${area.index}`;
 
           return (
-            <FadeIn key={area.id} delay={index * 0.07}>
-              <li
-                className={[
-                  "rounded-md border p-6 transition",
-                  isUnlocked
-                    ? "border-hairline bg-surface"
-                    : "border-hairline bg-surface opacity-60",
-                ].join(" ")}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    <span
-                      className={[
-                        "font-sans text-eyebrow font-medium uppercase tracking-eyebrow",
-                        isUnlocked ? "text-umber" : "text-muted",
-                      ].join(" ")}
-                    >
-                      Bereich {area.id}
-                    </span>
-                    <p
-                      className={[
-                        "font-sans text-body",
-                        isUnlocked ? "text-ink" : "text-muted",
-                      ].join(" ")}
-                    >
-                      {area.title}
-                    </p>
-                  </div>
-
-                  {isUnlocked ? (
-                    <span className="shrink-0 font-sans text-small text-muted">
-                      Bald verfügbar
-                    </span>
-                  ) : (
-                    <span className="shrink-0 font-sans text-small text-muted">
-                      Noch gesperrt
-                    </span>
+            <FadeIn key={area.slug} delay={index * 0.07}>
+              {unlocked ? (
+                <Link
+                  href={`/programme/ifs/${area.slug}`}
+                  className="block rounded-md border border-hairline bg-surface p-6 transition hover:border-muted"
+                >
+                  <AreaCardBody
+                    eyebrow={eyebrow}
+                    title={area.title}
+                    unlocked
+                  />
+                  {areaProgress.totalSteps > 0 && (
+                    <div className="mt-4">
+                      <ProgressBar
+                        label={`${areaProgress.completedSteps} von ${areaProgress.totalSteps} Schritten`}
+                        value={
+                          (areaProgress.completedSteps /
+                            areaProgress.totalSteps) *
+                          100
+                        }
+                      />
+                    </div>
                   )}
+                </Link>
+              ) : (
+                <div className="rounded-md border border-hairline bg-surface p-6 opacity-60">
+                  <AreaCardBody
+                    eyebrow={eyebrow}
+                    title={area.title}
+                    unlocked={false}
+                  />
                 </div>
-              </li>
+              )}
             </FadeIn>
           );
         })}
       </ol>
+    </div>
+  );
+}
+
+function Header({ title }: { title: string }) {
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3">
+        <span className="block h-px w-6 bg-umber" aria-hidden="true" />
+        <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
+          Programm
+        </span>
+      </div>
+      <h1 className="font-serif text-h1 font-medium leading-h1 text-ink">
+        {title}
+      </h1>
+    </div>
+  );
+}
+
+function AreaCardBody({
+  eyebrow,
+  title,
+  unlocked,
+}: {
+  eyebrow: string;
+  title: string;
+  unlocked: boolean;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4">
+      <div className="space-y-1">
+        <span
+          className={[
+            "font-sans text-eyebrow font-medium uppercase tracking-eyebrow",
+            unlocked ? "text-umber" : "text-muted",
+          ].join(" ")}
+        >
+          {eyebrow}
+        </span>
+        <p
+          className={[
+            "font-sans text-body",
+            unlocked ? "text-ink" : "text-muted",
+          ].join(" ")}
+        >
+          {title}
+        </p>
+      </div>
+      <span className="shrink-0 font-sans text-small text-muted">
+        {unlocked ? "Freigeschaltet" : "Noch gesperrt"}
+      </span>
     </div>
   );
 }

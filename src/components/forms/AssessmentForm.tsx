@@ -10,6 +10,7 @@ import {
   type Question,
 } from "@/lib/assessment-config";
 import ResultActions from "@/components/forms/ResultActions";
+import ProgressBar from "@/components/ui/ProgressBar";
 
 interface StepRecord {
   questionId: string;
@@ -154,18 +155,10 @@ export default function AssessmentForm() {
     <div className="text-primary">
       {/* Fortschrittsbalken */}
       <div className="mb-10">
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-sm text-muted">
-            Frage {step + 1} von {totalSteps}
-          </span>
-          <span className="text-sm text-muted">{progress}%</span>
-        </div>
-        <div className="h-px w-full bg-primary/10 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-umber transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+        <ProgressBar
+          label={`Frage ${step + 1} von ${totalSteps}`}
+          value={progress}
+        />
       </div>
 
       {/* Eyebrow */}

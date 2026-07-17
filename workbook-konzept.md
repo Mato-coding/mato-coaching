@@ -1,6 +1,6 @@
 # Workbook-Konzept: Digitales IFS-Workbook
 
-> Stand: 17.07.2026 (Auftrag 1 abgeschlossen, Konzept auf Programm-Bereich-Schritt-Block-Hierarchie erweitert). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
+> Stand: 17.07.2026 (Auftrag 2 abgeschlossen: Block-Renderer, Routen, Autosave, lesende Sperrlogik, Fortschritt). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
 
 ## 1. Zweck und Status
 
@@ -8,7 +8,7 @@ Interaktives digitales IFS-Workbook für Klienten der 1:1-Begleitung. Eigenentwi
 
 Alle Inhalte sind Eigenkreationen in Lasses Sprache. Keine Übernahme von Texten, Übungsformulierungen oder Strukturen aus fremden Workbooks (Urheberrecht). Die IFS-Methodik selbst (Parts, Self, Manager, Firefighter, Exiles, 6 F's) ist frei nutzbar.
 
-Status: Auftrag 1 (Fundament) ist umgesetzt. Es existieren: ein geschützter Bereich unter /programme mit Programmliste, /programme/ifs mit Bereichsübersicht, Auth per E-Mail-Code über Supabase (bewusste Entscheidung statt Magic Link, weil robuster gegenüber Mail-Clients), ein gemeinsamer Header mit drei Zuständen je nach Login-Status, ein gemeinsamer Footer, Middleware mit Session-Refresh sowie die Tabellen workbook_responses und workbook_access mit RLS. Klienten-Anlage erfolgt manuell in Supabase. Nächster Schritt ist Auftrag 2 (siehe Abschnitt 12).
+Status: Auftrag 1 (Fundament) und Auftrag 2 (Block-Renderer-Grundgerüst) sind umgesetzt. Es existieren: ein geschützter Bereich unter /programme (leitet auf /programme/ifs weiter, solange es nur ein Programm gibt), Auth per E-Mail-Code über Supabase (bewusste Entscheidung statt Magic Link, weil robuster gegenüber Mail-Clients), ein gemeinsamer Header mit drei Zuständen je nach Login-Status, ein gemeinsamer Footer, Proxy mit Session-Refresh sowie die Tabellen workbook_responses und workbook_access mit RLS. Die Routen /programme/ifs (Bereichsübersicht), /programme/ifs/[bereichSlug] (Schrittliste) und /programme/ifs/[bereichSlug]/[schrittSlug] (Block-Renderer) sind gebaut, mit Renderern für die Blocktypen text, freetext, scale und choice, debounced Autosave und lesender Sperrlogik nach unlocked_areas. Klienten-Anlage und Bereichs-Freischaltung erfolgen weiterhin manuell in Supabase. Nächster Schritt ist Auftrag 3 (siehe Abschnitt 12).
 
 ## 2. Branch-Regel (verbindlich)
 
@@ -46,9 +46,10 @@ Typische Schritt-Inhalte: Einführung, Self-Assessment, Meditation, Bestandsaufn
 
 Inhalte leben getrennt vom Code als typisierte Config-Dateien (Muster wie `assessment-config.ts`):
 
-- `src/content/workbook/<programm-slug>/bereich-0-einstieg.ts` plus `bereich-1.ts` bis `bereich-n.ts` je nach Programm (bzw. gemeinsamer Index pro Programm).
+- Umgesetzt (Auftrag 2): eine Datei pro Programm, `src/content/workbook/<programm-slug>.ts` (z.B. `src/content/workbook/ifs.ts`), exportiert ein vollständiges `WorkbookProgram`-Objekt mit allen Bereichen, Schritten und Blöcken. Bei wachsendem Umfang kann das später pro Bereich in eigene Dateien aufgeteilt werden, ohne dass sich Typen oder Lookup ändern.
 - Jede Datei definiert Schritte und Blöcke deklarativ. Textänderungen erfordern keine Code-Aufgabe.
-- TypeScript-Typen für alle Blocktypen in `src/lib/workbook-types.ts` (o.ä.), damit Configs beim Build validiert werden.
+- TypeScript-Typen für alle Blocktypen sowie `WorkbookProgram`/`WorkbookArea`/`WorkbookStep` in `src/lib/workbook-types.ts`, damit Configs beim Build validiert werden.
+- Reine, DB-freie Helper (Programm-Lookup über Slug, Bereich/Schritt per Slug finden, Fortschritt berechnen) in `src/lib/workbook.ts`.
 
 ## 6. Block-Typen
 
@@ -91,7 +92,7 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 - `workbook_access`: client_id (uuid), program (text), unlocked_areas (int-Array), updated_at. Primary Key (client_id, program). Für manuelle Freischaltung pro Klient und Programm durch Lasse im Dashboard.
 - Block-IDs müssen nur innerhalb eines Programms eindeutig sein, weil program eine eigene Spalte ist. Kein Programm-Präfix in der ID. Muster bleibt `b1.s2.reflexion-1`, für den Einstiegsbereich `b0.s1....`. IDs sind stabil und werden nie umbenannt, sonst verwaisen Antworten. Neue Blöcke bekommen neue IDs.
 - RLS an, kein Public-Zugriff. Klienten: select/insert/update eigene Zeilen in workbook_responses, select eigene Zeile in workbook_access. Keine Delete-Policy. Freischaltung nur über Service-Role.
-- Autosave: Speichern bei Eingabe (debounced), kein expliziter Speichern-Button als einzige Option.
+- Autosave (Auftrag 2 umgesetzt): `WorkbookStepView` (Client-Komponente) upsertet direkt über den Browser-Client (`@/lib/supabase/client`, RLS-gesichert, kein Service-Role-Key) auf `workbook_responses`, Konfliktschlüssel `client_id,program,block_id`. Bei scale und choice wird sofort beim Klick gespeichert, bei freetext debounced (800 ms), nie bei leerem Text. Lesender Serverzugriff (Access-Prüfung, vorhandene Antworten laden) läuft über die Server-Helper `src/lib/workbook-access.ts` und `src/lib/workbook-responses.ts`, die eine bereits aufgelöste `userId` entgegennehmen statt selbst `getUser()` aufzurufen, damit pro Page nur ein Auth-Roundtrip nötig ist.
 
 ### Fortschrittsdefinition
 
@@ -108,13 +109,16 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 - Flow: Schritt 1 E-Mail eingeben, `signInWithOtp` mit `shouldCreateUser: false` aufrufen. Schritt 2 Code eingeben, `verifyOtp` mit `type: "email"` aufrufen. Bei Erfolg Redirect auf `/programme` (oder auf `?next=`-Parameter). `/auth/callback` bleibt für Rückwärtskompatibilität bestehen, wird im normalen Flow nicht mehr angesteuert.
 - Klienten-Reflexionen sind sensible Daten (Gesundheitsbezug). Vor Livegang mit echten Klienten: eigener Datenschutz-Absatz, explizite Einwilligung, Entscheidung und Transparenz darüber, ob Lasse Einträge einsehen kann. Coach-Ansicht ist Ausbaustufe 2 und nur mit expliziter Einwilligung.
 
-**Entschiedene Routen-Struktur (Auftrag 1):**
-- Geschützter Hub: `/programme` (Route Group `(members)`, teilt Header und Footer mit der öffentlichen Website)
+**Entschiedene Routen-Struktur (Stand Auftrag 2):**
+- Geschützter Hub: `/programme` (Route Group `(members)`, teilt Header und Footer mit der öffentlichen Website), leitet per `redirect()` auf `/programme/ifs` weiter, solange es nur ein Programm gibt.
 - Login: `/programme/login` (öffentlich, aber noindex)
-- Erstes Programm: `/programme/ifs`
+- Erstes Programm: `/programme/ifs` (Bereichsübersicht, statisches Segment; der Programm-Slug "ifs" ist als Konstante in jeder Page hart hinterlegt, das Programm-Objekt selbst kommt aber immer über `getProgram(slug)` aus `src/lib/workbook.ts`, nie als Direkt-Import)
+- Bereich: `/programme/ifs/[bereichSlug]` (Schrittliste, dynamisches Segment)
+- Schritt: `/programme/ifs/[bereichSlug]/[schrittSlug]` (Block-Renderer, dynamisches Segment)
 - Auth-Callback: `/auth/callback` (Code-Exchange, bleibt für Kompatibilität, wird im normalen Flow nicht mehr genutzt)
-- Mehrprogrammfähig: weitere Programme als `/programme/<slug>`, gesteuert über `PROGRAMS` in `src/lib/workbook-programs.ts`
-- Nicht in Sitemap. `robots: noindex, nofollow` im Members-Layout. `/programme/` und `/auth/` in robots.ts disallowed.
+- Mehrprogrammfähig: ein zweites Programm bräuchte ein eigenes statisches `/programme/<slug>`-Segment plus einen Eintrag in der Programm-Registry in `src/lib/workbook.ts`; die Lookup-Funktion `getProgram(slug)` und alle Helper in `workbook.ts` sind bereits generisch.
+- Nicht in Sitemap. `robots: noindex, nofollow` im Members-Layout und auf jeder Bereichs-/Schritt-Page einzeln gesetzt. `/programme/` und `/auth/` in robots.ts disallowed.
+- Unbekannte Bereichs- oder Schritt-Slugs: `notFound()`.
 
 ## 11. Design und Ton
 
@@ -129,14 +133,7 @@ Layout-Entscheidung (17.07.2026, ersetzt das frühere reduzierte Eigenlayout): D
 
 **MVP (Pilotrunde):**
 1. ~~Fundament~~ (erledigt): Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit OTP-Code (kein Magic-Link-Klick, Mail-Scanner-robust), leere Bereichsübersicht.
-2. Block-Renderer mit diesem festen Zuschnitt:
-   - `workbook-types.ts` mit Typen für alle 12 Blocktypen plus Struktur Programm (variable Bereichsliste, Bereich 0 = Einstieg), Schritte, Blöcke.
-   - Dummy-Config für ifs: Einstieg plus zwei bis drei Test-Schritte, klar als Platzhalter markiert.
-   - Routen /programme/ifs/[bereich-slug] (Schrittliste) und /programme/ifs/[bereich-slug]/[schritt-slug] (Block-Renderer), aufbauend auf der bestehenden Übersicht.
-   - Renderer für `text`, `freetext`, `scale`, `choice` mit debounced Autosave (Upsert über client_id, program, block_id), dezenter Speicher-Status.
-   - Sperrlogik lesend nach unlocked_areas, Einstieg immer offen bei vorhandener Zeile.
-   - Fortschrittsbalken auf beiden Ebenen nach der Fortschrittsdefinition (Abschnitt 9), Umber-Muster aus AssessmentForm wiederverwenden oder als gemeinsame Komponente extrahieren.
-   - Nicht enthalten: Freischalt-Schreiblogik (Auftrag 6), Audio, Video, Bodymap, echte Inhalte.
+2. ~~Block-Renderer-Grundgerüst~~ (erledigt): `workbook-types.ts` mit allen 12 Blocktypen plus `WorkbookProgram`/`WorkbookArea`/`WorkbookStep`; Dummy-Config `src/content/workbook/ifs.ts` (Einstieg plus Bereich 1 mit Test-Schritten, Bereiche 2 bis 5 ohne Schritte); Routen `/programme/ifs/[bereichSlug]` und `/programme/ifs/[bereichSlug]/[schrittSlug]`; Renderer für `text`, `freetext`, `scale`, `choice` (`src/components/workbook/blocks/`) mit debounced Autosave und dezentem Speicher-Status; lesende Sperrlogik (`src/lib/workbook-access.ts`); Fortschritt nach Abschnitt 9 (`src/lib/workbook.ts`), `ProgressBar` aus AssessmentForm extrahiert (`src/components/ui/ProgressBar.tsx`). Noch offen: Marker für Schritte ohne zählende Blöcke (siehe Auftrag 9 in CLAUDE.md), Freischalt-Schreiblogik, Audio/Video/Bodymap, echte Inhalte.
 3. Blocktypen `table`, `wordlist`, `audio` (inkl. Storage-Anbindung und Player).
 4. Blocktyp `bodymap` (eigener Auftrag, aufwendigster Block).
 5. Blocktyp `video` (Vimeo-Embed im Seitendesign).
