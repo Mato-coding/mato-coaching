@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen. Bei Aufgaben zum digitalen Workbook zusätzlich workbook-konzept.md lesen.
 
-> Stand: 17.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 17.07.2026 (Workbook Auftrag 1: Branch feature/workbook, Fundament). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -29,8 +29,14 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - src/app/api/: lead/route.ts (Lead-Magnet: Supabase + Resend, Versandstatus), assessment/route.ts (anonyme Abschlüsse)
 - src/app/(public)/: layout.tsx (Metadaten, JsonLd), page.tsx (Startseite), assessment/page.tsx, breathwork/page.tsx (Service-Seite, live), coaching/page.tsx (Service-Seite, live), termin/ (page.tsx + CalEmbed.tsx), journal/ (page.tsx + [slug]/page.tsx)
 - src/components/sections/ (Hero, Transformation, Cause, Method, About, CTA, LeadMagnet, LeadMagnetCTA)
-- src/components/forms/ (AssessmentForm, LeadMagnetForm, ResultActions)
+- src/components/forms/ (AssessmentForm, LeadMagnetForm, ResultActions, MagicLinkForm)
 - src/components/ui/ (Header, Footer, FadeIn), src/components/seo/JsonLd.tsx
+- src/app/(members)/: Route Group für Klienten-Bereich. Layout ohne Public-Header/Footer, eigener schlanker Rahmen. Routen: /programme (Hub), /programme/login (offen), /programme/ifs (erster Bereich). Auth via Supabase Magic Link. Session-Refresh in src/proxy.ts.
+- src/lib/supabase/: client.ts (Browser-Client, Anon Key), server.ts (Server-Client mit Cookie-Handling). Der Service-Role-Client bleibt in src/lib/supabase.ts, nur für API-Routen.
+- src/lib/workbook-programs.ts: PROGRAMS-Konstante, ProgramSlug-Typ.
+- src/lib/workbook-types.ts: Alle Block-Typen, Antwort-Typen, WorkbookResponse.
+- src/app/auth/callback/route.ts: Code-Exchange nach Magic-Link-Klick.
+- supabase/migrations/: SQL-Migrations (manuell im SQL Editor ausführen).
 - src/content/journal/<slug>.mdx; src/lib/ (assessment-config.ts, journal.ts, supabase.ts, scroll.ts)
 
 ## Design (Details in design-system.md)
@@ -60,7 +66,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - Keine IP speichern. User-Agent nur in der Mail, nicht in der DB.
 
 ## Env (in Vercel, Werte nie im Code)
-NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL (hello@lassekluever.de), LEAD_AUDIO_URL (https://www.lassekluever.de/audio/physiological-sigh.m4a).
+NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL (hello@lassekluever.de), LEAD_AUDIO_URL (https://www.lassekluever.de/audio/physiological-sigh.m4a).
 
 ## SEO
 - sitemap.ts und robots.ts in src/app. JsonLd: ProfessionalService, areaServed Hamburg, founder Lasse Klüver (sameAs LinkedIn). Unternehmens-sameAs leer (später Instagram).

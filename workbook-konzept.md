@@ -1,6 +1,6 @@
 # Workbook-Konzept: Digitales IFS-Workbook
 
-> Stand: 17.07.2026. Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
+> Stand: 17.07.2026 (Auftrag 1 abgeschlossen). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
 
 ## 1. Zweck und Status
 
@@ -77,17 +77,26 @@ Alle Antworten in einer Tabelle, ein Schema für alle Typen (siehe 9). Neue Bloc
 
 ## 9. Datenmodell (Supabase)
 
-- `workbook_responses`: id, client_id, block_id (stabiler String aus der Config, z.B. `b1.s2.reflexion-1`), value (jsonb), created_at, updated_at. Upsert pro (client_id, block_id). Ein Schema für alle Blocktypen.
-- `workbook_access` (o.ä.): client_id, freigeschaltete Bereiche/Schritte, für manuelle Freischaltung.
+Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
+
+- `workbook_responses`: id, client_id (uuid, Supabase Auth User-ID), **program** (text), block_id (stabiler String aus der Config, z.B. `b1.s2.reflexion-1`), value (jsonb), created_at, updated_at. Unique-Constraint auf (client_id, program, block_id). Upsert pro dieses Tripel. Ein Schema für alle Blocktypen.
+- `workbook_access`: client_id (uuid), **program** (text), unlocked_areas (int[]), updated_at. Primary Key (client_id, program). Für manuelle Freischaltung pro Klient und Programm durch Lasse im Dashboard.
 - Block-IDs sind stabil und werden nie umbenannt, sonst verwaisen Antworten. Neue Blöcke bekommen neue IDs.
-- RLS an: Klienten lesen und schreiben nur eigene Zeilen. Kein Public-Zugriff.
+- RLS an, kein Public-Zugriff. Klienten: select/insert/update eigene Zeilen in workbook_responses, select eigene Zeile in workbook_access. Keine Delete-Policy. Freischaltung nur über Service-Role.
 - Autosave: Speichern bei Eingabe (debounced), kein expliziter Speichern-Button als einzige Option.
 
 ## 10. Auth und Datenschutz
 
-- Login über Supabase Auth mit Magic Link (kein Passwort). Zugang nur für aktive Klienten, Anlage manuell durch Lasse.
+- Login über Supabase Auth mit Magic Link (kein Passwort). Zugang nur für aktive Klienten, Anlage manuell durch Lasse (Supabase Dashboard, "Invite by email"). Self-Signup ist in den Auth-Settings deaktiviert.
 - Klienten-Reflexionen sind sensible Daten (Gesundheitsbezug). Vor Livegang mit echten Klienten: eigener Datenschutz-Absatz, explizite Einwilligung, Entscheidung und Transparenz darüber, ob Lasse Einträge einsehen kann. Coach-Ansicht ist Ausbaustufe 2 und nur mit expliziter Einwilligung.
-- Geschützter Bereich unter eigenem Routen-Segment (z.B. `/programm` oder `/workbook`, Entscheidung in Auftrag 1). Nicht in Sitemap, `noindex`.
+
+**Entschiedene Routen-Struktur (Auftrag 1):**
+- Geschützter Hub: `/programme` (Route Group `(members)`, kein Public-Layout)
+- Login: `/programme/login` (öffentlich, aber noindex)
+- Erstes Programm: `/programme/ifs`
+- Auth-Callback: `/auth/callback` (Code-Exchange, leitet auf `/programme` weiter)
+- Mehrprogrammfähig: weitere Programme als `/programme/<slug>`, gesteuert über `PROGRAMS` in `src/lib/workbook-programs.ts`
+- Nicht in Sitemap. `robots: noindex, nofollow` im Members-Layout. `/programme/` und `/auth/` in robots.ts disallowed.
 
 ## 11. Design und Ton
 
