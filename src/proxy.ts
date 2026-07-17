@@ -1,7 +1,34 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+// @supabase/ssr cookie names follow sb-<project-ref>-auth-token and may be
+// split into chunks (sb-<ref>-auth-token.0, .1, ...). Check generically, no
+// project ref hardcoded, so we can skip the Supabase roundtrip entirely when
+// a visitor has no session cookie at all.
+function hasAuthCookie(request: NextRequest) {
+  return request.cookies
+    .getAll()
+    .some(
+      (cookie) => cookie.name.startsWith("sb-") && cookie.name.includes("-auth-token")
+    );
+}
+
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const isProgrammeRoute = pathname.startsWith("/programme");
+  const isLoginRoute = pathname === "/programme/login";
+
+  if (!hasAuthCookie(request)) {
+    // No session cookie at all: there is nothing for getUser() to refresh
+    // or validate, so skip the Supabase client entirely.
+    if (isProgrammeRoute && !isLoginRoute) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/programme/login";
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -32,10 +59,6 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
-  const isProgrammeRoute = pathname.startsWith("/programme");
-  const isLoginRoute = pathname === "/programme/login";
 
   // Redirect unauthenticated users away from protected /programme routes.
   if (isProgrammeRoute && !isLoginRoute && !user) {

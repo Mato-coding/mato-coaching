@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen. Bei Aufgaben zum digitalen Workbook zusätzlich workbook-konzept.md lesen.
 
-> Stand: 17.07.2026 (Workbook: Mitgliederbereich nutzt gemeinsamen Header/Footer mit auth-abhängigem Header-Slot, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 17.07.2026 (Workbook: proxy.ts überspringt getUser() für anonyme Besucher ohne Auth-Cookie, Branch feature/workbook). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -32,7 +32,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - src/components/forms/ (AssessmentForm, LeadMagnetForm, ResultActions, MagicLinkForm)
 - src/components/ui/ (Header, Footer, FadeIn), src/components/seo/JsonLd.tsx
 - src/components/ui/HeaderAuthSlot.tsx: Client-Komponente, rechter Header-Slot mit drei Auth-Zuständen (Erstgespräch-CTA, "Mein Programm"-CTA, Abmelden-Textlink innerhalb von /programme). Prüft die Session clientseitig über den Supabase-Browser-Client, damit der Header selbst weiter statisch bleibt.
-- src/app/(members)/: Route Group für Klienten-Bereich. Layout nutzt denselben Header und Footer wie die öffentliche Website. Routen: /programme (Hub), /programme/login (offen), /programme/ifs (erster Bereich). Auth via Supabase OTP-Code (kein Magic-Link-Klick). Session-Refresh site-weit in src/proxy.ts (Next.js Proxy-Konvention, ersetzt middleware.ts).
+- src/app/(members)/: Route Group für Klienten-Bereich. Layout nutzt denselben Header und Footer wie die öffentliche Website. Routen: /programme (Hub), /programme/login (offen), /programme/ifs (erster Bereich). Auth via Supabase OTP-Code (kein Magic-Link-Klick). Session-Refresh site-weit in src/proxy.ts (Next.js Proxy-Konvention, ersetzt middleware.ts), getUser() läuft nur, wenn ein sb-*-auth-token-Cookie vorhanden ist, sonst kein Supabase-Roundtrip für anonyme Besucher.
 - src/lib/supabase/: client.ts (Browser-Client, Anon Key), server.ts (Server-Client mit Cookie-Handling). Der Service-Role-Client bleibt in src/lib/supabase.ts, nur für API-Routen.
 - src/lib/workbook-programs.ts: PROGRAMS-Konstante, ProgramSlug-Typ.
 - src/lib/workbook-types.ts: Alle Block-Typen, Antwort-Typen, WorkbookResponse.
