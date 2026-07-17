@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import MagicLinkForm from "@/components/forms/MagicLinkForm";
+import { Suspense } from "react";
+import OtpLoginForm from "@/components/forms/OtpLoginForm";
 
 export const metadata = {
   title: "Anmelden",
@@ -26,11 +27,13 @@ export default async function LoginPage() {
           </h1>
           <p className="font-sans text-body text-muted">
             Gib die E-Mail-Adresse ein, mit der du zur Begleitung angemeldet
-            bist. Du bekommst einen Link, der dich direkt einloggt.
+            bist. Du bekommst einen 6-stelligen Code per Mail.
           </p>
         </div>
 
-        <MagicLinkForm />
+        <Suspense>
+          <OtpLoginForm />
+        </Suspense>
       </div>
     </div>
   );

@@ -87,14 +87,16 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 
 ## 10. Auth und Datenschutz
 
-- Login über Supabase Auth mit Magic Link (kein Passwort). Zugang nur für aktive Klienten, Anlage manuell durch Lasse (Supabase Dashboard, "Invite by email"). Self-Signup ist in den Auth-Settings deaktiviert.
+- Login über Supabase Auth mit OTP-Code-Eingabe (kein Passwort, kein Link-Klick). Zugang nur für aktive Klienten, Anlage manuell durch Lasse (Supabase Dashboard, "Invite by email"). Self-Signup ist in den Auth-Settings deaktiviert.
+- Technische Begründung für OTP statt Magic-Link-Klick: PKCE-Magic-Links werden von Mail-Scannern (z.B. Gmail Safe Browsing) vorab aufgerufen und dadurch verbraucht, bevor die Person selbst klickt. Der 6-stellige Code, den Supabase in derselben Mail mitschickt, ist davon nicht betroffen.
+- Flow: Schritt 1 E-Mail eingeben, `signInWithOtp` mit `shouldCreateUser: false` aufrufen. Schritt 2 Code eingeben, `verifyOtp` mit `type: "email"` aufrufen. Bei Erfolg Redirect auf `/programme` (oder auf `?next=`-Parameter). `/auth/callback` bleibt für Rückwärtskompatibilität bestehen, wird im normalen Flow nicht mehr angesteuert.
 - Klienten-Reflexionen sind sensible Daten (Gesundheitsbezug). Vor Livegang mit echten Klienten: eigener Datenschutz-Absatz, explizite Einwilligung, Entscheidung und Transparenz darüber, ob Lasse Einträge einsehen kann. Coach-Ansicht ist Ausbaustufe 2 und nur mit expliziter Einwilligung.
 
 **Entschiedene Routen-Struktur (Auftrag 1):**
 - Geschützter Hub: `/programme` (Route Group `(members)`, kein Public-Layout)
 - Login: `/programme/login` (öffentlich, aber noindex)
 - Erstes Programm: `/programme/ifs`
-- Auth-Callback: `/auth/callback` (Code-Exchange, leitet auf `/programme` weiter)
+- Auth-Callback: `/auth/callback` (Code-Exchange, bleibt für Kompatibilität, wird im normalen Flow nicht mehr genutzt)
 - Mehrprogrammfähig: weitere Programme als `/programme/<slug>`, gesteuert über `PROGRAMS` in `src/lib/workbook-programs.ts`
 - Nicht in Sitemap. `robots: noindex, nofollow` im Members-Layout. `/programme/` und `/auth/` in robots.ts disallowed.
 
@@ -108,7 +110,7 @@ Migration: `supabase/migrations/20260717000000_workbook_foundation.sql`.
 ## 12. Ausbaustufen und Auftragsfahrplan
 
 **MVP (Pilotrunde):**
-1. Fundament: Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit Magic Link, leere Bereichsübersicht.
+1. Fundament: Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit OTP-Code (kein Magic-Link-Klick, Mail-Scanner-robust), leere Bereichsübersicht.
 2. Block-Renderer-Grundgerüst plus Blocktypen `text`, `freetext`, `scale`, `choice` mit Autosave.
 3. Blocktypen `table`, `wordlist`, `audio` (inkl. Storage-Anbindung und Player).
 4. Blocktyp `bodymap` (eigener Auftrag, aufwendigster Block).
