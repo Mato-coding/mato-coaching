@@ -1,6 +1,6 @@
 # Workbook-Konzept: Digitales IFS-Workbook
 
-> Stand: 18.07.2026 (Auftrag 2 abgenommen, getestet am 18.07.2026: Block-Renderer, Routen, Autosave, lesende Sperrlogik, Fortschritt. Nächster Schritt: Block-Designregeln in design-system.md definieren, danach Auftrag 3). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
+> Stand: 18.07.2026 (Block-Designregeln in design-system.md Abschnitt 8 final, Block-Renderer und Schritt-Kopf unter /programme/ifs auf diesen Stand umgebaut. Nächster Schritt: Auftrag 3, Blocktypen table, wordlist, audio). Quelle der Wahrheit für das Feature "Digitales Workbook". Bei Aufgaben zu diesem Feature diese Datei vollständig lesen. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot, diese Datei für das Workbook-Feature.
 
 ## 1. Zweck und Status
 
@@ -58,9 +58,9 @@ Inhalte leben getrennt vom Code als typisierte Config-Dateien (Muster wie `asses
 | `text` | Markdown/JSX-Inhalt | keine |
 | `audio` | Storage-Pfad, Titel, Dauer, Begleittext | optional `{ listened: boolean }` |
 | `video` | Vimeo-ID, Titel, Begleittext | optional `{ watched: boolean }` |
-| `choice` | Frage, Optionen, single/multi | Auswahl-Array |
+| `choice` | Frage, Optionen, single/multi, optional `variant: 'rows' \| 'pills'` (Default `rows`) | Auswahl-Array |
 | `freetext` | Frage, Placeholder, optional Mindesthöhe | `{ text }` |
-| `scale` | Frage, Min/Max, Endpunkt-Labels | `{ value: number }` |
+| `scale` | Frage, Min/Max, Endpunkt-Labels. Standard 7 Stufen (siehe design-system.md Abschnitt 8) | `{ value: number }` |
 | `table` | Spaltendefinition, Startzeilen, Zeilen ergänzbar | Zeilen-Array |
 | `wordlist` | vorgegebene Wörter, eigene ergänzbar, Auswahlmodus | gewählte plus eigene Wörter |
 | `association` | Stimulus-Begriffe | Textpaare |
@@ -135,7 +135,7 @@ Layout-Entscheidung (17.07.2026, ersetzt das frühere reduzierte Eigenlayout): D
 1. ~~Fundament~~ (erledigt): Branch, Routen-Segment, Supabase-Tabellen mit RLS, Auth mit OTP-Code (kein Magic-Link-Klick, Mail-Scanner-robust), leere Bereichsübersicht.
 2. ~~Block-Renderer-Grundgerüst~~ (abgenommen, getestet am 18.07.2026): `workbook-types.ts` mit allen 12 Blocktypen plus `WorkbookProgram`/`WorkbookArea`/`WorkbookStep`; Dummy-Config `src/content/workbook/ifs.ts` (Einstieg plus Bereich 1 mit Test-Schritten, Bereiche 2 bis 5 ohne Schritte); Routen `/programme/ifs/[bereichSlug]` und `/programme/ifs/[bereichSlug]/[schrittSlug]`; Renderer für `text`, `freetext`, `scale`, `choice` (`src/components/workbook/blocks/`) mit debounced Autosave und dezentem Speicher-Status; lesende Sperrlogik (`src/lib/workbook-access.ts`); Fortschritt nach Abschnitt 9 (`src/lib/workbook.ts`), `ProgressBar` aus AssessmentForm extrahiert (`src/components/ui/ProgressBar.tsx`). Noch offen: Marker für Schritte ohne zählende Blöcke (siehe Auftrag 9 in CLAUDE.md), Freischalt-Schreiblogik, Audio/Video/Bodymap, echte Inhalte.
 
-   Zwischenschritt vor Auftrag 3: Block-Designregeln in design-system.md definieren (eigener Auftrag), danach Auftrag 3. Ziel: ein verbindlicher Regelsatz (Abschnitt "8. Workbook-Blöcke" in design-system.md, aktuell Platzhalter), nach dem `table`, `wordlist`, `audio`, `bodymap` und die übrigen Blocktypen einheitlich gebaut werden, bevor der erste dieser Blocktypen entsteht.
+   Zwischenschritt vor Auftrag 3 (abgenommen, 18.07.2026): Block-Designregeln in design-system.md Abschnitt 8 definiert und `freetext`, `scale`, `choice` sowie der Schritt-Kopf unter /programme/ifs darauf umgebaut (Frage-Nummerierung, Speicherfeedback pro Block, 7-stufige Skala, `choice`-Varianten rows/pills). `table`, `wordlist`, `audio`, `bodymap` folgen in Auftrag 3 auf Basis dieses Regelsatzes.
 
 3. Blocktypen `table`, `wordlist`, `audio` (inkl. Storage-Anbindung und Player).
 4. Blocktyp `bodymap` (eigener Auftrag, aufwendigster Block).

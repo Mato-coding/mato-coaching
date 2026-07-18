@@ -5,16 +5,23 @@ import TextBlock from "@/components/workbook/blocks/TextBlock";
 import FreetextBlock from "@/components/workbook/blocks/FreetextBlock";
 import ScaleBlock from "@/components/workbook/blocks/ScaleBlock";
 import ChoiceBlock from "@/components/workbook/blocks/ChoiceBlock";
+import SaveIndicator, {
+  type BlockSaveStatus,
+} from "@/components/workbook/blocks/SaveIndicator";
 
 interface BlockRendererProps {
   block: WorkbookBlock;
   value: unknown;
+  questionNumber?: string;
+  saveStatus?: BlockSaveStatus;
   onSave: (blockId: string, value: unknown) => void;
 }
 
 export default function BlockRenderer({
   block,
   value,
+  questionNumber,
+  saveStatus,
   onSave,
 }: BlockRendererProps) {
   switch (block.type) {
@@ -22,27 +29,39 @@ export default function BlockRenderer({
       return <TextBlock block={block} />;
     case "freetext":
       return (
-        <FreetextBlock
-          block={block}
-          value={value as { text: string } | undefined}
-          onSave={onSave}
-        />
+        <div>
+          <FreetextBlock
+            block={block}
+            value={value as { text: string } | undefined}
+            questionNumber={questionNumber ?? ""}
+            onSave={onSave}
+          />
+          <SaveIndicator status={saveStatus} />
+        </div>
       );
     case "scale":
       return (
-        <ScaleBlock
-          block={block}
-          value={value as { value: number } | undefined}
-          onSave={onSave}
-        />
+        <div>
+          <ScaleBlock
+            block={block}
+            value={value as { value: number } | undefined}
+            questionNumber={questionNumber ?? ""}
+            onSave={onSave}
+          />
+          <SaveIndicator status={saveStatus} />
+        </div>
       );
     case "choice":
       return (
-        <ChoiceBlock
-          block={block}
-          value={value as { selected: string[] } | undefined}
-          onSave={onSave}
-        />
+        <div>
+          <ChoiceBlock
+            block={block}
+            value={value as { selected: string[] } | undefined}
+            questionNumber={questionNumber ?? ""}
+            onSave={onSave}
+          />
+          <SaveIndicator status={saveStatus} />
+        </div>
       );
     default:
       return (

@@ -15,9 +15,16 @@ export default function Header() {
     }
   };
 
+  const inWorkbook = pathname?.startsWith("/programme") ?? false;
+
   return (
     <header className="bg-background/95 border-primary/5 fixed top-0 z-50 w-full border-b py-5 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
+      <div
+        className={[
+          "mx-auto flex items-center justify-between",
+          inWorkbook ? "max-w-[1140px] px-5 md:px-6" : "max-w-7xl px-6",
+        ].join(" ")}
+      >
 
         {/* Header-Lockup SVG */}
         <Link href="/" onClick={handleLogoClick} aria-label="Lasse Klüver, zur Startseite" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent rounded-sm">

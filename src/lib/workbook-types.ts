@@ -86,6 +86,8 @@ export interface ChoiceBlock {
   question: string;
   options: string[];
   multi: boolean;
+  /** Darstellung: "rows" (Standard, untereinander) oder "pills" (kurze Antworten). */
+  variant?: "rows" | "pills";
 }
 
 export interface FreetextBlock {

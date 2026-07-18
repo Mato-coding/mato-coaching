@@ -1,51 +1,81 @@
 "use client";
 
 import type { ScaleBlock as ScaleBlockConfig } from "@/lib/workbook-types";
+import QuestionHeader from "@/components/workbook/blocks/QuestionHeader";
 
 interface ScaleBlockProps {
   block: ScaleBlockConfig;
   value?: { value: number };
+  questionNumber: string;
   onSave: (blockId: string, value: { value: number }) => void;
 }
 
-export default function ScaleBlock({ block, value, onSave }: ScaleBlockProps) {
+const TRACK_INSET_PX = 22;
+
+export default function ScaleBlock({
+  block,
+  value,
+  questionNumber,
+  onSave,
+}: ScaleBlockProps) {
   const options = Array.from(
     { length: block.max - block.min + 1 },
     (_, i) => block.min + i
   );
+  const lastIndex = options.length - 1;
+
+  function pointOffset(index: number) {
+    const fraction = lastIndex === 0 ? 0 : index / lastIndex;
+    return `calc(${TRACK_INSET_PX}px + (100% - ${TRACK_INSET_PX * 2}px) * ${fraction})`;
+  }
 
   return (
-    <div className="space-y-4">
-      <p className="font-sans text-body text-ink">{block.question}</p>
-      <div
-        role="radiogroup"
-        aria-label={block.question}
-        className="flex flex-wrap items-center gap-3"
-      >
-        {options.map((option) => {
+    <div>
+      <QuestionHeader number={questionNumber} question={block.question} />
+
+      <div className="relative mt-3 h-11">
+        <div
+          className="absolute top-1/2 h-px -translate-y-1/2 bg-hairline"
+          style={{ left: TRACK_INSET_PX, right: TRACK_INSET_PX }}
+          aria-hidden="true"
+        />
+        {options.map((option, index) => {
           const selected = value?.value === option;
           return (
             <button
               key={option}
               type="button"
-              role="radio"
-              aria-checked={selected}
+              aria-pressed={selected}
+              aria-label={`Stufe ${index + 1} von ${options.length}`}
               onClick={() => onSave(block.id, { value: option })}
-              className={[
-                "flex h-12 w-12 shrink-0 items-center justify-center rounded-md border font-sans text-body transition",
-                selected
-                  ? "border-navy bg-navy text-paper"
-                  : "border-ink/15 text-ink hover:border-navy",
-              ].join(" ")}
+              style={{ left: pointOffset(index) }}
+              className="absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
             >
-              {option}
+              <span
+                className={[
+                  "rounded-full transition-all",
+                  selected ? "h-4 w-4 bg-navy" : "h-2 w-2 bg-muted/55",
+                ].join(" ")}
+                aria-hidden="true"
+              />
             </button>
           );
         })}
       </div>
-      <div className="flex justify-between font-sans text-small text-muted">
-        <span>{block.minLabel}</span>
-        <span>{block.maxLabel}</span>
+
+      <div className="relative mt-1.5 h-4">
+        <span
+          className="absolute -translate-x-1/2 font-sans text-[13px] text-muted"
+          style={{ left: TRACK_INSET_PX }}
+        >
+          {block.minLabel}
+        </span>
+        <span
+          className="absolute translate-x-1/2 font-sans text-[13px] text-muted"
+          style={{ right: TRACK_INSET_PX }}
+        >
+          {block.maxLabel}
+        </span>
       </div>
     </div>
   );

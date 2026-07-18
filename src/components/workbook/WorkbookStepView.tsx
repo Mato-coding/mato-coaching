@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import FadeIn from "@/components/ui/FadeIn";
 import BlockRenderer from "@/components/workbook/blocks/BlockRenderer";
-import ProgressBar from "@/components/ui/ProgressBar";
+import type { BlockSaveStatus } from "@/components/workbook/blocks/SaveIndicator";
 import { computeStepProgress } from "@/lib/workbook";
 import type { WorkbookArea, WorkbookStep } from "@/lib/workbook-types";
-
-type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 interface WorkbookStepViewProps {
   program: string;
@@ -18,6 +17,16 @@ interface WorkbookStepViewProps {
   initialValues: Record<string, unknown>;
   prevStepSlug: string | null;
   nextStepSlug: string | null;
+}
+
+const FOCUS_RING =
+  "outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy";
+
+function blockSpacingClass(index: number, isText: boolean) {
+  if (index === 0) {
+    return isText ? "mt-8 md:mt-11" : "mt-11 md:mt-15";
+  }
+  return "mt-10 md:mt-13";
 }
 
 export default function WorkbookStepView({
@@ -34,13 +43,15 @@ export default function WorkbookStepView({
   const [answeredBlockIds, setAnsweredBlockIds] = useState<Set<string>>(
     () => new Set(Object.keys(initialValues))
   );
-  const [status, setStatus] = useState<SaveStatus>("idle");
+  const [saveStatus, setSaveStatus] = useState<Record<string, BlockSaveStatus>>(
+    {}
+  );
+  const tokenRef = useRef(0);
 
   const progress = computeStepProgress(step, answeredBlockIds);
   const areaHref = `/programme/${program}/${area.slug}`;
 
   async function handleSave(blockId: string, value: unknown) {
-    setStatus("saving");
     setValues((prev) => ({ ...prev, [blockId]: value }));
 
     const supabase = createClient();
@@ -55,69 +66,99 @@ export default function WorkbookStepView({
       { onConflict: "client_id,program,block_id" }
     );
 
+    tokenRef.current += 1;
+    const token = tokenRef.current;
+
     if (error) {
       console.error("Workbook-Speicherfehler:", error.message);
-      setStatus("error");
+      setSaveStatus((prev) => ({ ...prev, [blockId]: { state: "error", token } }));
       return;
     }
 
     setAnsweredBlockIds((prev) => new Set(prev).add(blockId));
-    setStatus("saved");
+    setSaveStatus((prev) => ({ ...prev, [blockId]: { state: "saved", token } }));
+  }
+
+  const questionNumbers: (string | undefined)[] = [];
+  for (let counter = 0, i = 0; i < step.blocks.length; i++) {
+    if (step.blocks[i].type === "text") {
+      questionNumbers.push(undefined);
+    } else {
+      counter += 1;
+      questionNumbers.push(String(counter).padStart(2, "0"));
+    }
   }
 
   return (
-    <div className="space-y-10">
-      <div className="space-y-4">
-        <Link
-          href={areaHref}
-          className="font-sans text-small text-muted underline underline-offset-2 hover:text-ink"
-        >
-          Zurück zu {area.title}
-        </Link>
+    <div className="mx-auto max-w-[68ch]">
+      <Link
+        href={areaHref}
+        className={`inline-flex min-h-11 items-center font-sans text-[14px] text-muted transition-colors hover:text-ink ${FOCUS_RING}`}
+      >
+        <span aria-hidden="true" className="mr-2">
+          ←
+        </span>
+        Zurück zur Übersicht
+      </Link>
 
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <span className="block h-px w-6 bg-umber" aria-hidden="true" />
-            <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
-              {area.index === 0 ? "Einstieg" : `Bereich ${area.index}`}
-            </span>
+      <div className="mt-4 flex items-center gap-3">
+        <span className="block h-px w-4 bg-umber" aria-hidden="true" />
+        <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
+          {area.index === 0 ? "Einstieg" : `Bereich ${area.index}`}
+        </span>
+      </div>
+
+      <h1 className="mt-3 font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] text-ink md:text-[46px]">
+        {step.title}
+      </h1>
+
+      {progress.total > 0 && (
+        <div className="mt-6">
+          <div className="h-px w-full bg-hairline">
+            <div
+              className="h-px bg-navy"
+              style={{
+                width: `${(progress.answered / progress.total) * 100}%`,
+              }}
+            />
           </div>
-          <h1 className="font-serif text-h1 font-medium leading-h1 text-ink">
-            {step.title}
-          </h1>
+          <p className="mt-2 font-sans text-[13px] text-muted">
+            {progress.answered} von {progress.total} beantwortet
+          </p>
         </div>
+      )}
 
-        {progress.total > 0 && (
-          <ProgressBar
-            label={`${progress.answered} von ${progress.total} beantwortet`}
-            value={(progress.answered / progress.total) * 100}
-          />
-        )}
+      <div>
+        {step.blocks.map((block, index) => {
+          const isText = block.type === "text";
+          const questionNumber = questionNumbers[index];
 
-        <p className="font-sans text-small text-muted" aria-live="polite">
-          {status === "saving" && "Wird gespeichert …"}
-          {status === "saved" && "Gespeichert"}
-          {status === "error" &&
-            "Speichern fehlgeschlagen. Wird beim nächsten Versuch erneut probiert."}
-        </p>
+          return (
+            <FadeIn
+              key={block.id}
+              y={8}
+              durationSec={0.6}
+              ease={[0.16, 1, 0.3, 1]}
+              delay={index * 0.04}
+              className={blockSpacingClass(index, isText)}
+            >
+              <BlockRenderer
+                block={block}
+                value={values[block.id]}
+                questionNumber={questionNumber}
+                saveStatus={saveStatus[block.id]}
+                onSave={handleSave}
+              />
+            </FadeIn>
+          );
+        })}
       </div>
 
-      <div className="space-y-10">
-        {step.blocks.map((block) => (
-          <BlockRenderer
-            key={block.id}
-            block={block}
-            value={values[block.id]}
-            onSave={handleSave}
-          />
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between border-t border-hairline pt-6">
+      <div className="mt-16 flex items-center justify-between border-t border-hairline pt-6">
         {prevStepSlug ? (
           <Link
             href={`${areaHref}/${prevStepSlug}`}
-            className="font-sans text-small text-ink underline underline-offset-2 hover:text-muted"
+            className={`font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
           >
             Zurück
           </Link>
@@ -127,7 +168,7 @@ export default function WorkbookStepView({
         {nextStepSlug ? (
           <Link
             href={`${areaHref}/${nextStepSlug}`}
-            className="font-sans text-small text-ink underline underline-offset-2 hover:text-muted"
+            className={`font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
           >
             Weiter
           </Link>

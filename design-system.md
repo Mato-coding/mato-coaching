@@ -1,5 +1,9 @@
 # Design System, Lasse Klüver
 
+> Stand: 18.07.2026 (Abschnitt 8 "Workbook-Blöcke" final, Block-Renderer und
+> Schritt-Kopf unter /programme/ifs auf diesen Stand umgebaut). Diese Zeile bei
+> jeder Änderung an den Gestaltungsregeln aktualisieren.
+
 **Marke:** Persönliche Brand, Name-forward (Lasse Klüver), kanonische Domain www.lassekluever.de.
 **Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
 **Was vermieden wird:** Verspieltheit, Esoterik-Optik und der generische KI-Look
@@ -116,4 +120,91 @@ Charakter sichtbar wird, sonst Stille.
 
 ## 8. Workbook-Blöcke
 
-Regeln folgen, Quelle ist der Designregeln-Auftrag im Workbook-Fahrplan.
+Verbindliche Regeln für alle Blocktypen im geschützten Workbook. Quelle: abgenommener
+Claude-Design-Prototyp vom 18.07.2026. Blocktypen und Datenmodell stehen in
+workbook-konzept.md, dieses Kapitel regelt die Gestaltung.
+
+### 8.1 Grundprinzip
+
+Blöcke liegen direkt auf dem Papier-Hintergrund. Keine Karten, keine Rahmen, keine
+Schatten. Trennung entsteht ausschließlich über vertikalen Abstand (Atem-Rhythmus)
+und die Frage-Typografie. `--color-surface` bleibt für Pills reserviert, sonst kommt
+es im Workbook nicht vor.
+
+### 8.2 Schritt-Kopf
+
+- Zurück-Link: Pfeil plus "Zurück zur Übersicht" (immer dieser kurze Text, nie der
+  Bereichstitel), 14px, `--color-muted`, Hover `--color-ink`, min-height 44px.
+- Eyebrow: 16px-Umber-Strich plus Label ("Bereich n"), Bestandsmuster der Website.
+  Abstand Eyebrow zu H1: 12px.
+- Schritt-Titel: Cormorant 500, 32px mobil / 46px Desktop, line-height 1.08,
+  letter-spacing -0.01em.
+- Fortschritt: 24px unter dem Titel. 1px-Hairline in voller Spaltenbreite, gefüllter
+  Anteil in `--color-navy`. Darunter 8px Abstand, dann "n von m beantwortet" in 13px
+  `--color-muted`. Keine Prozentzahl, keine weiteren Kennzahlen.
+- Einführungstext (text-Block direkt nach dem Kopf): 32px mobil / 44px Abstand nach
+  oben, Body-Größe (16px mobil / 18px Desktop).
+
+### 8.3 Frage-Anatomie
+
+- Jeder antwortende Block trägt eine laufende zweistellige Nummer ("01", "02") in
+  Cormorant 500, 18px, `--color-muted`, gefolgt von der Frage in Cormorant Italic
+  500, 19px mobil / 21px Desktop, line-height 1.4, `--color-ink`. Nummer und Frage
+  baseline-ausgerichtet, 16px Lücke. Nummern zählen nur antwortende Blöcke,
+  text-Blöcke bleiben unnummeriert.
+- Blockabstände: 44px mobil / 60px Desktop vor dem ersten Block, 40px mobil / 52px
+  Desktop zwischen Blöcken.
+- Textspalte max. 68ch, Container max. 1140px. Horizontales Seiten-Padding 20px
+  mobil / 24px Desktop, Header und Content auf denselben Kanten.
+
+### 8.4 Blocktypen
+
+**freetext:** Randloses Feld auf Papier, kein Rand, kein Resize-Griff, min-height
+100px, Schrift wie Body. Platzhalter `--color-muted` bei 65% Deckkraft. Untere
+1px-Hairline als Schreiblinie; bei Fokus wird sie 2px und `--color-navy` (das ist
+der Fokus-Indikator, kein zusätzlicher Ring). Autosave debounced nach ~900ms
+Tipp-Pause.
+
+**scale:** Standard 7 Stufen, immer ungerade Stufenzahl mit Mittelpunkt. Punkte auf
+einer 1px-Hairline, gleichmäßig verteilt. Unselektiert: 8px-Punkt in `--color-muted`
+bei 55%. Gewählt: 16px-Punkt in `--color-navy`, genau ein Wert. Unsichtbare
+Touch-Fläche 44px pro Punkt. Horizontaler Innenrand der Skala 22px, damit
+Touch-Flächen und Labels in der Spalte bleiben. Endpunkt-Labels (Pflicht, 13px,
+`--color-muted`) mittig unter dem ersten und letzten Punkt, keine Beschriftung der
+Zwischenstufen, keine Ziffern.
+
+**choice, Variante rows (Standard):** Für längere Antworten oder wenige Optionen.
+Untereinander als Zeilen, min-height 48px, führender Kreis 18px mit 1px-Rand in
+`--color-navy`, bei Auswahl Navy gefüllt. Label Body-Größe, `--color-ink`, 16px
+Lücke zum Kreis.
+
+**choice, Variante pills:** Für kurze Antworten (ein bis zwei Wörter). Umbrechende
+Zeile mit 12px Lücke. Pill: Radius 999px, min-height 44px, Padding 10px 20px, 16px
+Schrift. Unselektiert `--color-surface` mit Hairline-Rand, gewählt `--color-navy`
+mit Text in `--color-paper`. Die Variante steht in der Block-Config
+(`variant: 'rows' | 'pills'`), Default rows.
+
+### 8.5 Speicherfeedback
+
+Pro Block, rechtsbündig unterhalb, "Gespeichert" in 13px `--color-muted`. Erscheint
+nach erfolgreichem Speichern, blendet nach 2s über 600ms (`--ease-settle`) aus. Die
+Zeile reserviert ihre Höhe (min-height ~21px), damit nichts springt. Ton immer
+nüchtern: "Gespeichert", bei Fehlern "Speichern fehlgeschlagen, wird erneut
+versucht". Keine Haken-Icons, keine Ausrufezeichen.
+
+### 8.6 Interaktion, Fokus, Motion
+
+- Tastatur-Fokus: 2px-Ring in `--color-navy`, Offset 2px, auf allen interaktiven
+  Elementen. Ausnahme freetext (Unterlinien-Fokus, siehe 8.4).
+- Auswahl-Elemente sind Buttons mit `aria-pressed`, Skalen-Punkte mit
+  `aria-label` "Stufe n von m".
+- Einblendung der Blöcke: Opazität plus 8px Y-Versatz, 600ms, `--ease-settle`.
+  `prefers-reduced-motion` schaltet alle Animationen und Transitionen ab.
+- Umber erscheint im Workbook nur im Eyebrow-Strich. Nie in Blöcken, Skalen oder
+  Auswahlzuständen.
+
+### 8.7 Offen (eigene Design-Briefs vor Umsetzung)
+
+table mobil, Audio-Player und bodymap sind noch nicht gestaltet. Für sie gilt: erst
+Varianten in Claude Design auf Basis dieses Kapitels, Entscheidung im Strategie-Chat,
+dann Regeln hier ergänzen. Keine Umsetzung im Blindflug.

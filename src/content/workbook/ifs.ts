@@ -31,7 +31,7 @@ export const ifsProgram: WorkbookProgram = {
               type: "scale",
               question: "Wie ist deine Stimmung gerade, in diesem Moment?",
               min: 1,
-              max: 5,
+              max: 7,
               minLabel: "angespannt",
               maxLabel: "ruhig",
             },
@@ -90,7 +90,7 @@ export const ifsProgram: WorkbookProgram = {
               question:
                 "Wie vertraut ist dir der Gedanke, dass du aus verschiedenen inneren Anteilen bestehst?",
               min: 1,
-              max: 5,
+              max: 7,
               minLabel: "ganz neu",
               maxLabel: "sehr vertraut",
             },

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FreetextBlock as FreetextBlockConfig } from "@/lib/workbook-types";
+import QuestionHeader from "@/components/workbook/blocks/QuestionHeader";
 
 interface FreetextBlockProps {
   block: FreetextBlockConfig;
   value?: { text: string };
+  questionNumber: string;
   onSave: (blockId: string, value: { text: string }) => void;
 }
 
@@ -14,6 +16,7 @@ const AUTOSAVE_DELAY_MS = 800;
 export default function FreetextBlock({
   block,
   value,
+  questionNumber,
   onSave,
 }: FreetextBlockProps) {
   const [text, setText] = useState(value?.text ?? "");
@@ -38,20 +41,15 @@ export default function FreetextBlock({
   }
 
   return (
-    <div className="space-y-3">
-      <label
-        htmlFor={block.id}
-        className="block font-sans text-body text-ink"
-      >
-        {block.question}
-      </label>
+    <div>
+      <QuestionHeader number={questionNumber} question={block.question} />
       <textarea
         id={block.id}
         value={text}
         onChange={(event) => handleChange(event.target.value)}
         placeholder={block.placeholder}
-        style={block.minHeight ? { minHeight: `${block.minHeight}px` } : undefined}
-        className="w-full rounded-md border border-ink/15 bg-surface px-4 py-3 font-sans text-body text-ink outline-none transition focus:border-navy"
+        style={{ minHeight: `${block.minHeight ?? 100}px` }}
+        className="mt-3 w-full resize-none bg-transparent px-0 pt-2 pb-3 font-sans text-[17px] leading-body text-ink outline-none transition-shadow duration-200 placeholder:text-muted/65 md:text-[18px] [box-shadow:inset_0_-1px_0_var(--color-hairline)] focus:[box-shadow:inset_0_-2px_0_var(--color-navy)]"
       />
     </div>
   );

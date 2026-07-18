@@ -15,7 +15,7 @@ export default function MembersLayout({
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 pt-20">
-        <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
+        <div className="mx-auto max-w-[1140px] px-5 py-12 md:px-6 md:py-16">
           {children}
         </div>
       </main>
