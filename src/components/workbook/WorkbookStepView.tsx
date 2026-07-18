@@ -91,42 +91,42 @@ export default function WorkbookStepView({
 
   return (
     <div className="mx-auto max-w-[68ch]">
-      <Link
-        href={areaHref}
-        className={`inline-flex min-h-11 items-center font-sans text-[14px] text-muted transition-colors hover:text-ink ${FOCUS_RING}`}
-      >
-        <span aria-hidden="true" className="mr-2">
-          ←
-        </span>
-        Zurück zur Übersicht
-      </Link>
+      <FadeIn y={8} durationSec={0.6} ease={[0.16, 1, 0.3, 1]}>
+        <Link
+          href={areaHref}
+          className={`inline-flex min-h-11 items-center gap-2 whitespace-nowrap font-sans text-[14px] text-muted no-underline transition-colors hover:text-ink ${FOCUS_RING}`}
+        >
+          <span aria-hidden="true">←</span>
+          Zurück zur Übersicht
+        </Link>
 
-      <div className="mt-4 flex items-center gap-3">
-        <span className="block h-px w-4 bg-umber" aria-hidden="true" />
-        <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
-          {area.index === 0 ? "Einstieg" : `Bereich ${area.index}`}
-        </span>
-      </div>
-
-      <h1 className="mt-3 font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] text-ink md:text-[46px]">
-        {step.title}
-      </h1>
-
-      {progress.total > 0 && (
-        <div className="mt-6">
-          <div className="h-px w-full bg-hairline">
-            <div
-              className="h-px bg-navy"
-              style={{
-                width: `${(progress.answered / progress.total) * 100}%`,
-              }}
-            />
-          </div>
-          <p className="mt-2 font-sans text-[13px] text-muted">
-            {progress.answered} von {progress.total} beantwortet
-          </p>
+        <div className="mt-4 flex items-center gap-3">
+          <span className="block h-px w-4 bg-umber" aria-hidden="true" />
+          <span className="font-sans text-eyebrow font-normal uppercase tracking-eyebrow text-muted">
+            {area.index === 0 ? "Einstieg" : `Bereich ${area.index}`}
+          </span>
         </div>
-      )}
+
+        <h1 className="mt-3 font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] text-ink md:text-[46px]">
+          {step.title}
+        </h1>
+
+        {progress.total > 0 && (
+          <div className="mt-6">
+            <div className="h-px w-full bg-hairline">
+              <div
+                className="h-px bg-navy"
+                style={{
+                  width: `${(progress.answered / progress.total) * 100}%`,
+                }}
+              />
+            </div>
+            <p className="mt-2 font-sans text-[13px] text-muted">
+              {progress.answered} von {progress.total} beantwortet
+            </p>
+          </div>
+        )}
+      </FadeIn>
 
       <div>
         {step.blocks.map((block, index) => {
