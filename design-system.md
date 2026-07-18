@@ -1,8 +1,10 @@
 # Design System, Lasse Klüver
 
-> Stand: 18.07.2026 (Abschnitt 8 "Workbook-Blöcke" final, Block-Renderer und
-> Schritt-Kopf unter /programme/ifs auf diesen Stand umgebaut). Diese Zeile bei
-> jeder Änderung an den Gestaltungsregeln aktualisieren.
+> Stand: 18.07.2026 (Abschnitt 8.2a ergänzt: Kopfzonen- und Listenregeln gelten
+> für das gesamte Workbook-Segment. Programmübersicht und Bereichsseite unter
+> /programme/ifs auf diesen Stand umgebaut, Kartenmuster durch Listenzeilen
+> ersetzt). Diese Zeile bei jeder Änderung an den Gestaltungsregeln
+> aktualisieren.
 
 **Marke:** Persönliche Brand, Name-forward (Lasse Klüver), kanonische Domain www.lassekluever.de.
 **Anmutung:** Stille Eleganz, Quiet Luxury. Vertrauen, Klarheit, Autorität, Ruhe.
@@ -144,6 +146,29 @@ es im Workbook nicht vor.
   `--color-muted`. Keine Prozentzahl, keine weiteren Kennzahlen.
 - Einführungstext (text-Block direkt nach dem Kopf): 32px mobil / 44px Abstand nach
   oben, Body-Größe (16px mobil / 18px Desktop).
+
+### 8.2a Geltungsbereich der Kopfzone und Bereichsseiten
+
+Die Kopfzonen-Regeln aus 8.2 gelten für ALLE Seiten im Workbook-Segment
+(Programmübersicht, Bereichsseite, Schrittseite), nicht nur für Schritte:
+Zurück-Link kurz und ohne Unterstreichung, Eyebrow mit Umber-Strich, Titel in
+Cormorant, Fortschritt als Hairline mit Navy-Füllung plus Textzeile, niemals
+Prozentzahlen. Auf der Programmübersicht entfällt der Zurück-Link.
+
+Fortschritts-Wording je Ebene: Schrittseite "n von m beantwortet",
+Bereichsseite "n von m Schritten abgeschlossen", Programmübersicht
+"n von m Bereichen abgeschlossen".
+
+Schritt-Listen auf Bereichsseiten (und Bereichs-Listen auf der Übersicht) sind
+keine Karten, sondern Listenzeilen: volle Spaltenbreite, getrennt durch
+1px-Hairlines, vertikales Padding 24px, ganze Zeile klickbar (min-height 44px).
+Zeileninhalt: Titel in Cormorant 500, 22px, ink; darunter 6px Abstand, dann
+Status in 13px muted ("n von m beantwortet" bzw. "abgeschlossen"). Rechts ein
+Pfeil (→) in muted, bei Hover ink; Hover hebt zusätzlich den Titel leicht an
+(opacity oder Farbe, keine Bewegung). Gesperrte Einträge: Titel und Status in
+muted, kein Pfeil, nicht klickbar, Statustext "Öffnet nach Bereich n".
+Abgeschlossene Einträge tragen statt des Status ein schlichtes "Abgeschlossen"
+in 13px muted, keine Haken-Icons, keine Badges.
 
 ### 8.3 Frage-Anatomie
 

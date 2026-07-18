@@ -158,7 +158,7 @@ export default function WorkbookStepView({
         {prevStepSlug ? (
           <Link
             href={`${areaHref}/${prevStepSlug}`}
-            className={`font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
+            className={`inline-flex min-h-11 items-center font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
           >
             Zurück
           </Link>
@@ -168,7 +168,7 @@ export default function WorkbookStepView({
         {nextStepSlug ? (
           <Link
             href={`${areaHref}/${nextStepSlug}`}
-            className={`font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
+            className={`inline-flex min-h-11 items-center font-sans text-small text-ink hover:text-muted ${FOCUS_RING}`}
           >
             Weiter
           </Link>

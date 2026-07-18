@@ -1,8 +1,8 @@
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
-import ProgressBar from "@/components/ui/ProgressBar";
 import NoAccessNotice from "@/components/workbook/NoAccessNotice";
+import WorkbookHeader from "@/components/workbook/WorkbookHeader";
+import WorkbookListRow from "@/components/workbook/WorkbookListRow";
 import { createClient } from "@/lib/supabase/server";
 import { getProgram, computeAreaProgress } from "@/lib/workbook";
 import { getWorkbookAccess, isAreaUnlocked } from "@/lib/workbook-access";
@@ -29,8 +29,8 @@ export default async function ProgramOverviewPage() {
 
   if (!access) {
     return (
-      <div className="space-y-10">
-        <Header title={program.title} />
+      <div className="mx-auto max-w-[68ch]">
+        <WorkbookHeader eyebrow="Programm" title={program.title} />
         <NoAccessNotice />
       </div>
     );
@@ -42,106 +42,59 @@ export default async function ProgramOverviewPage() {
   const values = await getResponseValues(user.id, program.slug, allBlockIds);
   const answeredBlockIds = new Set(Object.keys(values));
 
-  return (
-    <div className="space-y-10">
-      <Header title={program.title} />
+  const completedAreas = program.areas.filter((area) => {
+    const progress = computeAreaProgress(area, answeredBlockIds);
+    return progress.totalSteps > 0 && progress.completedSteps === progress.totalSteps;
+  }).length;
 
-      <ol className="space-y-4">
+  return (
+    <div className="mx-auto max-w-[68ch]">
+      <WorkbookHeader
+        eyebrow="Programm"
+        title={program.title}
+        progress={{
+          completed: completedAreas,
+          total: program.areas.length,
+          label: `${completedAreas} von ${program.areas.length} Bereichen abgeschlossen`,
+        }}
+      />
+
+      <div className="mt-12 border-t border-hairline md:mt-16">
         {program.areas.map((area, index) => {
           const unlocked = isAreaUnlocked(access, area.index);
           const areaProgress = computeAreaProgress(area, answeredBlockIds);
-          const eyebrow = area.index === 0 ? "Einstieg" : `Bereich ${area.index}`;
+          const previousAreaIndex = area.index - 1;
+          const previousAreaLabel =
+            previousAreaIndex === 0
+              ? "dem Einstieg"
+              : `Bereich ${previousAreaIndex}`;
+
+          let status: string;
+          if (!unlocked) {
+            status = `Öffnet nach ${previousAreaLabel}`;
+          } else if (
+            areaProgress.totalSteps > 0 &&
+            areaProgress.completedSteps === areaProgress.totalSteps
+          ) {
+            status = "Abgeschlossen";
+          } else if (areaProgress.totalSteps > 0) {
+            status = `${areaProgress.completedSteps} von ${areaProgress.totalSteps} Schritten abgeschlossen`;
+          } else {
+            status = "Noch keine Schritte hinterlegt";
+          }
 
           return (
-            <FadeIn key={area.slug} delay={index * 0.07}>
-              {unlocked ? (
-                <Link
-                  href={`/programme/ifs/${area.slug}`}
-                  className="block rounded-md border border-hairline bg-surface p-6 transition hover:border-muted"
-                >
-                  <AreaCardBody
-                    eyebrow={eyebrow}
-                    title={area.title}
-                    unlocked
-                  />
-                  {areaProgress.totalSteps > 0 && (
-                    <div className="mt-4">
-                      <ProgressBar
-                        label={`${areaProgress.completedSteps} von ${areaProgress.totalSteps} Schritten`}
-                        value={
-                          (areaProgress.completedSteps /
-                            areaProgress.totalSteps) *
-                          100
-                        }
-                      />
-                    </div>
-                  )}
-                </Link>
-              ) : (
-                <div className="rounded-md border border-hairline bg-surface p-6 opacity-60">
-                  <AreaCardBody
-                    eyebrow={eyebrow}
-                    title={area.title}
-                    unlocked={false}
-                  />
-                </div>
-              )}
+            <FadeIn key={area.slug} delay={index * 0.05}>
+              <WorkbookListRow
+                href={`/programme/${program.slug}/${area.slug}`}
+                title={area.title}
+                status={status}
+                locked={!unlocked}
+              />
             </FadeIn>
           );
         })}
-      </ol>
-    </div>
-  );
-}
-
-function Header({ title }: { title: string }) {
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <span className="block h-px w-6 bg-umber" aria-hidden="true" />
-        <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
-          Programm
-        </span>
       </div>
-      <h1 className="font-serif text-h1 font-medium leading-h1 text-ink">
-        {title}
-      </h1>
-    </div>
-  );
-}
-
-function AreaCardBody({
-  eyebrow,
-  title,
-  unlocked,
-}: {
-  eyebrow: string;
-  title: string;
-  unlocked: boolean;
-}) {
-  return (
-    <div className="flex items-start justify-between gap-4">
-      <div className="space-y-1">
-        <span
-          className={[
-            "font-sans text-eyebrow font-medium uppercase tracking-eyebrow",
-            unlocked ? "text-umber" : "text-muted",
-          ].join(" ")}
-        >
-          {eyebrow}
-        </span>
-        <p
-          className={[
-            "font-sans text-body",
-            unlocked ? "text-ink" : "text-muted",
-          ].join(" ")}
-        >
-          {title}
-        </p>
-      </div>
-      <span className="shrink-0 font-sans text-small text-muted">
-        {unlocked ? "Freigeschaltet" : "Noch gesperrt"}
-      </span>
     </div>
   );
 }

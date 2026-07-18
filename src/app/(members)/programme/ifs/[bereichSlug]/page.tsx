@@ -1,9 +1,9 @@
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
-import ProgressBar from "@/components/ui/ProgressBar";
 import NoAccessNotice from "@/components/workbook/NoAccessNotice";
 import AreaLockedNotice from "@/components/workbook/AreaLockedNotice";
+import WorkbookHeader from "@/components/workbook/WorkbookHeader";
+import WorkbookListRow from "@/components/workbook/WorkbookListRow";
 import { createClient } from "@/lib/supabase/server";
 import {
   getProgram,
@@ -53,67 +53,49 @@ export default async function AreaStepsPage({
   const answeredBlockIds = new Set(Object.keys(values));
   const areaProgress = computeAreaProgress(area, answeredBlockIds);
   const eyebrow = area.index === 0 ? "Einstieg" : `Bereich ${area.index}`;
+  const areaHref = `/programme/${program.slug}`;
 
   return (
-    <div className="space-y-10">
-      <div className="space-y-3">
-        <Link
-          href={`/programme/${program.slug}`}
-          className="font-sans text-small text-muted underline underline-offset-2 hover:text-ink"
-        >
-          Zurück zur Übersicht
-        </Link>
-        <div className="flex items-center gap-3">
-          <span className="block h-px w-6 bg-umber" aria-hidden="true" />
-          <span className="font-sans text-eyebrow font-medium uppercase tracking-eyebrow text-umber">
-            {eyebrow}
-          </span>
-        </div>
-        <h1 className="font-serif text-h1 font-medium leading-h1 text-ink">
-          {area.title}
-        </h1>
-        {area.description && (
-          <p className="font-sans text-body text-muted">{area.description}</p>
-        )}
-      </div>
+    <div className="mx-auto max-w-[68ch]">
+      <WorkbookHeader
+        backHref={areaHref}
+        eyebrow={eyebrow}
+        title={area.title}
+        description={area.description}
+        progress={
+          area.steps.length > 0
+            ? {
+                completed: areaProgress.completedSteps,
+                total: areaProgress.totalSteps,
+                label: `${areaProgress.completedSteps} von ${areaProgress.totalSteps} Schritten abgeschlossen`,
+              }
+            : undefined
+        }
+      />
 
       {area.steps.length > 0 ? (
-        <>
-          <ProgressBar
-            label={`${areaProgress.completedSteps} von ${areaProgress.totalSteps} Schritten abgeschlossen`}
-            value={
-              (areaProgress.completedSteps / areaProgress.totalSteps) * 100
-            }
-          />
+        <div className="mt-12 border-t border-hairline md:mt-16">
+          {area.steps.map((step, index) => {
+            const stepProgress = computeStepProgress(step, answeredBlockIds);
+            const status = stepProgress.complete
+              ? "Abgeschlossen"
+              : stepProgress.total > 0
+                ? `${stepProgress.answered} von ${stepProgress.total} beantwortet`
+                : "Zum Lesen";
 
-          <ol className="space-y-4">
-            {area.steps.map((step, index) => {
-              const stepProgress = computeStepProgress(step, answeredBlockIds);
-
-              return (
-                <FadeIn key={step.slug} delay={index * 0.07}>
-                  <li>
-                    <Link
-                      href={`/programme/${program.slug}/${area.slug}/${step.slug}`}
-                      className="block rounded-md border border-hairline bg-surface p-6 transition hover:border-muted"
-                    >
-                      <p className="font-sans text-body text-ink">
-                        {step.title}
-                      </p>
-                      <p className="mt-2 font-sans text-small text-muted">
-                        {stepProgress.total > 0
-                          ? `${stepProgress.answered} von ${stepProgress.total} beantwortet`
-                          : "Zum Lesen"}
-                      </p>
-                    </Link>
-                  </li>
-                </FadeIn>
-              );
-            })}
-          </ol>
-        </>
+            return (
+              <FadeIn key={step.slug} delay={index * 0.05}>
+                <WorkbookListRow
+                  href={`/programme/${program.slug}/${area.slug}/${step.slug}`}
+                  title={step.title}
+                  status={status}
+                />
+              </FadeIn>
+            );
+          })}
+        </div>
       ) : (
-        <p className="font-sans text-body text-muted">
+        <p className="mt-12 font-sans text-body text-muted md:mt-16">
           Für diesen Bereich sind noch keine Schritte hinterlegt.
         </p>
       )}

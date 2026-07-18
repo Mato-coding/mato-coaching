@@ -65,11 +65,9 @@ export default function BlockRenderer({
       );
     default:
       return (
-        <div className="rounded-md border border-hairline bg-surface p-6">
-          <p className="font-sans text-small text-muted">
-            Dieser Baustein folgt in einem späteren Schritt.
-          </p>
-        </div>
+        <p className="font-sans text-small text-muted">
+          Dieser Baustein folgt in einem späteren Schritt.
+        </p>
       );
   }
 }
