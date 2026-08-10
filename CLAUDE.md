@@ -2,7 +2,7 @@
 
 Briefing für Claude Code. Lies zu Sitzungsbeginn diese Datei und design-system.md. Halte sie und AGENTS.md widerspruchsfrei. Bei Aufgaben zu Copy, Positionierung, Angebot oder Personendarstellung zusätzlich profil-lasse.md lesen. Bei Aufgaben rund um Erstgespräch, /termin oder /coaching zusätzlich erstgespraech-leitfaden.md lesen. Bei Aufgaben zum digitalen Workbook zusätzlich workbook-konzept.md lesen.
 
-> Stand: 17.07.2026. Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
+> Stand: 10.08.2026 (Supabase-Keep-alive-Cron ergänzt: src/app/api/cron/keep-alive, Vercel Cron montags und donnerstags, verhindert Pausieren des Free-Projekts. Grund: pausiertes Projekt hat den Lead-Magnet-Funnel in Produktion lahmgelegt). Diese Zeile bei jedem live gegangenen Feature mit aktualisieren.
 
 ## Projekt
 Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und IFS-orientierte Prozessbegleitung. Zielgruppe: zahlungskräftige Menschen mit stressbedingter innerer Unruhe, Anspannung, Erschöpfung. Anmutung: Quiet Luxury, ruhig, klar, autoritativ. Sprache Deutsch. Ziel: Conversion zu kostenfreiem Erstgespräch und zum Audio-Lead-Magneten. Person, Qualifikation, Angebot und Business-Ziele stehen in profil-lasse.md. Konfliktregel: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, profil-lasse.md für Person und Angebot.
@@ -53,6 +53,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - LeadMagnetForm props: autoFocus, source, assessmentCluster, assessmentResult, onSuccess (feuert einmalig bei status "success", nutzen LeadMagnetCTA und ResultActions zum Ausblenden ihrer Einladungssätze). Sendet pagePath und referrer mit, scrollt bei Erfolg sanft nach oben.
 - /api/assessment speichert anonyme Abschlüsse, versendet keine Mail.
 - Resend: Domain lassekluever.de verifiziert (DKIM, SPF, send-MX über die Strato-Subdomain send.lassekluever.de). Root-MX = Strato Mailserver (Postfach hello@). RESEND_API_KEY ist Full-Access, nicht domain-beschränkt.
+- Supabase-Keep-alive-Cron: src/app/api/cron/keep-alive/route.ts, per Vercel Cron (vercel.json) montags und donnerstags 6:00 UTC aufgerufen. Zweck: Das Supabase-Free-Projekt pausiert nach 7 Tagen Inaktivität, das hat POST /api/lead in Produktion bereits einmal fehlschlagen lassen. Die Route macht einen minimalen Read (count auf leads, keine Daten geloggt) und prüft den Bearer-Header gegen CRON_SECRET. Entfällt nach dem Upgrade auf Supabase Pro (siehe offene Aufgaben).
 
 ## Datenbank (RLS an, keine Public-Policy, nur Server schreibt)
 - leads: id, created_at, email, name, consent, source, page_path, referrer, assessment_cluster, assessment_result, audio_email_status (pending dann sent oder failed). Spalte heißt audio_email_status.
@@ -60,7 +61,7 @@ Brand- und Akquise-Website für Lasse Klüver. Angebot: Somatic Breathwork und I
 - Keine IP speichern. User-Agent nur in der Mail, nicht in der DB.
 
 ## Env (in Vercel, Werte nie im Code)
-NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL (hello@lassekluever.de), LEAD_AUDIO_URL (https://www.lassekluever.de/audio/physiological-sigh.m4a).
+NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL (hello@lassekluever.de), LEAD_AUDIO_URL (https://www.lassekluever.de/audio/physiological-sigh.m4a), CRON_SECRET (autorisiert den Vercel-Cron-Aufruf gegen /api/cron/keep-alive, von Vercel selbst als Bearer-Header mitgeschickt).
 
 ## SEO
 - sitemap.ts und robots.ts in src/app. JsonLd: ProfessionalService, areaServed Hamburg, founder Lasse Klüver (sameAs LinkedIn). Unternehmens-sameAs leer (später Instagram).
@@ -86,6 +87,7 @@ NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, LEAD_NOTIFI
 4. Weitere Journal-Artikel. AggregateRating sobald Bewertungen. OG-Bild 1200×630. Instagram in sameAs. Assessment-Videos.
 5. Robuster Env-Umgang für LEAD_AUDIO_URL: In src/app/api/lead/route.ts keinen stillen Fallback auf eine hart verdrahtete Audio-URL verwenden. Fehlt die Env-Variable, eine Warnung ins Server-Log schreiben, statt lautlos eine Datei-URL zu raten. Grund: Ein stiller Fallback hat beim Domainwechsel einen falschen Link verdeckt.
 6. Digitales IFS-Workbook für Klienten. Konzept, Architektur und Auftragsfahrplan stehen in workbook-konzept.md. Entwicklung ausschließlich auf dem Branch feature/workbook, Merge auf main erst nach MVP-Abschluss.
+7. Supabase Pro Upgrade spätestens zum Start der Gründungsrunde, danach Keep-alive-Cron entfernen.
 
 ## Erledigt
 - Inhaltliche Marken-Umstellung: Lasse vorn, Mato als Methode, in Header, Metadaten, Schema, Footer.
