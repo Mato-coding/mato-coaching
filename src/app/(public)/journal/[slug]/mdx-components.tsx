@@ -43,4 +43,7 @@ export const mdxComponents: MDXComponents = {
       {...props}
     />
   ),
+  hr: (props) => (
+    <hr className="border-0 border-t border-hairline my-10" {...props} />
+  ),
 };
