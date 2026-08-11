@@ -28,6 +28,8 @@ export default function AssessmentForm() {
   const submittedRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const hasMountedRef = useRef(false);
+  const continueButtonRef = useRef<HTMLButtonElement>(null);
+  const autoScrolledRef = useRef(false);
 
   const step = history.length;
 
@@ -51,6 +53,7 @@ export default function AssessmentForm() {
   if (shownQuestionIdRef.current !== currentQ?.id) {
     shownQuestionIdRef.current = currentQ?.id;
     if (multiSelected.length > 0) setMultiSelected([]);
+    autoScrolledRef.current = false;
   }
 
   // Alle gesammelten Tags aus der History (fürs Scoring und die Ergebnis-Komposition)
@@ -66,6 +69,21 @@ export default function AssessmentForm() {
     }
     if (containerRef.current) scrollElementToTop(containerRef.current);
   }, [currentQ?.id]);
+
+  // Bei der ERSTEN Auswahl einer Mehrfachauswahl-Frage den Weiter-Button sanft
+  // in den sichtbaren Bereich holen, damit sein Musterwechsel (kein
+  // Auto-Advance) erkennbar bleibt. Nur einmal pro Frage.
+  useEffect(() => {
+    if (multiSelected.length !== 1 || autoScrolledRef.current) return;
+    autoScrolledRef.current = true;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    continueButtonRef.current?.scrollIntoView({
+      block: "nearest",
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, [multiSelected]);
 
   // Abschluss genau einmal anonym tracken, sobald das Ergebnis feststeht
   useEffect(() => {
@@ -222,12 +240,35 @@ export default function AssessmentForm() {
                     type="button"
                     aria-pressed={selected}
                     onClick={() => toggleMultiAnswer(answer)}
-                    className={`cursor-pointer rounded-md border p-6 text-left transition-all duration-200 ${
+                    className={`flex items-start gap-4 cursor-pointer rounded-md border p-6 text-left transition-all duration-200 ${
                       selected
                         ? "border-accent bg-accent/5"
                         : "border-primary/15 hover:border-accent hover:bg-accent/5"
                     }`}
                   >
+                    <span
+                      aria-hidden="true"
+                      className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border transition-colors duration-200 ${
+                        selected ? "border-accent bg-accent" : "border-hairline"
+                      }`}
+                    >
+                      <svg
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                        className={`h-3 w-3 text-background transition-opacity duration-200 ${
+                          selected ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        <path
+                          d="M3.5 8.5l3 3 6-7"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
                     <span className="text-primary/90 text-lg leading-relaxed">
                       {answer.label}
                     </span>
@@ -255,12 +296,13 @@ export default function AssessmentForm() {
           {isMulti && (
             <div className="mb-8">
               <button
+                ref={continueButtonRef}
                 type="button"
                 onClick={handleMultiNext}
                 disabled={multiSelected.length === 0}
                 className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Weiter
+                Weiter zur nächsten Frage
               </button>
             </div>
           )}
