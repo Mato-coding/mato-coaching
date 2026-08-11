@@ -10,16 +10,17 @@ const JOURNAL_URL = "/journal";
 type ResultActionsProps = {
   cluster: string;
   result: string;
+  onRestart: () => void;
 };
 
-export default function ResultActions({ cluster, result }: ResultActionsProps) {
+export default function ResultActions({ cluster, result, onRestart }: ResultActionsProps) {
   const [showAudio, setShowAudio] = useState(false);
   const [audioSubmitted, setAudioSubmitted] = useState(false);
 
   const ctaHrefWithContext = `/termin?cluster=${encodeURIComponent(cluster)}&result=${encodeURIComponent(result)}`;
 
   return (
-    <div className="mt-10 text-left pb-16 md:pb-24">
+    <div className="mt-10 text-left">
       {/* Brücke vom Ergebnistext zu den Optionen */}
       <p className="text-primary/80 text-lg leading-relaxed mb-8">
         Von hier aus hast du drei Möglichkeiten, weiterzugehen.
@@ -109,6 +110,17 @@ export default function ResultActions({ cluster, result }: ResultActionsProps) {
             />
           </div>
         )}
+      </div>
+
+      {/* Leiser Ausstieg: unter den Karten, ruhiger Abstand, kein Trennstrich */}
+      <div className="mt-12 text-center">
+        <button
+          type="button"
+          onClick={onRestart}
+          className="text-sm text-muted hover:text-accent transition-colors"
+        >
+          Assessment neu starten
+        </button>
       </div>
     </div>
   );

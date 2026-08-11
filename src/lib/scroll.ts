@@ -15,3 +15,14 @@ export function smoothScrollToTop(duration = 2000) {
   }
   requestAnimationFrame(step);
 }
+
+// Scrollt so weit, dass das übergebene Element (abzüglich eines festen
+// Kopfabstands für den fixen Header) oben im Viewport steht. Respektiert
+// prefers-reduced-motion mit einem direkten Sprung statt einer Animation.
+export function scrollElementToTop(el: HTMLElement, offset = 100) {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const y = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: y, behavior: prefersReducedMotion ? "auto" : "smooth" });
+}

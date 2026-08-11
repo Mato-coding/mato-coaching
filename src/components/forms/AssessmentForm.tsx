@@ -11,6 +11,7 @@ import {
 } from "@/lib/assessment-config";
 import AssessmentResult from "@/components/forms/AssessmentResult";
 import FadeIn from "@/components/ui/FadeIn";
+import { scrollElementToTop } from "@/lib/scroll";
 
 interface StepRecord {
   questionId: string;
@@ -25,6 +26,8 @@ export default function AssessmentForm() {
   const [done, setDone] = useState(false);
   const [multiSelected, setMultiSelected] = useState<string[]>([]);
   const submittedRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasMountedRef = useRef(false);
 
   const step = history.length;
 
@@ -52,6 +55,17 @@ export default function AssessmentForm() {
 
   // Alle gesammelten Tags aus der History (fürs Scoring und die Ergebnis-Komposition)
   const collectedTags = history.flatMap((h) => h.tags);
+
+  // Nach einem Fragenwechsel sicherstellen, dass die neue Frage oben im
+  // Viewport steht (relevant, wenn die vorige Frage lang war und nach
+  // unten gescrollt wurde). Beim ersten Rendern nicht auslösen.
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+    if (containerRef.current) scrollElementToTop(containerRef.current);
+  }, [currentQ?.id]);
 
   // Abschluss genau einmal anonym tracken, sobald das Ergebnis feststeht
   useEffect(() => {
@@ -162,7 +176,7 @@ export default function AssessmentForm() {
   const isMulti = currentQ.mode === "multi";
 
   return (
-    <div className="text-primary">
+    <div ref={containerRef} className="text-primary">
       {/* Fortschrittsbalken */}
       <div className="mb-10">
         <div className="flex justify-between items-center mb-3">
