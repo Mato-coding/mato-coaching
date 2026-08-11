@@ -8,25 +8,15 @@ const JOURNAL_READY = true;
 const JOURNAL_URL = "/journal";
 
 type ResultActionsProps = {
-  ctaHref: string;
-  ctaLabel: string;
   cluster: string;
   result: string;
 };
 
-export default function ResultActions({
-  ctaHref,
-  ctaLabel,
-  cluster,
-  result,
-}: ResultActionsProps) {
+export default function ResultActions({ cluster, result }: ResultActionsProps) {
   const [showAudio, setShowAudio] = useState(false);
   const [audioSubmitted, setAudioSubmitted] = useState(false);
 
-  const ctaHrefWithContext =
-    ctaHref === "/termin"
-      ? `/termin?cluster=${encodeURIComponent(cluster)}&result=${encodeURIComponent(result)}`
-      : ctaHref;
+  const ctaHrefWithContext = `/termin?cluster=${encodeURIComponent(cluster)}&result=${encodeURIComponent(result)}`;
 
   return (
     <div className="mt-10 text-left pb-16 md:pb-24">
@@ -52,7 +42,7 @@ export default function ResultActions({
                 href={ctaHrefWithContext}
                 className="mx-auto w-full max-w-62 text-center rounded-md bg-accent px-6 py-3 text-background transition hover:opacity-90"
               >
-                {ctaLabel}
+                Erstgespräch vereinbaren
               </Link>
             </div>
           </div>

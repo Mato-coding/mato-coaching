@@ -1,18 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import {
-  questions,
   calculateResult,
-  results,
+  composeResult,
+  questions,
+  type Answer,
   type Cluster,
   type Question,
 } from "@/lib/assessment-config";
-import ResultActions from "@/components/forms/ResultActions";
+import AssessmentResult from "@/components/forms/AssessmentResult";
+import FadeIn from "@/components/ui/FadeIn";
 
 interface StepRecord {
   questionId: string;
+  answerIds: string[];
   tags: string[];
   cluster?: Cluster;
 }
@@ -21,6 +23,7 @@ export default function AssessmentForm() {
   const [cluster, setCluster] = useState<Cluster | null>(null);
   const [history, setHistory] = useState<StepRecord[]>([]);
   const [done, setDone] = useState(false);
+  const [multiSelected, setMultiSelected] = useState<string[]>([]);
   const submittedRef = useRef(false);
 
   const step = history.length;
@@ -30,7 +33,8 @@ export default function AssessmentForm() {
     (q) => !q.onlyForCluster || q.onlyForCluster === cluster
   );
 
-  // Gesamtzahl: wenn Cluster noch unbekannt, schätzen wir 5 (4 gemeinsam + 1 Branching)
+  // Gesamtzahl: solange der Cluster unbekannt ist, schätzen wir 6 gemeinsame
+  // Fragen plus eine Branching-Frage (F3).
   const totalSteps =
     cluster === null
       ? questions.filter((q) => !q.onlyForCluster).length + 1
@@ -39,47 +43,87 @@ export default function AssessmentForm() {
   const currentQ = visibleQuestions[step];
   const progress = Math.round((step / totalSteps) * 100);
 
-  // Alle gesammelten Tags aus der History
+  // Auswahl der Mehrfachauswahl-Frage zurücksetzen, sobald eine neue Frage angezeigt wird.
+  const shownQuestionIdRef = useRef(currentQ?.id);
+  if (shownQuestionIdRef.current !== currentQ?.id) {
+    shownQuestionIdRef.current = currentQ?.id;
+    if (multiSelected.length > 0) setMultiSelected([]);
+  }
+
+  // Alle gesammelten Tags aus der History (fürs Scoring und die Ergebnis-Komposition)
   const collectedTags = history.flatMap((h) => h.tags);
 
   // Abschluss genau einmal anonym tracken, sobald das Ergebnis feststeht
   useEffect(() => {
     if (!done || !cluster || submittedRef.current) return;
     submittedRef.current = true;
-    const route = calculateResult(collectedTags, cluster);
+    const { route } = calculateResult(collectedTags);
+    const answers = Object.fromEntries(
+      history.map((h) => [h.questionId, h.questionId === "q4" ? h.answerIds : h.answerIds[0]])
+    );
     fetch("/api/assessment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cluster, route, answers: collectedTags }),
+      body: JSON.stringify({ cluster, route, answers }),
     }).catch((err) => console.error("Assessment-Tracking-Fehler:", err));
-  }, [done, cluster, collectedTags]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done, cluster]);
 
-  const handleAnswer = (answer: (typeof currentQ.answers)[number]) => {
-    const newCluster = answer.cluster ?? cluster;
-    if (answer.cluster) setCluster(answer.cluster);
-
-    const record: StepRecord = {
-      questionId: currentQ.id,
-      tags: answer.tags,
-      cluster: answer.cluster,
-    };
+  const advance = (record: StepRecord, newCluster?: Cluster) => {
+    const effectiveCluster = newCluster ?? cluster;
+    if (newCluster) setCluster(newCluster);
 
     const newHistory = [...history, record];
     setHistory(newHistory);
 
-    // Prüfen ob fertig (nach dem Update)
     const newVisibleQuestions = questions.filter(
-      (q) => !q.onlyForCluster || q.onlyForCluster === newCluster
+      (q) => !q.onlyForCluster || q.onlyForCluster === effectiveCluster
     );
     if (newHistory.length >= newVisibleQuestions.length) {
       setDone(true);
     }
   };
 
+  const handleAnswer = (answer: Answer) => {
+    const record: StepRecord = {
+      questionId: currentQ.id,
+      answerIds: [answer.id],
+      tags: answer.tags,
+      cluster: answer.cluster,
+    };
+    advance(record, answer.cluster);
+  };
+
+  const toggleMultiAnswer = (answer: Answer) => {
+    setMultiSelected((prev) => {
+      if (answer.exclusive) {
+        return prev.includes(answer.id) ? [] : [answer.id];
+      }
+      const withoutExclusive = prev.filter((id) => {
+        const a = currentQ.answers.find((x) => x.id === id);
+        return !a?.exclusive;
+      });
+      return withoutExclusive.includes(answer.id)
+        ? withoutExclusive.filter((id) => id !== answer.id)
+        : [...withoutExclusive, answer.id];
+    });
+  };
+
+  const handleMultiNext = () => {
+    if (multiSelected.length === 0) return;
+    const chosenAnswers = currentQ.answers.filter((a) => multiSelected.includes(a.id));
+    const record: StepRecord = {
+      questionId: currentQ.id,
+      answerIds: multiSelected,
+      tags: chosenAnswers.flatMap((a) => a.tags),
+    };
+    advance(record);
+  };
+
   const handleBack = () => {
     if (history.length === 0) return;
     const prev = history[history.length - 1];
-    // Cluster zurücksetzen wenn wir zu Frage 1 zurück
+    // Cluster zurücksetzen, wenn wir zu Frage 1 zurückgehen
     if (history.length === 1) setCluster(null);
     else if (prev.cluster) {
       // Cluster des vorletzten Schritts wiederherstellen
@@ -90,66 +134,33 @@ export default function AssessmentForm() {
     setDone(false);
   };
 
-  const handleSkip = () => {
-    const record: StepRecord = {
-      questionId: currentQ.id,
-      tags: [],
-    };
-    const newHistory = [...history, record];
-    setHistory(newHistory);
-
-    const newVisibleQuestions = questions.filter(
-      (q) => !q.onlyForCluster || q.onlyForCluster === cluster
-    );
-    if (newHistory.length >= newVisibleQuestions.length) {
-      setDone(true);
-    }
+  const handleRestart = () => {
+    setCluster(null);
+    setHistory([]);
+    setDone(false);
+    setMultiSelected([]);
+    submittedRef.current = false;
   };
 
   // Ergebnis-Screen
   if (done && cluster) {
-    const route = calculateResult(collectedTags, cluster);
-    const result = results[route];
-    const headline = result.headlines[cluster] ?? result.headlines.default;
+    const { route, careActive } = calculateResult(collectedTags);
+    const { headline, paragraphs } = composeResult(history, cluster, route, careActive);
 
     return (
-      <div className="text-primary">
-        <div className="flex items-center gap-3 mb-8">
-          <span className="h-px w-6 bg-umber" aria-hidden="true" />
-          <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-            Dein Ergebnis
-          </span>
-        </div>
-
-        <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
-          {headline}
-        </h2>
-
-        <p className="text-primary/80 text-lg leading-relaxed mb-10">
-          {result.body}
-        </p>
-
-        {result.videoUrl && (
-          <div className="mb-10 rounded-md overflow-hidden aspect-video bg-surface">
-            <video
-              src={result.videoUrl}
-              controls
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
-
-       <ResultActions
-  ctaHref={result.ctaHref}
-  ctaLabel={result.ctaLabel}
-  cluster={cluster}
-  result={route}
-/>
-      </div>
+      <AssessmentResult
+        headline={headline}
+        paragraphs={paragraphs}
+        cluster={cluster}
+        route={route}
+        onRestart={handleRestart}
+      />
     );
   }
 
   // Fragen-Screen
+  const isMulti = currentQ.mode === "multi";
+
   return (
     <div className="text-primary">
       {/* Fortschrittsbalken */}
@@ -176,27 +187,73 @@ export default function AssessmentForm() {
         </span>
       </div>
 
-      {/* Frage */}
-      <h2 className="font-serif text-2xl md:text-3xl font-medium text-primary leading-[1.2] mb-10">
-        {currentQ.question}
-      </h2>
+      <FadeIn key={currentQ.id} durationSec={isMulti ? 0.9 : 0.6} y={8}>
+        <div>
+          {/* Frage */}
+          <h2 className="font-serif text-2xl md:text-3xl font-medium text-primary leading-[1.2] mb-3">
+            {currentQ.question}
+          </h2>
 
-      {/* Antworten */}
-      <div className="flex flex-col gap-3 mb-8">
-        {currentQ.answers.map((answer, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleAnswer(answer)}
-            className="border border-primary/15 hover:border-accent hover:bg-accent/5 cursor-pointer rounded-md p-6 text-left transition-all duration-200"
-          >
-            <span className="text-primary/90 text-lg leading-relaxed">
-              {answer.label}
-            </span>
-          </button>
-        ))}
-      </div>
+          {currentQ.hint && <p className="text-sm text-muted mb-8">{currentQ.hint}</p>}
+          {!currentQ.hint && <div className="mb-10" />}
 
-      {/* Navigation: Zurück + Überspringen */}
+          {/* Antworten */}
+          {isMulti ? (
+            <div className="flex flex-col gap-3 mb-6">
+              {currentQ.answers.map((answer) => {
+                const selected = multiSelected.includes(answer.id);
+                return (
+                  <button
+                    key={answer.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => toggleMultiAnswer(answer)}
+                    className={`cursor-pointer rounded-md border p-6 text-left transition-all duration-200 ${
+                      selected
+                        ? "border-accent bg-accent/5"
+                        : "border-primary/15 hover:border-accent hover:bg-accent/5"
+                    }`}
+                  >
+                    <span className="text-primary/90 text-lg leading-relaxed">
+                      {answer.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3 mb-8">
+              {currentQ.answers.map((answer) => (
+                <button
+                  key={answer.id}
+                  type="button"
+                  onClick={() => handleAnswer(answer)}
+                  className="border border-primary/15 hover:border-accent hover:bg-accent/5 cursor-pointer rounded-md p-6 text-left transition-all duration-200"
+                >
+                  <span className="text-primary/90 text-lg leading-relaxed">
+                    {answer.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {isMulti && (
+            <div className="mb-8">
+              <button
+                type="button"
+                onClick={handleMultiNext}
+                disabled={multiSelected.length === 0}
+                className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Weiter
+              </button>
+            </div>
+          )}
+        </div>
+      </FadeIn>
+
+      {/* Navigation: Zurück */}
       <div className="flex items-center justify-between pt-2">
         <button
           onClick={handleBack}
@@ -204,12 +261,6 @@ export default function AssessmentForm() {
           className="text-sm text-muted hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Zurück
-        </button>
-        <button
-          onClick={handleSkip}
-          className="text-sm text-muted hover:text-primary transition-colors"
-        >
-          Frage überspringen
         </button>
       </div>
     </div>
