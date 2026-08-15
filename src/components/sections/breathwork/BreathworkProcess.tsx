@@ -3,7 +3,7 @@ import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
-import ListMark from "@/components/ui/ListMark";
+import StepList from "@/components/ui/StepList";
 
 const steps = [
   {
@@ -40,17 +40,10 @@ export default function BreathworkProcess() {
             BreathworkResonance.tsx. max-w-measure = --container-measure
             (width="prose"), kein Arbitrary-Value.
           */}
-          <ol className="space-y-8 max-w-measure">
-            {steps.map((step, i) => (
-              <li key={i} className="flex items-start gap-6 text-lg leading-relaxed">
-                <ListMark />
-                <p className="text-primary/80 text-lg leading-relaxed">
-                  <strong className="font-medium text-primary">{step.title}</strong>{" "}
-                  {step.body}
-                </p>
-              </li>
-            ))}
-          </ol>
+          <StepList
+            items={steps.map((step) => ({ title: step.title, text: step.body }))}
+            className="max-w-measure"
+          />
         </FadeIn>
 
         <FadeIn delay={0.3}>

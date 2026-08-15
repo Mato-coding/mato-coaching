@@ -4,43 +4,44 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
 import Button from "@/components/ui/Button";
-import { AUDIO_RESET_ANCHOR } from "@/lib/anchors";
+import { PROGRAMM_ANCHOR } from "@/lib/anchors";
 
-export default function BreathworkHero() {
+export default function CoachingHero() {
   return (
     <Section className="bg-background">
       <Container width="narrow" className="text-center">
         <FadeIn>
-          <Eyebrow label="Somatic Breathwork · Hamburg und online" align="center" />
+          <Eyebrow label="1:1 Begleitung" align="center" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
           <Heading variant="display-sub" className="mb-8">
-            Echte Ruhe, die du im Körper spürst
+            Vom Funktionieren zurück ins Leben
           </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           {/* max-w-2xl trifft keine der drei Container-Breiten, siehe CTA.tsx */}
           <p className="text-xl text-primary/70 leading-relaxed mb-12 max-w-2xl mx-auto">
-            Begleitete Atemsitzungen für Menschen, die nach außen funktionieren
-            und innen keine Ruhe finden können.
-            <br />
-            Einzeln oder in der Gruppe, in Hamburg und online.
+            Zehn Wochen intensive Einzelbegleitung für Menschen, die viel
+            tragen. Damit dein Nervensystem wieder lernt zu regulieren, dein Schlaf
+            sich erholt und du dein Leben wieder aktiv gestaltest, statt nur zu reagieren und es zu
+            verwalten. Ich arbeite mit dir über das IFS Coaching an den echten Ursachen und tiefgehend somatisch, über den Körper und Atem. Remote oder in
+            Hamburg.
           </p>
         </FadeIn>
 
         <FadeIn delay={0.3}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button href="/termin" className="w-full sm:w-auto text-lg">
+            <Button href="/termin" className="w-full sm:w-auto">
               Erstgespräch vereinbaren
             </Button>
             <Button
-              href={`#${AUDIO_RESET_ANCHOR}`}
+              href={`#${PROGRAMM_ANCHOR}`}
               variant="secondary"
-              className="w-full sm:w-auto text-lg"
+              className="w-full sm:w-auto"
             >
-              Kostenloses Audio sichern
+              So ist das Programm aufgebaut
             </Button>
           </div>
         </FadeIn>

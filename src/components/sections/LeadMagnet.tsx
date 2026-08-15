@@ -4,10 +4,11 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
 import LeadMagnetCTA from "@/components/sections/LeadMagnetCTA";
+import { AUDIO_ANCHOR } from "@/lib/anchors";
 
 export default function LeadMagnet() {
   return (
-    <Section id="audio" className="bg-background">
+    <Section id={AUDIO_ANCHOR} className="bg-background">
       <Container width="narrow">
         <FadeIn>
           <Eyebrow label="Kostenloses Audio" />

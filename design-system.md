@@ -46,11 +46,12 @@ Regeln:
 - Disziplin als Gegengewicht: weil Cormorant kontrastreich ist, bleiben Layout,
   Farbe und Bewegung umso ruhiger.
 
-Type-Skala. Display, Section und Emphasis sind über `Heading.tsx` (Props `variant="display"|"section"|"emphasis"`) verdrahtet und damit verbindlich; H1/Body/Small/Eyebrow bleiben vorerst dokumentierte Richtwerte ohne Komponenten-Anbindung.
+Type-Skala. Display, Display-sub, Section und Emphasis sind über `Heading.tsx` (Props `variant="display"|"display-sub"|"section"|"emphasis"`) verdrahtet und damit verbindlich; H1/Body/Small/Eyebrow bleiben vorerst dokumentierte Richtwerte ohne Komponenten-Anbindung.
 
 | Rolle | Größe | Font | Gewicht | Line-height | Status |
 |-------|-------|------|---------|-------------|--------|
 | Display (Hero), `variant="display"` | `text-display` 3rem mobil · `md:text-display-md` 3.75rem · `lg:text-display-lg` 4.5rem (Breakpoint-Stufen, kein `clamp()`) | Cormorant | 500 | `leading-display` 1.1 | verdrahtet |
+| Display-sub (Hero), `variant="display-sub"` | `text-display` 3rem mobil · `md:text-display-md` 3.75rem (dieselben Tokens wie `display`, aber ohne `lg`-Stufe) | Cormorant | 500 | `leading-display` 1.1 | verdrahtet |
 | Section-Headline (H2), `variant="section"` | `text-h2` 1.875rem mobil · `md:text-h2-md` 2.25rem | Cormorant | 500 | `leading-h2` 1.15 | verdrahtet |
 | Emphasis-Headline (H2), `variant="emphasis"` | Mobil identisch mit `section` (`text-h2` 1.875rem) · ab `md:text-h2-emphasis-md` 3rem (48px) | Cormorant | 500 | `leading-h2` 1.15 | verdrahtet |
 | H1 (Richtwert, noch nicht verwendet) | `clamp(2rem, 3.5vw, 2.75rem)` | Cormorant | 500 | 1.15 | Richtwert |
@@ -60,7 +61,7 @@ Type-Skala. Display, Section und Emphasis sind über `Heading.tsx` (Props `varia
 
 Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signature-Detail), Tracking über `tracking-eyebrow` (`--tracking-eyebrow: 0.15em`), verdrahtet in `Eyebrow.tsx`.
 
-Hinweis: Die Breakpoint-Stufen bei Display, Section und Emphasis bilden die historisch gewachsene Tailwind-Kette (`text-5xl/6xl/7xl` bzw. `text-3xl/4xl` bzw. `text-3xl/5xl`) 1:1 ab, statt sie durch eine kontinuierliche `clamp()`-Kurve zu ersetzen, damit sich beim Verdrahten keine Pixelgröße ändert. `emphasis` ist die Variante für einzelne Sektionen mit bewusst stärkerer Betonung (bisher Cause.tsx' größere H2, jetzt auf die Skala verdrahtet statt als Ausnahme geführt).
+Hinweis: Die Breakpoint-Stufen bei Display, Section und Emphasis bilden die historisch gewachsene Tailwind-Kette (`text-5xl/6xl/7xl` bzw. `text-3xl/4xl` bzw. `text-3xl/5xl`) 1:1 ab, statt sie durch eine kontinuierliche `clamp()`-Kurve zu ersetzen, damit sich beim Verdrahten keine Pixelgröße ändert. `emphasis` ist die Variante für einzelne Sektionen mit bewusst stärkerer Betonung (bisher Cause.tsx' größere H2, jetzt auf die Skala verdrahtet statt als Ausnahme geführt). `display-sub` ist die Variante für Service-Hero-H1, die (anders als Homepage-Hero) nicht bis `lg` auf 72px weiterwächst (bisher BreathworkHero.tsx' und coaching/page.tsx' identisches, handgesetztes `text-5xl md:text-6xl`, beide Werte deckungsgleich, deshalb eine gemeinsame Variante statt zweier Ausnahmen).
 
 ---
 
