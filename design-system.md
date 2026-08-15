@@ -46,18 +46,20 @@ Regeln:
 - Disziplin als Gegengewicht: weil Cormorant kontrastreich ist, bleiben Layout,
   Farbe und Bewegung umso ruhiger.
 
-Type-Skala (Richtwerte, `clamp()` für responsive Größen):
+Type-Skala. Display und Section sind über `Heading.tsx` (Props `variant="display"|"section"`) verdrahtet und damit verbindlich; H1/Body/Small/Eyebrow bleiben vorerst dokumentierte Richtwerte ohne Komponenten-Anbindung.
 
-| Rolle | Größe | Font | Gewicht | Line-height |
-|-------|-------|------|---------|-------------|
-| Display (Hero) | `clamp(2.5rem, 5vw, 4rem)` | Cormorant | 400 bis 500 | 1.1 |
-| H1 / Section | `clamp(2rem, 3.5vw, 2.75rem)` | Cormorant | 500 | 1.15 |
-| H2 | `1.5rem` | Cormorant | 500 (600 falls Striche zu dünn wirken) | 1.25 |
-| Body | `1.125rem` (18px) | Hanken Grotesk | 400 | 1.6 |
-| Small | `0.9375rem` | Hanken Grotesk | 400 | 1.55 |
-| Eyebrow | `0.625rem` (10px), uppercase, `letter-spacing: 0.14em` | Hanken Grotesk | 500 | 1.4 |
+| Rolle | Größe | Font | Gewicht | Line-height | Status |
+|-------|-------|------|---------|-------------|--------|
+| Display (Hero), `variant="display"` | `text-display` 3rem mobil · `md:text-display-md` 3.75rem · `lg:text-display-lg` 4.5rem (Breakpoint-Stufen, kein `clamp()`) | Cormorant | 500 | `leading-display` 1.1 | verdrahtet |
+| Section-Headline (H2), `variant="section"` | `text-h2` 1.875rem mobil · `md:text-h2-md` 2.25rem | Cormorant | 500 | `leading-h2` 1.15 | verdrahtet |
+| H1 (Richtwert, noch nicht verwendet) | `clamp(2rem, 3.5vw, 2.75rem)` | Cormorant | 500 | 1.15 | Richtwert |
+| Body | `1.125rem` (18px) | Hanken Grotesk | 400 | 1.6 | Richtwert |
+| Small | `0.9375rem` | Hanken Grotesk | 400 | 1.55 | Richtwert |
+| Eyebrow-Label | `text-sm` (14px, nicht der Token `--text-eyebrow`) | Hanken Grotesk | 500 | 1.4 | Größe Richtwert, Tracking verdrahtet |
 
-Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signature-Detail).
+Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signature-Detail), Tracking über `tracking-eyebrow` (`--tracking-eyebrow: 0.15em`), verdrahtet in `Eyebrow.tsx`.
+
+Hinweis: Die Breakpoint-Stufen bei Display und Section bilden die historisch gewachsene Tailwind-Kette (`text-5xl/6xl/7xl` bzw. `text-3xl/4xl`) 1:1 ab, statt sie durch eine kontinuierliche `clamp()`-Kurve zu ersetzen, damit sich beim Verdrahten keine Pixelgröße ändert. Einzelne Sektionen mit historisch abweichender Größe (z. B. Cause.tsx' größere H2) bleiben bewusst außerhalb dieser Skala, siehe CLAUDE.md, Abschnitt „Architektur-Konventionen".
 
 ---
 
@@ -66,10 +68,20 @@ Eyebrows tragen einen dünnen `--color-umber`-Strich davor oder darunter (Signat
 Basiseinheit 4px. Skala: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128 · 160`.
 
 - **Großzügige, gleichmäßige vertikale Rhythmik** ist das Markenzeichen: die Seite „atmet".
-- Sektions-Innenabstand (vertikal): Desktop `96 bis 160px`, Mobil `64 bis 96px`.
-- Content-Container: max. `~1140px`. Textspalten max. `~68ch` für ruhigen Lesefluss.
+- Sektions-Innenabstand (vertikal), verbindlich über `Section.tsx` (Prop `size`), drei Stufen:
+  | Stufe | Mobil | Ab `md` | Wann |
+  |-------|-------|---------|------|
+  | `compact` | 40px (`py-10`) | 48px (`py-12`) | dichte, kampagnenartige Nebensektionen |
+  | `default` | 64px (`py-16`) | 96px (`py-24`) | Standard, die meisten Sektionen |
+  | `spacious` | 96px (`py-24`) | 160px (`py-40`) | wenige, bewusst große Momente |
+- Content-Container über `Container.tsx` (Prop `width`), verbindlich:
+  | Wert | Breite | Token |
+  |------|--------|-------|
+  | `default` | 1140px | `--container-content` |
+  | `narrow` | 768px (`max-w-3xl`) | eingebauter Tailwind-Wert |
+  | `prose` | 68ch | `--container-measure` |
 - Radius: `rounded-sm` (4px) für Inputs, `rounded-md` (8px) für Karten und Buttons.
-- Hairlines: 1px in `--color-hairline` (muted bei ~30% Deckkraft).
+- Hairlines: 1px in `--color-hairline` (muted bei ~30% Deckkraft), verbindlich über `Card.tsx` (Kartenrand) statt `border-primary/N`.
 
 ---
 
@@ -109,5 +121,15 @@ Charakter sichtbar wird, sonst Stille.
 - Schriften über `next/font/google` (Cormorant + Hanken Grotesk) laden, als
   `--font-serif-src` und `--font-sans-src` mappen, in `@theme` zu `--font-serif`
   und `--font-sans` komponieren. Die Komponenten nutzen `font-serif` (Display) und
-  `font-sans` (Body), diese Namen nicht ändern.
+  `font-sans` (Body), diese Namen nicht ändern. Kein `font-display`-Alias mehr
+  (ungenutzt, aus `globals.css` entfernt).
 - In `next/font/google` heißt die Familie `Cormorant`, nicht `Cormorant_Garamond`.
+- Type-Scale lebt in `globals.css` (`--text-display`/`-display-md`/`-display-lg`,
+  `--text-h2`/`-h2-md`, `--leading-display`/`-h2`) plus `Heading.tsx`, das die
+  Breakpoint-Klassen daraus zusammensetzt. Container über `--container-content`
+  (1140px, `width="default"`) und `--container-measure` (68ch, `width="prose"`)
+  plus `Container.tsx`. Beide Layout-Tokens bewusst nicht `--container-max` bzw.
+  `--container-prose` genannt: diese Schlüssel kollidieren mit Tailwinds eigenen
+  statischen `max-w-max`- (`max-content`) und `max-w-prose`-Utilities (fest 65ch)
+  und würden den Token-Wert nur zufällig per Cascade-Reihenfolge durchsetzen,
+  statt eine eindeutige, alleinstehende Utility-Regel zu erzeugen.

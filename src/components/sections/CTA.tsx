@@ -1,31 +1,33 @@
-import Link from "next/link";
-import FadeIn from "../ui/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
+import Button from "@/components/ui/Button";
 
 export default function CTA() {
   return (
-    <section className="bg-background px-6 py-16 md:py-24">
+    <Section className="bg-background">
+      {/*
+        Bewusst kein Container-Primitive: diese Textspalte ist max-w-2xl
+        (672px), keine der drei Container-Breiten (prose/narrow/default)
+        trifft diesen Wert.
+      */}
       <div className="mx-auto max-w-2xl text-center">
 
         <FadeIn>
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="h-px w-6 bg-umber" aria-hidden="true" />
-            <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-              Der nächste Schritt
-            </span>
-            <span className="h-px w-6 bg-umber" aria-hidden="true" />
-          </div>
+          <Eyebrow label="Der nächste Schritt" align="center" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
+          <Heading variant="section" className="mb-6">
             Bist du bereit für echte innere Arbeit?
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           <p className="text-primary/80 text-lg leading-relaxed mb-10">
             Diese Begleitung ist kein Quick-Fix. Sie erfordert Mut, Zeit und
-            die Bereitschaft, sich den eigenen Emotionen zuzuwenden. 
+            die Bereitschaft, sich den eigenen Emotionen zuzuwenden.
             Im kostenfreien Erstgespräch klären wir unverbindlich, wo du gerade stehst
             und ob wir ein gutes Match für deinen Weg sind.
           </p>
@@ -33,18 +35,12 @@ export default function CTA() {
 
         <FadeIn delay={0.3}>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/termin"
-              className="w-full sm:w-auto bg-accent text-background hover:opacity-90 rounded-md px-8 py-4 font-medium transition-opacity"
-            >
+            <Button href="/termin" className="w-full sm:w-auto">
               Erstgespräch vereinbaren
-            </Link>
-            <Link
-              href="/assessment"
-              className="w-full sm:w-auto border border-accent/25 text-accent hover:border-accent/50 rounded-md px-8 py-4 font-medium transition-colors"
-            >
+            </Button>
+            <Button href="/assessment" variant="secondary" className="w-full sm:w-auto">
               Zum Kurz-Assessment
-            </Link>
+            </Button>
           </div>
           <p className="text-muted mt-5 text-sm">
             Das Assessment dauert nur ca. 3 Minuten.
@@ -52,6 +48,6 @@ export default function CTA() {
         </FadeIn>
 
       </div>
-    </section>
+    </Section>
   );
 }

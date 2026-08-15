@@ -1,25 +1,24 @@
 import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 import LeadMagnetCTA from "@/components/sections/LeadMagnetCTA";
 
 export default function LeadMagnet() {
   return (
-    <section id="audio" className="bg-background py-16 md:py-24">
-      <div className="mx-auto max-w-3xl px-6">
+    <Section id="audio" className="bg-background">
+      <Container width="narrow">
         <FadeIn>
-          <div className="mb-4 flex items-center gap-3">
-            <span className="h-px w-8 bg-umber" />
-            <span className="text-sm uppercase tracking-widest text-umber">
-              Kostenloses Audio
-            </span>
-          </div>
+          <Eyebrow label="Kostenloses Audio" />
 
-          <h2 className="font-display text-3xl leading-tight text-primary md:text-4xl">
+          <Heading variant="section">
             Ein erster Schritt zurück zur Ruhe
-          </h2>
+          </Heading>
 
           <LeadMagnetCTA />
         </FadeIn>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

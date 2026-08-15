@@ -4,6 +4,22 @@ Stand: 15.08.2026. Reines Lese-Audit, keine Code-Änderungen. Geprüft: gesamtes
 
 ---
 
+## Status: Umsetzung
+
+**Auftrag 1 von 5 (Branch `refactor/primitives`, noch nicht auf main gemergt):** UI-Primitives Section, Container, Heading, Button, Card in `src/components/ui/` gebaut, Eyebrow um `className`- und Tracking-Token-Unterstützung erweitert, Startseite (alle 8 Sections) darauf migriert. Damit behoben bzw. adressiert:
+- **Befund A1** (2.1, Doppel-FadeIn): äußere `FadeIn`-Wrapper aus `page.tsx` entfernt, Sections bringen ihre FadeIns jetzt ausschließlich selbst mit.
+- **Eyebrow-Wildwuchs** (2.2): alle 6 handgerollten Eyebrow-Nachbauten in den Home-Sections sowie die dritte, abweichende Variante in `LeadMagnet.tsx` und `LeadMagnetForm.tsx` (Erfolgszustand) durch `Eyebrow.tsx` ersetzt.
+- **H2-Kette** (2.2): die Standard-H2-Kette in Transformation, Method, About, CTA, LeadMagnet durch `Heading.tsx` (`variant="section"`) ersetzt; `font-display`/`leading-tight`-Abweichung in LeadMagnet behoben. `font-display`-Alias war danach repo-weit ungenutzt und wurde aus `globals.css` entfernt. Cause.tsx' abweichend große H2 (text-4xl/5xl statt text-3xl/4xl) bewusst **nicht** vereinheitlicht, siehe CLAUDE.md „Architektur-Konventionen".
+- **Buttons** (2.2): Hero- und CTA-Buttons durch `Button.tsx` ersetzt (Header-Variante `size="small"` existiert, Header selbst folgt erst in Auftrag 5).
+- **Section-Wrapper / Container-Breiten** (2.2): Home-Sections auf `Section`/`Container` umgestellt; `max-w-6xl` in Cause/Method/About ersetzt durch `Container width="default"` auf Basis von `--container-content` (1140px, exakter als die bisherigen 1152px). CTA.tsx' `max-w-2xl` bewusst als Ausnahme belassen (keine der drei Container-Breiten trifft 672px).
+- **Karten-Ränder** (2.2/2.3 Befund B): Method.tsx' Testimonial-Karte auf `Card.tsx` mit `border-hairline` statt `border-primary/8` umgestellt.
+- **Befund C** (2.3, `text-[--color-navy]`): in Method.tsx auf `text-accent` korrigiert.
+- **Ungenutzte Type-Scale-Tokens** (2.3 Befund A, Refactoring-Kandidat 6): `--text-display`, `--text-h2` und die zugehörigen Leading-Tokens jetzt über `Heading.tsx` verdrahtet (Werte an die de-facto-Größen angepasst); `--container-max`/`--measure` umbenannt in `--container-content`/`--container-measure` und über `Container.tsx` verdrahtet. `--text-h1`, `--text-body`, `--text-small`, `--text-eyebrow` bleiben unverdrahtete Richtwerte (offene Frage 6 weiterhin offen).
+
+**Noch offen (Aufträge 2 bis 5, siehe Abschnitt 3):** `/coaching`-Extraktion und `BreathworkAbout.tsx`-Entscheidung (Kandidat 3), `/breathwork`-Migration auf dieselben Primitives, Metadata/JSON-LD-Vereinheitlichung (Kandidat 4), Header/Footer-Client-Grenze (Kandidat 7), restliche `border-primary/N`-Fundstellen (Kandidat 5), Typisierungs- und lib-Befunde (Abschnitt 2.7).
+
+---
+
 ## 1. Ist-Stand
 
 ### Seiten (App Router, `src/app/(public)/`)

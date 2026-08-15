@@ -20,7 +20,6 @@
   /* Familien aus next/font (layout.tsx) als *-src-Variablen, hier komponiert */
   --font-serif: var(--font-serif-src), Georgia, "Times New Roman", serif;            /* Display: Cormorant */
   --font-sans: var(--font-sans-src), system-ui, -apple-system, "Segoe UI", sans-serif; /* Body/UI: Hanken Grotesk */
-  --font-display: var(--font-serif-src), Georgia, "Times New Roman", serif;          /* Alias für Komponenten die font-display nutzen */
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -29,20 +28,26 @@
   --font-weight-hero: 400;       /* sehr großes Hero-Display */
 
   /* ── Type Scale ───────────────────────────── */
-  --text-display: clamp(2.5rem, 5vw, 4rem);
-  --text-h1: clamp(2rem, 3.5vw, 2.75rem);
-  --text-h2: 1.5rem;
+  /* --text-display/-h2 sind auf die de-facto-Größen aus Heading.tsx verdrahtet
+     (Breakpoint-Stufen statt clamp(), damit die gerenderte Größe exakt der
+     bisherigen text-5xl/6xl/7xl- bzw. text-3xl/4xl-Kette entspricht). */
+  --text-display: 3rem;          /* 48px, mobil (bisher text-5xl) */
+  --text-display-md: 3.75rem;    /* 60px, ab md (bisher md:text-6xl) */
+  --text-display-lg: 4.5rem;     /* 72px, ab lg (bisher lg:text-7xl) */
+  --text-h1: clamp(2rem, 3.5vw, 2.75rem);   /* Richtwert, noch nicht verdrahtet */
+  --text-h2: 1.875rem;           /* 30px, mobil (bisher text-3xl) */
+  --text-h2-md: 2.25rem;         /* 36px, ab md (bisher md:text-4xl) */
   --text-body: 1.125rem;         /* 18px */
   --text-small: 0.9375rem;       /* 15px */
-  --text-eyebrow: 0.625rem;      /* 10px */
+  --text-eyebrow: 0.625rem;      /* 10px, Richtwert, noch nicht verdrahtet */
 
   --leading-display: 1.1;
   --leading-h1: 1.15;
-  --leading-h2: 1.25;
+  --leading-h2: 1.15;
   --leading-body: 1.6;
   --leading-small: 1.55;
 
-  --tracking-eyebrow: 0.14em;
+  --tracking-eyebrow: 0.15em;    /* verdrahtet in Eyebrow.tsx, entspricht bisherigem tracking-[0.15em] */
 
   /* ── Spacing (Basis 4px) ──────────────────── */
   --spacing-1: 4px;
@@ -64,8 +69,13 @@
   --radius-md: 8px;              /* Karten / Buttons */
 
   /* ── Layout ───────────────────────────────── */
-  --container-max: 1140px;
-  --measure: 68ch;
+  /* Beide unter --container-* namespaced, damit Tailwind v4 daraus echte
+     max-w-*-Utilities erzeugt. Schlüssel bewusst nicht "max" oder "prose"
+     genannt: beide kollidieren mit Tailwinds eigenen statischen Keywords
+     (max-w-max = max-content, max-w-prose = fest 65ch) und würden die
+     Token-Werte sonst nur zufällig per Cascade-Reihenfolge überschreiben. */
+  --container-content: 1140px;   /* Container width="default", ersetzt max-w-6xl */
+  --container-measure: 68ch;     /* Container width="prose", ersetzt max-w-[68ch] */
 
   /* ── Motion ───────────────────────────────── */
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);

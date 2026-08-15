@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Eyebrow from "@/components/ui/Eyebrow";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -89,19 +90,14 @@ export default function LeadMagnetForm({
     <div ref={rootRef}>
       {status === "success" ? (
         <div className="rounded-md border border-umber/30 bg-surface p-8 text-center">
-          <p className="font-display text-2xl text-accent">Schau in dein Postfach</p>
+          <p className="font-serif text-2xl text-accent">Schau in dein Postfach</p>
           <p className="mt-3 text-muted">
             Dein Audio ist unterwegs zu dir. Falls es nicht gleich da ist, wirf
             auch einen Blick in den Spam-Ordner.
           </p>
 
           <div className="mt-8 border-t border-umber/20 pt-8 text-left">
-            <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-6 bg-umber" aria-hidden="true" />
-              <span className="text-sm uppercase tracking-widest text-umber">
-                Wie es für dich weitergehen kann
-              </span>
-            </div>
+            <Eyebrow label="Wie es für dich weitergehen kann" />
 
             <ul className="space-y-4">
               <li>

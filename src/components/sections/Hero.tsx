@@ -1,53 +1,51 @@
-import Link from "next/link";
+import Container from "@/components/ui/Container";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
+import Button from "@/components/ui/Button";
 
+// Hero bleibt bewusst außerhalb des Section-Primitives: min-h-[80vh],
+// asymmetrisches pt/pb und die Flex-Zentrierung passen zu keiner der drei
+// Section-size-Stufen und würden bei Erzwingen sichtbar vom Ist-Zustand
+// abweichen. Eyebrow, Heading und Button kommen trotzdem aus den Primitives.
 export default function Hero() {
   return (
     <section className="min-h-[80vh] flex flex-col items-center justify-center bg-background px-6 pt-20 pb-16">
-      <div className="max-w-3xl mx-auto text-center">
+      <Container width="narrow" className="text-center">
 
-        {/* Eyebrow mit Umber-Signature */}
-        <div className="hero-item flex items-center justify-center gap-3 mb-6">
-          <span className="h-px w-6 bg-umber" aria-hidden="true" />
-          <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-            Somatic Breathwork &amp; Integration
-          </span>
-          <span className="h-px w-6 bg-umber" aria-hidden="true" />
-        </div>
+        <Eyebrow
+          label="Somatic Breathwork & Integration"
+          align="center"
+          className="hero-item"
+        />
 
-        {/* Hauptaussage in Cormorant */}
-        <h1 className="hero-item hero-d1 font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary leading-[1.1] mb-8">
+        <Heading
+          variant="display"
+          className="hero-item hero-d1 mb-8"
+        >
           Wenn dauerhafte Anspannung deinen Alltag bestimmt.
-        </h1>
+        </Heading>
 
-        {/* Subline */}
         <p className="hero-item hero-d2 text-xl md:text-2xl text-primary/70 font-light leading-relaxed mb-12 max-w-2xl mx-auto">
           Ich zeige dir einen Weg, auf dem du zur Ruhe kommst.
           <br />
           Finde aus dem Gedankenkarussell zurück in eine spürbare körperliche und emotionale Erholung.
         </p>
 
-        {/* CTAs */}
         <div className="hero-item hero-d3">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/termin"
-              className="w-full sm:w-auto bg-accent text-background px-8 py-4 rounded-md text-lg font-medium hover:opacity-90 transition-opacity"
-            >
+            <Button href="/termin" className="w-full sm:w-auto text-lg">
               Erstgespräch vereinbaren
-            </Link>
-            <Link
-              href="/assessment"
-              className="w-full sm:w-auto border border-accent/25 text-accent px-8 py-4 rounded-md text-lg font-medium hover:border-accent/50 transition-colors"
-            >
+            </Button>
+            <Button href="/assessment" variant="secondary" className="w-full sm:w-auto text-lg">
               Zum Kurz-Assessment
-            </Link>
+            </Button>
           </div>
           <p className="mt-5 text-sm text-muted">
             Das Assessment dauert nur ca. 3 Minuten.
           </p>
         </div>
 
-      </div>
+      </Container>
     </section>
   );
 }

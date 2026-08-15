@@ -1,4 +1,8 @@
-import FadeIn from "../ui/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 
 const benefits = [
   "Wieder tief schlafen und morgens erholt aufwachen.",
@@ -8,23 +12,17 @@ const benefits = [
 
 export default function Transformation() {
   return (
-    <section className="bg-background px-6 py-16 md:py-24">
-      <div className="mx-auto max-w-3xl">
+    <Section className="bg-background">
+      <Container width="narrow">
 
-        {/* Eyebrow mit Umber-Signature */}
         <FadeIn>
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-6 bg-umber" aria-hidden="true" />
-            <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-              Das Ziel
-            </span>
-          </div>
+          <Eyebrow label="Das Ziel" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary mb-6 leading-[1.15]">
+          <Heading variant="section" className="mb-6">
             Zurück in ein Leben, das von Klarheit statt von dauerhaftem Alarmzustand geführt wird.
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
@@ -54,7 +52,7 @@ export default function Transformation() {
           </ul>
         </FadeIn>
 
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }
