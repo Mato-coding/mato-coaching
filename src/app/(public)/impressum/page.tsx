@@ -23,7 +23,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-medium text-primary mb-2">Kontakt</h2>
             <p>
               Telefon: +49 179 237 88 95<br />
-              E-Mail: lassekluever@gmail.com
+              E-Mail: hello@lassekluever.de
             </p>
           </section>
           <section>

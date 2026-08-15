@@ -1,5 +1,8 @@
 import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 
 const faqs = [
   {
@@ -36,20 +39,25 @@ const faqs = [
 
 export default function BreathworkFAQ() {
   return (
-    <section className="bg-background px-6 py-16 md:py-24">
-      <div className="mx-auto max-w-3xl">
+    <Section className="bg-background">
+      <Container width="narrow">
         <FadeIn>
           <Eyebrow label="Fragen" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-10">
+          <Heading variant="section" className="mb-10">
             Häufige Fragen
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <dl className="space-y-8 max-w-[68ch]">
+          {/*
+            Bewusst kein Container-Primitive für diese Textspalte, siehe
+            BreathworkResonance.tsx. max-w-measure = --container-measure
+            (width="prose"), kein Arbitrary-Value.
+          */}
+          <dl className="space-y-8 max-w-measure">
             {faqs.map((faq, i) => (
               <div key={i} className="border-t border-hairline pt-6">
                 <dt className="font-medium text-primary text-lg mb-2">
@@ -62,7 +70,7 @@ export default function BreathworkFAQ() {
             ))}
           </dl>
         </FadeIn>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

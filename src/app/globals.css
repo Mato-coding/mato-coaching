@@ -37,6 +37,7 @@
   --text-h1: clamp(2rem, 3.5vw, 2.75rem);   /* Richtwert, noch nicht verdrahtet */
   --text-h2: 1.875rem;           /* 30px, mobil (bisher text-3xl) */
   --text-h2-md: 2.25rem;         /* 36px, ab md (bisher md:text-4xl) */
+  --text-h2-emphasis-md: 3rem;   /* 48px, ab md (bisher Cause.tsx' md:text-5xl) */
   --text-body: 1.125rem;         /* 18px */
   --text-small: 0.9375rem;       /* 15px */
   --text-eyebrow: 0.625rem;      /* 10px, Richtwert, noch nicht verdrahtet */

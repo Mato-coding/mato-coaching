@@ -1,5 +1,8 @@
 import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 
 const steps = [
   {
@@ -18,20 +21,25 @@ const steps = [
 
 export default function BreathworkProcess() {
   return (
-    <section className="bg-surface px-6 py-16 md:py-24">
-      <div className="mx-auto max-w-3xl">
+    <Section className="bg-surface">
+      <Container width="narrow">
         <FadeIn>
           <Eyebrow label="Ablauf" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-10">
+          <Heading variant="section" className="mb-10">
             Wie eine Sitzung abläuft
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <ol className="space-y-8 max-w-[68ch]">
+          {/*
+            Bewusst kein Container-Primitive für diese Textspalte, siehe
+            BreathworkResonance.tsx. max-w-measure = --container-measure
+            (width="prose"), kein Arbitrary-Value.
+          */}
+          <ol className="space-y-8 max-w-measure">
             {steps.map((step, i) => (
               <li key={i} className="flex gap-6">
                 <span
@@ -48,12 +56,12 @@ export default function BreathworkProcess() {
         </FadeIn>
 
         <FadeIn delay={0.3}>
-          <p className="mt-10 text-primary/60 text-base leading-relaxed max-w-[68ch]">
+          <p className="mt-10 text-primary/60 text-base leading-relaxed max-w-measure">
             In Einzelsessions arbeiten wir ganz in deinem Tempo und so, wie es für dich individuell am besten ist. In der Gruppe trägt
             zusätzlich die gemeinsame Erfahrung.
           </p>
         </FadeIn>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

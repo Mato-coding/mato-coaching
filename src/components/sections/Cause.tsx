@@ -2,6 +2,7 @@ import FadeIn from "@/components/ui/FadeIn";
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 
 export default function Cause() {
   return (
@@ -17,15 +18,9 @@ export default function Cause() {
             <Eyebrow label="Der Grund" />
           </FadeIn>
           <FadeIn delay={0.1}>
-            {/*
-              Bewusst kein Heading-Primitive: diese Headline ist größer
-              (text-4xl md:text-5xl leading-[1.1]) als die Standard-H2-Kette,
-              die die "section"-Variante abbildet. Eigenständige Größe erhalten,
-              statt sie unbeabsichtigt zu verkleinern.
-            */}
-            <h2 className="font-serif text-4xl md:text-5xl font-medium text-primary leading-display">
+            <Heading variant="emphasis">
               Dein System macht keinen Fehler. Es schützt dich.
-            </h2>
+            </Heading>
           </FadeIn>
         </div>
 

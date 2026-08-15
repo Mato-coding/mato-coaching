@@ -1,23 +1,31 @@
 import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 
 export default function BreathworkMethod() {
   return (
-    <section className="bg-background px-6 py-16 md:py-24">
-      <div className="mx-auto max-w-3xl">
+    <Section className="bg-background">
+      <Container width="narrow">
         <FadeIn>
           <Eyebrow label="Die Methode" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-8">
+          <Heading variant="section" className="mb-8">
             Was Somatic Breathwork ist
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <div className="space-y-5 max-w-[68ch]">
+          {/*
+            Bewusst kein Container-Primitive für diese Textspalte, siehe
+            BreathworkResonance.tsx. max-w-measure = --container-measure
+            (width="prose"), kein Arbitrary-Value.
+          */}
+          <div className="space-y-5 max-w-measure">
             <p className="text-primary/80 text-lg leading-relaxed">
               Somatic Breathwork nutzt eine bewusst geführte Atmung, um den
               Körper auf einer tiefen, ursprünglichen Ebene wahrzunehmen und gezielt zu steuern.
@@ -34,7 +42,7 @@ export default function BreathworkMethod() {
               Mit meiner Methode lernst du, wieder die leisen, sanften Signale zu hören, bevor sie laut und unangenehm werden.
             </p>
             <p className="text-primary/80 text-lg leading-relaxed">
-              Ich nutze in meiner Arbeit die wirkungsvollsten Techniken aus Breathe to Heal von Max Strom, Buteyko, Yoga, Chi-Gong und Tai Chi. 
+              Ich nutze in meiner Arbeit die wirkungsvollsten Techniken aus Breathe to Heal von Max Strom, Buteyko, Yoga, Chi-Gong und Tai Chi.
               Durch die Somatische Atemarbeit führe ich dich in einen Zustand, in dem körperlich Festgehaltenes spürbar und veränderbar wird. Viele Menschen
               beschreiben danach eine Klarheit und Weite, die sie aus dem Alltag nicht kennen. Und vor allem eine tiefe Ruhe, in der sie wirklich erholen und Kraft tanken können.
             </p>
@@ -51,7 +59,7 @@ export default function BreathworkMethod() {
             </Link>
           </div>
         </FadeIn>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

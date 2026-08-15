@@ -1,19 +1,23 @@
-import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
+import Section from "@/components/ui/Section";
 import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
+import Button from "@/components/ui/Button";
 
 export default function BreathworkClosingCTA() {
   return (
-    <section className="bg-surface px-6 py-16 md:py-24">
+    <Section className="bg-surface">
+      {/* Bewusst kein Container-Primitive: max-w-2xl (672px) trifft keine der
+          drei Container-Breiten, siehe CTA.tsx */}
       <div className="mx-auto max-w-2xl text-center">
         <FadeIn>
           <Eyebrow label="Nächster Schritt" align="center" />
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15] mb-6">
+          <Heading variant="section" className="mb-6">
             Ein ruhiges Gespräch zum gemeinsamen Kennenlernen
-          </h2>
+          </Heading>
         </FadeIn>
 
         <FadeIn delay={0.2}>
@@ -24,14 +28,11 @@ export default function BreathworkClosingCTA() {
         </FadeIn>
 
         <FadeIn delay={0.3}>
-          <Link
-            href="/termin"
-            className="inline-block bg-accent text-background px-8 py-4 rounded-md font-medium hover:opacity-90 transition-opacity"
-          >
+          <Button href="/termin" className="inline-block">
             Erstgespräch vereinbaren
-          </Link>
+          </Button>
         </FadeIn>
       </div>
-    </section>
+    </Section>
   );
 }

@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { absoluteUrl, SITE_URL } from "@/lib/site";
-import FadeIn from "@/components/ui/FadeIn";
-import Eyebrow from "@/components/ui/Eyebrow";
-import LeadMagnetCTA from "@/components/sections/LeadMagnetCTA";
 
 import BreathworkHero from "@/components/sections/breathwork/BreathworkHero";
 import BreathworkResonance from "@/components/sections/breathwork/BreathworkResonance";
@@ -11,6 +8,7 @@ import BreathworkProcess from "@/components/sections/breathwork/BreathworkProces
 import BreathworkFitFor from "@/components/sections/breathwork/BreathworkFitFor";
 import BreathworkAbout from "@/components/sections/About";
 import BreathworkFAQ from "@/components/sections/breathwork/BreathworkFAQ";
+import BreathworkAudio from "@/components/sections/breathwork/BreathworkAudio";
 import BreathworkClosingCTA from "@/components/sections/breathwork/BreathworkClosingCTA";
 
 export const metadata: Metadata = {
@@ -75,20 +73,7 @@ export default function BreathworkPage() {
       <BreathworkFitFor />
       <BreathworkAbout />
       <BreathworkFAQ />
-
-      {/* Sektion 8: Audio-Lead-Magnet */}
-      <section id="audio-reset" className="bg-background px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-3xl">
-          <FadeIn>
-            <Eyebrow label="Kostenloses Audio" />
-            <h2 className="font-serif text-3xl md:text-4xl font-medium text-primary leading-[1.15]">
-              Ein erster Schritt zurück zur Ruhe
-            </h2>
-            <LeadMagnetCTA source="breathwork" />
-          </FadeIn>
-        </div>
-      </section>
-
+      <BreathworkAudio />
       <BreathworkClosingCTA />
     </>
   );
