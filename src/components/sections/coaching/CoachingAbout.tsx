@@ -1,7 +1,6 @@
 import Image from "next/image";
 import FadeIn from "@/components/ui/FadeIn";
 import Section from "@/components/ui/Section";
-import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
 
@@ -11,10 +10,17 @@ import Heading from "@/components/ui/Heading";
 export default function CoachingAbout() {
   return (
     <Section className="bg-background">
-      <Container
-        width="default"
-        className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-0"
-      >
+      {/*
+        Bewusst kein Container-Primitive: die ursprüngliche Breite dieser
+        Sektion war max-w-6xl (1152px), keine der drei Container-Breiten
+        (prose/narrow/default = 1140px) trifft diesen Wert exakt. Anders als
+        bei About.tsx auf der Startseite (dort war die Angleichung auf
+        Container width="default" in Auftrag 1 eine bewusste, dokumentierte
+        Entscheidung) bleibt diese Coaching-eigene Sektion beim historischen
+        Wert, um die Leitplanke "visuelle Identität" dieses Auftrags nicht zu
+        verletzen.
+      */}
+      <div className="mx-auto max-w-6xl grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-0">
 
         {/* Header: mobil zuoberst, auf Desktop oben in der Textspalte */}
         <div className="lg:col-start-2 lg:row-start-1 lg:self-end">
@@ -75,7 +81,7 @@ export default function CoachingAbout() {
           </FadeIn>
         </div>
 
-      </Container>
+      </div>
     </Section>
   );
 }
