@@ -3,6 +3,7 @@ import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
+import ListMark from "@/components/ui/ListMark";
 
 const steps = [
   {
@@ -41,14 +42,8 @@ export default function BreathworkProcess() {
           */}
           <ol className="space-y-8 max-w-measure">
             {steps.map((step, i) => (
-              <li key={i} className="flex gap-6">
-                {/* mt in em relativ zur (ambienten) Schriftgröße, damit der
-                    Strich unabhängig von Breakpoint auf halber Versalhöhe
-                    des fetten Titelworts sitzt, nicht am oberen Zeilenrand. */}
-                <span
-                  className="mt-[0.75em] h-px w-6 shrink-0 bg-umber"
-                  aria-hidden="true"
-                />
+              <li key={i} className="flex items-start gap-6 text-lg leading-relaxed">
+                <ListMark />
                 <p className="text-primary/80 text-lg leading-relaxed">
                   <strong className="font-medium text-primary">{step.title}</strong>{" "}
                   {step.body}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { absoluteUrl, SITE_URL } from "@/lib/site";
 import FadeIn from "@/components/ui/FadeIn";
 import Eyebrow from "@/components/ui/Eyebrow";
+import ListMark from "@/components/ui/ListMark";
 
 export const metadata: Metadata = {
   title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
@@ -182,11 +183,8 @@ export default function CoachingPage() {
           <FadeIn delay={0.3}>
             <ol className="space-y-8 max-w-[68ch]">
               {bausteine.map((baustein, i) => (
-                <li key={i} className="flex gap-6">
-                  <span
-                    className="mt-[0.75em] h-px w-6 shrink-0 bg-umber"
-                    aria-hidden="true"
-                  />
+                <li key={i} className="flex items-start gap-6 text-lg leading-relaxed">
+                  <ListMark />
                   <p className="text-primary/80 text-lg leading-relaxed">
                     <strong className="font-medium text-primary">
                       {baustein.title}

@@ -4,6 +4,7 @@ import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
+import ListMark from "@/components/ui/ListMark";
 
 const credentials = [
   "Zertifizierter Breathwork Instructor & Coach (Somatic Breathwork)",
@@ -79,11 +80,8 @@ export default function About() {
             <div className="border-t border-primary/10 mt-8 pt-8">
               <ul className="space-y-4">
                 {credentials.map((credential, index) => (
-                  <li key={index} className="flex items-start gap-4">
-                    <span
-                      className="mt-[0.6em] h-px w-4 shrink-0 bg-umber"
-                      aria-hidden="true"
-                    />
+                  <li key={index} className="flex items-start gap-4 text-base leading-relaxed">
+                    <ListMark width="w-4" />
                     <span className="text-primary/90 text-base leading-relaxed">
                       {credential}
                     </span>

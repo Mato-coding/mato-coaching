@@ -3,6 +3,7 @@ import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
+import ListMark from "@/components/ui/ListMark";
 
 const benefits = [
   "Wieder tief schlafen und morgens erholt aufwachen.",
@@ -38,12 +39,9 @@ export default function Transformation() {
         <FadeIn delay={0.3}>
           <ul className="space-y-5">
             {benefits.map((benefit, index) => (
-              <li key={index} className="flex items-start gap-4">
+              <li key={index} className="flex items-start gap-4 text-lg leading-relaxed">
                 {/* Umber-Strich statt Check-Icon: ruhiger, weniger generisch */}
-                <span
-                  className="mt-[0.6em] h-px w-4 shrink-0 bg-umber"
-                  aria-hidden="true"
-                />
+                <ListMark width="w-4" />
                 <span className="text-primary/90 text-lg leading-relaxed">
                   {benefit}
                 </span>
