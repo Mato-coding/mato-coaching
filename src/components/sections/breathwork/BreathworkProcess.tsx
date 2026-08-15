@@ -42,8 +42,11 @@ export default function BreathworkProcess() {
           <ol className="space-y-8 max-w-measure">
             {steps.map((step, i) => (
               <li key={i} className="flex gap-6">
+                {/* mt in em relativ zur (ambienten) Schriftgröße, damit der
+                    Strich unabhängig von Breakpoint auf halber Versalhöhe
+                    des fetten Titelworts sitzt, nicht am oberen Zeilenrand. */}
                 <span
-                  className="mt-[0.65em] h-px w-6 shrink-0 bg-umber"
+                  className="mt-[0.75em] h-px w-6 shrink-0 bg-umber"
                   aria-hidden="true"
                 />
                 <p className="text-primary/80 text-lg leading-relaxed">
