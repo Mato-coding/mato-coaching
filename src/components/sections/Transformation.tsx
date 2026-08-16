@@ -29,7 +29,7 @@ export default function Transformation() {
         <FadeIn delay={0.2}>
           <p className="text-primary/80 text-lg leading-relaxed mb-10">
             Symptomlinderung kratzt nur an der Oberfläche. Das Ziel unserer
-            Arbeit ist nicht, dich wieder „funktionstüchtig" für den Stress zu
+            Arbeit ist nicht, dich wieder „funktionstüchtig&quot; für den Stress zu
             machen. Es geht darum, dein Nervensystem nachhaltig zu entlasten —
             damit du aus dem Überlebensmodus herausfindest und wieder wirklich
             präsent sein kannst.

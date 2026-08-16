@@ -77,7 +77,7 @@ export default function About() {
           </FadeIn>
 
           <FadeIn delay={0.4}>
-            <div className="border-t border-primary/10 mt-8 pt-8">
+            <div className="border-t border-hairline mt-8 pt-8">
               <ul className="space-y-4">
                 {credentials.map((credential, index) => (
                   <li key={index} className="flex items-start gap-4 text-base leading-relaxed">

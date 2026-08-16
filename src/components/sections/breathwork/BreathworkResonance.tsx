@@ -35,7 +35,7 @@ export default function BreathworkResonance() {
               aufbaut. Erschöpfung, die dich trotzdem nicht in einen erholsamen Schlaf finden lässt. Immer die Sensoren an. Eine Wachsamkeit, die nie ganz nachlässt.
             </p>
             <p className="text-primary/80 text-lg leading-relaxed">
-              Anxiety macht viele Menschen zu sehr guten "Funktionierern". Aber das kommt nicht aus Überzeugung, aus Leidenschaft und Freude. Es ist ein Nervensystem, das gelernt
+              Anxiety macht viele Menschen zu sehr guten &quot;Funktionierern&quot;. Aber das kommt nicht aus Überzeugung, aus Leidenschaft und Freude. Es ist ein Nervensystem, das gelernt
               hat, dauerhaft in Alarmbereitschaft zu bleiben. Und es laugt dich aus.
               Der Atem ist einer der wenigen direkten Zugänge zu diesem System, bewusst steuerbar und zugleich tief mit dem
               deinem Nervensystem verbunden.

@@ -54,7 +54,7 @@ export default function Method() {
               „Es hat sich angefühlt, als würde eine Käseglocke von mir
               genommen werden und ich konnte die Welt das erste Mal wieder richtig spüren.
               Ich habe eine innere Ruhe und einen tiefen Schlaf
-              gefunden, den ich seit Jahren nicht mehr kannte."
+              gefunden, den ich seit Jahren nicht mehr kannte.&quot;
             </p>
             <div className="flex items-center gap-3">
               <span className="h-px w-4 bg-umber shrink-0" aria-hidden="true" />

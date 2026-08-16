@@ -12,7 +12,7 @@ import CoachingBoundary from "@/components/sections/coaching/CoachingBoundary";
 
 export const metadata = buildMetadata({
   path: "/coaching",
-  title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
+  title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten",
   description:
     "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
 });

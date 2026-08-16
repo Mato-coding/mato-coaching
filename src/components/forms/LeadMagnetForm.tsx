@@ -153,7 +153,7 @@ export default function LeadMagnetForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Vorname (optional)"
-              className="w-full rounded-md border border-primary/15 bg-surface px-4 py-3 text-primary outline-none transition focus:border-accent"
+              className="w-full rounded-md border border-hairline bg-surface px-4 py-3 text-primary outline-none transition focus:border-accent"
             />
           </div>
 
@@ -168,7 +168,7 @@ export default function LeadMagnetForm({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Deine E-Mail-Adresse"
-              className="w-full rounded-md border border-primary/15 bg-surface px-4 py-3 text-primary outline-none transition focus:border-accent"
+              className="w-full rounded-md border border-hairline bg-surface px-4 py-3 text-primary outline-none transition focus:border-accent"
             />
           </div>
 

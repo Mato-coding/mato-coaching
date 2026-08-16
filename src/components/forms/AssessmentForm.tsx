@@ -49,13 +49,21 @@ export default function AssessmentForm() {
   const currentQ = visibleQuestions[step];
   const progress = Math.round((step / totalSteps) * 100);
 
-  // Auswahl der Mehrfachauswahl-Frage zurücksetzen, sobald eine neue Frage angezeigt wird.
-  const shownQuestionIdRef = useRef(currentQ?.id);
-  if (shownQuestionIdRef.current !== currentQ?.id) {
-    shownQuestionIdRef.current = currentQ?.id;
+  // Auswahl der Mehrfachauswahl-Frage zurücksetzen, sobald eine neue Frage
+  // angezeigt wird: der von React sanktionierte "State während des Renderns
+  // anpassen"-Vergleich (State statt Ref, keine setState-Aufrufe in einem
+  // Effekt), siehe https://react.dev/learn/you-might-not-need-an-effect.
+  const [shownQuestionId, setShownQuestionId] = useState(currentQ?.id);
+  if (shownQuestionId !== currentQ?.id) {
+    setShownQuestionId(currentQ?.id);
     if (multiSelected.length > 0) setMultiSelected([]);
-    autoScrolledRef.current = false;
   }
+
+  // autoScrolledRef ist ein reiner Ref (kein UI-State), sein Reset gehört
+  // deshalb in einen Effekt statt in den Render-Körper.
+  useEffect(() => {
+    autoScrolledRef.current = false;
+  }, [currentQ?.id]);
 
   // Alle gesammelten Tags aus der History (fürs Scoring und die Ergebnis-Komposition)
   const collectedTags = history.flatMap((h) => h.tags);
@@ -238,7 +246,7 @@ export default function AssessmentForm() {
                     className={`flex items-start gap-4 cursor-pointer rounded-md border p-6 text-left transition-all duration-200 ${
                       selected
                         ? "border-accent bg-accent/5"
-                        : "border-primary/15 hover:border-accent hover:bg-accent/5"
+                        : "border-hairline hover:border-accent hover:bg-accent/5"
                     }`}
                   >
                     <span
@@ -278,7 +286,7 @@ export default function AssessmentForm() {
                   key={answer.id}
                   type="button"
                   onClick={() => handleAnswer(answer)}
-                  className="border border-primary/15 hover:border-accent hover:bg-accent/5 cursor-pointer rounded-md p-6 text-left transition-all duration-200"
+                  className="border border-hairline hover:border-accent hover:bg-accent/5 cursor-pointer rounded-md p-6 text-left transition-all duration-200"
                 >
                   <span className="text-primary/90 text-lg leading-relaxed">
                     {answer.label}

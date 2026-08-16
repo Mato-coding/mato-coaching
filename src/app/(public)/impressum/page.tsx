@@ -3,12 +3,9 @@ import Section from "@/components/ui/Section";
 import Heading from "@/components/ui/Heading";
 import { buildMetadata } from "@/lib/site";
 
-// Titel entspricht bewusst wortgleich dem Site-Default (vorher über die
-// jetzt aufgelöste Layout-Redundanz doppelt durch das Title-Template
-// gelaufen): reproduziert den bisherigen gerenderten Titel unverändert.
 export const metadata = buildMetadata({
   path: "/impressum",
-  title: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
+  title: "Impressum",
   description:
     "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
 });

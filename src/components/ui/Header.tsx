@@ -1,29 +1,15 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { smoothScrollToTop } from "@/lib/scroll";
+import HeaderLogoLink from "@/components/ui/HeaderLogoLink";
 
+// Server-Komponente: nur der Logo-Link braucht Client-JS (usePathname plus
+// smoothScrollToTop), siehe HeaderLogoLink.tsx. Der Rest des Headers bleibt
+// statisch und läuft ohne eigenes Client-Bundle auf jeder Seite mit.
 export default function Header() {
-  const pathname = usePathname();
-
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (pathname === "/") {
-      e.preventDefault();
-      smoothScrollToTop();
-    }
-  };
-
   return (
-    <header className="bg-background/95 border-primary/5 fixed top-0 z-50 w-full border-b py-5 backdrop-blur-md">
+    <header className="bg-background/95 border-b border-hairline fixed top-0 z-50 w-full py-5 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
 
-        {/* Header-Lockup SVG */}
-        <Link href="/" onClick={handleLogoClick} aria-label="Lasse Klüver, zur Startseite" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent rounded-sm">
-          <img src="/header-lockup-outlined.svg" alt="" aria-hidden="true" width="239" height="40" className="hidden sm:block h-10 w-auto" />
-          <img src="/mark-symbol-tight.svg" alt="" aria-hidden="true" width="19" height="36" className="block sm:hidden h-9 w-auto" />
-          <span className="sr-only">Lasse Klüver. Somatic Breathwork und IFS Coaching.</span>
-        </Link>
+        <HeaderLogoLink />
 
         {/* Primär-CTA */}
         <Link

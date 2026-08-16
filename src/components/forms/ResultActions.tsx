@@ -4,13 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import LeadMagnetForm from "@/components/forms/LeadMagnetForm";
 import Card from "@/components/ui/Card";
+import type { Cluster, ResultRoute } from "@/lib/assessment-config";
 
 const JOURNAL_READY = true;
 const JOURNAL_URL = "/journal";
 
 type ResultActionsProps = {
-  cluster: string;
-  result: string;
+  cluster: Cluster;
+  result: ResultRoute;
   onRestart: () => void;
 };
 
@@ -86,7 +87,7 @@ export default function ResultActions({ cluster, result, onRestart }: ResultActi
                   Zum Journal
                 </Link>
               ) : (
-                <span className="mx-auto w-full max-w-62 text-center rounded-md border border-primary/10 px-6 py-3 text-muted">
+                <span className="mx-auto w-full max-w-62 text-center rounded-md border border-hairline px-6 py-3 text-muted">
                   Bald verfügbar
                 </span>
               )}
