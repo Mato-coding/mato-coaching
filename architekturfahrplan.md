@@ -38,9 +38,14 @@ Diagnose: Die technische Basis ist seit Auftrag 4 sauber (Canonicals, Metadata, 
 Maßnahmen, priorisiert:
 
 1. SEO-1, Quick Wins ohne Code: Google Business Profile ausbauen (Kategorien, Leistungen, Beschreibung, Fotos, regelmäßige Beiträge, Verknüpfung mit www.lassekluever.de), systematisch Bewertungen von Klienten einsammeln, Backlinks aktivieren: The Shala (teacher-lasse-Seite verlinkt die Website? prüfen und bitten), weitere seriöse lokale Einträge und Verzeichnisse, Social-Profile (LinkedIn, Instagram) verlinken die Domain und kommen in sameAs im Schema.
+
+Status SEO-1 (16.08.2026): Checkliste erstellt, Umsetzung läuft ohne Code durch Lasse. Die vollständige, abhakbare Checkliste liegt im Claude-Projektwissen als claude/seo-1-checkliste.md. Entscheidungen: Google Business Profile als Dienstleistungsunternehmen mit Einzugsgebiet Hamburg ohne sichtbare Adresse. GBP-Beschreibung, Leistungen und Q&A nach Ampel-Logik v2 formuliert (Erlebens-Nennungen grün, Disclaimer enthalten, keine Therapie-Kategorien). Bewertungen einzeln und stetig einsammeln, zuerst 1:1-Begleitungen, dann Gruppensession-Teilnehmer, keine Anreize, ab etwa 5 Bewertungen folgt AggregateRating als kleiner Code-Auftrag. Backlink-Befund: theshala.de/teacher-lasse existiert und verlinkt keine Website, Verlinkungsbitte an The Shala ist der wichtigste Einzellink. Weitere Kandidaten: weitere Studios (Namen offen), LinkedIn-Profil, Apple Business Connect, Bing Places, Anfrage bei Max Strom (kein öffentliches Facilitator-Verzeichnis vorhanden), Coaches Rising und ICF prüfen. Kein berufliches Instagram, Instagram bleibt im Ideen-Parkplatz. Offener Rest aus SEO-1 für spätere Code-Aufträge: sameAs im Schema ergänzen, sobald neue Profile stehen.
+
 2. SEO-2, On-Page /breathwork für "breathwork hamburg": Title, H1, Copy und FAQ gezielt auf die Query prüfen und schärfen (im Rahmen der Copy-Regeln, keine Heilversprechen), lokalen Bezug stärken, areaServed im Schema, interne Links von Startseite und Journal-Artikeln auf /breathwork.
 3. SEO-3, Max-Strom-Artikel ausbauen: der umfassendste deutschsprachige Artikel zu Breathe to Heal werden (Buch, Methode, Kernübungen, eigene Praxiserfahrung, Abgrenzung), Title und Description auf die Query, interne Verlinkung zu /breathwork. Perspektivisch Artikel-Cluster rund um Atemarbeit und Nervensystem mit Querverlinkung.
 4. SEO-4, Struktur: Header-Navigation und ausführlicherer Footer (interne Verlinkung, auch Voraussetzung für Google-Sitelinks). Laut CLAUDE.md-Entscheidung erst nach /ifs, dieser Punkt verzahnt sich daher mit dem /ifs-Bau.
+
+Nächster Auftrag: SEO-2, On-Page /breathwork, eigener Chat.
 
 ## Weitere nächste Schritte (Ideen-Parkplatz)
 
