@@ -11,6 +11,7 @@ import {
 } from "@/lib/assessment-config";
 import AssessmentResult from "@/components/forms/AssessmentResult";
 import FadeIn from "@/components/ui/FadeIn";
+import Eyebrow from "@/components/ui/Eyebrow";
 import { scrollElementToTop } from "@/lib/scroll";
 
 interface StepRecord {
@@ -211,13 +212,7 @@ export default function AssessmentForm() {
         </div>
       </div>
 
-      {/* Eyebrow */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="h-px w-6 bg-umber" aria-hidden="true" />
-        <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-          Kurz-Assessment
-        </span>
-      </div>
+      <Eyebrow label="Kurz-Assessment" />
 
       <FadeIn key={currentQ.id} durationSec={isMulti ? 0.9 : 0.6} y={8}>
         <div>

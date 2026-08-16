@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import ResultActions from "@/components/forms/ResultActions";
 import FadeIn from "@/components/ui/FadeIn";
+import Eyebrow from "@/components/ui/Eyebrow";
 import type { Cluster, ResultRoute } from "@/lib/assessment-config";
 import { scrollElementToTop } from "@/lib/scroll";
 
@@ -32,12 +33,7 @@ export default function AssessmentResult({
   return (
     <div ref={rootRef} className="text-primary">
       <FadeIn>
-        <div className="flex items-center gap-3 mb-8">
-          <span className="h-px w-6 bg-umber" aria-hidden="true" />
-          <span className="text-sm font-medium tracking-[0.15em] uppercase text-muted">
-            Dein Ergebnis
-          </span>
-        </div>
+        <Eyebrow label="Dein Ergebnis" />
       </FadeIn>
 
       <FadeIn delay={0.1}>
@@ -47,7 +43,7 @@ export default function AssessmentResult({
       </FadeIn>
 
       <FadeIn delay={0.2}>
-        <div className="max-w-[68ch] space-y-6">
+        <div className="max-w-measure space-y-6">
           {paragraphs.map((paragraph, idx) => (
             <p key={idx} className="text-primary/80 text-lg leading-relaxed">
               {paragraph}

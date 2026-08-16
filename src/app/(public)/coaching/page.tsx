@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { absoluteUrl, SITE_URL } from "@/lib/site";
+import { absoluteUrl, buildMetadata, SITE_URL } from "@/lib/site";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 
 import CoachingHero from "@/components/sections/coaching/CoachingHero";
 import CoachingResonance from "@/components/sections/coaching/CoachingResonance";
@@ -10,20 +10,12 @@ import CoachingFoundingRound from "@/components/sections/coaching/CoachingFoundi
 import CoachingClosingCTA from "@/components/sections/coaching/CoachingClosingCTA";
 import CoachingBoundary from "@/components/sections/coaching/CoachingBoundary";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
+  path: "/coaching",
   title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
   description:
     "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
-  alternates: {
-    canonical: absoluteUrl("/coaching"),
-  },
-  openGraph: {
-    title: "1:1 Begleitung: zur Ruhe kommen, klar ausrichten | Lasse Klüver",
-    description:
-      "10 Wochen 1:1-Begleitung für Menschen mit innerer Unruhe, Anxiety oder Panikattacken. Somatic Breathwork und IFS, remote oder in Hamburg.",
-    url: absoluteUrl("/coaching"),
-  },
-};
+});
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -60,10 +52,7 @@ const serviceJsonLd = {
 export default function CoachingPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
+      <JsonLdScript data={serviceJsonLd} />
 
       <CoachingHero />
       <CoachingResonance />

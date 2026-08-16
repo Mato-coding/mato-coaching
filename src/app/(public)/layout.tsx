@@ -1,38 +1,12 @@
-import type { Metadata } from "next";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import JsonLd from "@/components/seo/JsonLd";
-import { SITE_URL } from "@/lib/site";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
-    template: "%s · Lasse Klüver",
-  },
-  description:
-    "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "de_DE",
-    url: SITE_URL,
-    siteName: "Lasse Klüver",
-    title: "Somatic Breathwork & Coaching in Hamburg | Lasse Klüver",
-    description:
-      "Begleitung bei innerer Unruhe, Anspannung und Erschöpfung. Somatic Breathwork, Coaching und IFS in Hamburg und online.",
-    images: [
-      {
-        url: "/portrait-lasse-sw.jpg",
-        width: 600,
-        height: 800,
-        alt: "Lasse Klüver",
-      },
-    ],
-  },
-};
+// Kein eigener metadata-Export mehr: metadataBase, Title-Template und
+// Beschreibung leben nur noch im Root-Layout (src/app/layout.tsx), Seiten
+// setzen ihre eigene Metadata (inkl. canonical/openGraph) über
+// buildMetadata() in src/lib/site.ts. Vorher war dieser Export byte-identisch
+// zum Root-Layout dupliziert (Architektur-Audit 2.6).
 
 export default function PublicLayout({
   children,

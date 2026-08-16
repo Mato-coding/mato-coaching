@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import LeadMagnetForm from "@/components/forms/LeadMagnetForm";
+import Card from "@/components/ui/Card";
 
 const JOURNAL_READY = true;
 const JOURNAL_URL = "/journal";
@@ -30,7 +31,7 @@ export default function ResultActions({ cluster, result, onRestart }: ResultActi
       <div className="md:relative md:left-1/2 md:w-[90vw] md:max-w-5xl md:-translate-x-1/2">
         <div className="grid gap-6 md:grid-cols-3 items-stretch">
           {/* Option 1: Erstgespräch (dynamischer CTA aus dem Ergebnis) */}
-          <div className="flex h-full flex-col rounded-md border border-primary/10 bg-surface p-6">
+          <Card className="flex h-full flex-col">
             <h3 className="font-serif text-xl text-primary">
               Erstgespräch vereinbaren
             </h3>
@@ -46,10 +47,10 @@ export default function ResultActions({ cluster, result, onRestart }: ResultActi
                 Erstgespräch vereinbaren
               </Link>
             </div>
-          </div>
+          </Card>
 
           {/* Option 2: Audio (Lead-Magnet) */}
-          <div className="flex h-full flex-col rounded-md border border-primary/10 bg-surface p-6">
+          <Card className="flex h-full flex-col">
             <h3 className="font-serif text-xl text-primary">
               Zum Kennenlernen: erstes Audio kostenlos
             </h3>
@@ -65,10 +66,10 @@ export default function ResultActions({ cluster, result, onRestart }: ResultActi
                 Audio kostenlos erhalten
               </button>
             </div>
-          </div>
+          </Card>
 
           {/* Option 3: Journal */}
-          <div className="flex h-full flex-col rounded-md border border-primary/10 bg-surface p-6">
+          <Card className="flex h-full flex-col">
             <h3 className="font-serif text-xl text-primary">
               Mehr über die Arbeit mit Breathwork und IFS erfahren
             </h3>
@@ -90,7 +91,7 @@ export default function ResultActions({ cluster, result, onRestart }: ResultActi
                 </span>
               )}
             </div>
-          </div>
+          </Card>
         </div>
 
         {/* Audio-Formular: klappt unterhalb der Karten auf */}

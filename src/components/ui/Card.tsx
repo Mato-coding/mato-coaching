@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-type CardPadding = "default" | "large";
+type CardPadding = "compact" | "default" | "large";
 
 interface CardProps {
   padding?: CardPadding;
@@ -9,6 +9,7 @@ interface CardProps {
 }
 
 const paddingClasses: Record<CardPadding, string> = {
+  compact: "p-4",
   default: "p-6",
   large: "p-8 md:p-10",
 };

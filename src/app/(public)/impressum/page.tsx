@@ -1,15 +1,31 @@
 import Link from "next/link";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import { buildMetadata } from "@/lib/site";
+
+// Titel entspricht bewusst wortgleich dem Site-Default (vorher über die
+// jetzt aufgelöste Layout-Redundanz doppelt durch das Title-Template
+// gelaufen): reproduziert den bisherigen gerenderten Titel unverändert.
+export const metadata = buildMetadata({
+  path: "/impressum",
+  title: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
+  description:
+    "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
+});
 
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen bg-background py-32 px-6 flex flex-col items-center">
+    <Section
+      size="default"
+      className="min-h-screen bg-background flex flex-col items-center"
+    >
       <div className="max-w-3xl w-full">
         <div className="mb-12">
           <Link href="/" className="text-sm text-primary/60 hover:text-primary transition-colors">
             ← Zurück zur Startseite
           </Link>
         </div>
-        <h1 className="text-3xl md:text-4xl text-primary font-medium mb-8">Impressum</h1>
+        <Heading variant="section" as="h1" className="mb-8">Impressum</Heading>
         <div className="space-y-6 text-primary/80 leading-relaxed">
           <section>
             <h2 className="text-xl font-medium text-primary mb-2">Angaben gemäß § 5 TMG</h2>
@@ -33,6 +49,6 @@ export default function ImpressumPage() {
           </section>
         </div>
       </div>
-    </div>
+    </Section>
   );
 }

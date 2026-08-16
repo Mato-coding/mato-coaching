@@ -1,4 +1,5 @@
 import { SITE_URL, absoluteUrl } from "@/lib/site";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 
 // JSON-LD strukturierte Daten für lokales SEO.
 // name: Lasse Klüver (primäre Identität), alternateName: Mato Coaching (Methoden-/Markenebene).
@@ -49,10 +50,5 @@ const jsonLd = {
 };
 
 export default function JsonLd() {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-  );
+  return <JsonLdScript data={jsonLd} />;
 }

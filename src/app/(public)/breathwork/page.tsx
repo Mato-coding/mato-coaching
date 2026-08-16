@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { absoluteUrl, SITE_URL } from "@/lib/site";
+import { absoluteUrl, buildMetadata, SITE_URL } from "@/lib/site";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 
 import BreathworkHero from "@/components/sections/breathwork/BreathworkHero";
 import BreathworkResonance from "@/components/sections/breathwork/BreathworkResonance";
@@ -11,20 +11,12 @@ import BreathworkFAQ from "@/components/sections/breathwork/BreathworkFAQ";
 import BreathworkAudio from "@/components/sections/breathwork/BreathworkAudio";
 import BreathworkClosingCTA from "@/components/sections/breathwork/BreathworkClosingCTA";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
+  path: "/breathwork",
   title: "Somatic Breathwork in Hamburg und online",
   description:
     "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Für Menschen mit Anspannung, Anxiety oder innerer Erschöpfung.",
-  alternates: {
-    canonical: absoluteUrl("/breathwork"),
-  },
-  openGraph: {
-    title: "Somatic Breathwork in Hamburg und online",
-    description:
-      "Begleitete Atemarbeit zur Stressregulation, einzeln oder in der Gruppe, in Hamburg und online. Für Menschen mit Anspannung, Anxiety oder innerer Erschöpfung.",
-    url: absoluteUrl("/breathwork"),
-  },
-};
+});
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -61,10 +53,7 @@ const serviceJsonLd = {
 export default function BreathworkPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
+      <JsonLdScript data={serviceJsonLd} />
 
       <BreathworkHero />
       <BreathworkResonance />

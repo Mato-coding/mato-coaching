@@ -5,9 +5,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import FadeIn from "@/components/ui/FadeIn";
 import { getJournalEntryBySlug, getJournalSlugs } from "@/lib/journal";
 import { mdxComponents } from "./mdx-components";
-import { SITE_URL } from "@/lib/site";
-
-const baseUrl = SITE_URL;
+import { absoluteUrl, buildMetadata } from "@/lib/site";
+import JsonLdScript from "@/components/seo/JsonLdScript";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -24,19 +23,12 @@ export async function generateMetadata({
   const entry = getJournalEntryBySlug(slug);
   if (!entry) return {};
 
-  return {
+  return buildMetadata({
+    path: `/journal/${slug}`,
     title: entry.meta.title,
     description: entry.meta.description,
-    alternates: {
-      canonical: `/journal/${slug}`,
-    },
-    openGraph: {
-      type: "article",
-      title: entry.meta.title,
-      description: entry.meta.description,
-      url: `${baseUrl}/journal/${slug}`,
-    },
-  };
+    ogType: "article",
+  });
 }
 
 export default async function JournalArticlePage({ params }: Props) {
@@ -60,15 +52,12 @@ export default async function JournalArticlePage({ params }: Props) {
       "@type": "Organization",
       name: "Lasse Klüver",
     },
-    mainEntityOfPage: `${baseUrl}/journal/${slug}`,
+    mainEntityOfPage: absoluteUrl(`/journal/${slug}`),
   };
 
   return (
     <article className="bg-background py-16 md:py-24 px-6">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLdScript data={jsonLd} />
       <div className="mx-auto max-w-2xl w-full">
         <div className="mb-10">
           <Link

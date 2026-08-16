@@ -1,15 +1,31 @@
 import Link from "next/link";
+import Section from "@/components/ui/Section";
+import Heading from "@/components/ui/Heading";
+import { buildMetadata } from "@/lib/site";
+
+// Titel entspricht bewusst wortgleich dem Site-Default (vorher über die
+// jetzt aufgelöste Layout-Redundanz doppelt durch das Title-Template
+// gelaufen): reproduziert den bisherigen gerenderten Titel unverändert.
+export const metadata = buildMetadata({
+  path: "/datenschutz",
+  title: "Lasse Klüver · Somatic Breathwork und IFS-Coaching",
+  description:
+    "Somatic Breathwork, Coaching und IFS-orientierte Prozessbegleitung in Hamburg und online. Begleitung bei innerer Unruhe, Anspannung und Erschöpfung.",
+});
 
 export default function DatenschutzPage() {
   return (
-    <div className="min-h-screen bg-background py-32 px-6 flex flex-col items-center">
+    <Section
+      size="default"
+      className="min-h-screen bg-background flex flex-col items-center"
+    >
       <div className="max-w-3xl w-full">
         <div className="mb-12">
           <Link href="/" className="text-sm text-primary/60 hover:text-primary transition-colors">
             ← Zurück zur Startseite
           </Link>
         </div>
-        <h1 className="text-3xl md:text-4xl text-primary font-medium mb-8">Datenschutzerklärung</h1>
+        <Heading variant="section" as="h1" className="mb-8">Datenschutzerklärung</Heading>
         <div className="space-y-8 text-primary/80 leading-relaxed">
           
           <section>
@@ -38,7 +54,7 @@ export default function DatenschutzPage() {
               Seesrein 9<br />
               22459 Hamburg<br /><br />
               Telefon: +49 179 237 88 95<br />
-              E-Mail: lassekluever@gmail.com
+              E-Mail: hello@lassekluever.de
             </p>
             <p>
               Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten (z. B. Namen, E-Mail-Adressen o. Ä.) entscheidet.
@@ -82,6 +98,6 @@ export default function DatenschutzPage() {
 
         </div>
       </div>
-    </div>
+    </Section>
   );
 }
