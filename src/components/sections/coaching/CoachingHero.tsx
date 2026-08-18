@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
 import Button from "@/components/ui/Button";
+import AnchorScrollLink from "@/components/ui/AnchorScrollLink";
 import { PROGRAMM_ANCHOR } from "@/lib/anchors";
 
 export default function CoachingHero() {
@@ -36,13 +37,12 @@ export default function CoachingHero() {
             <Button href="/termin" className="w-full sm:w-auto">
               Erstgespräch vereinbaren
             </Button>
-            <Button
-              href={`#${PROGRAMM_ANCHOR}`}
-              variant="secondary"
+            <AnchorScrollLink
+              anchorId={PROGRAMM_ANCHOR}
               className="w-full sm:w-auto"
             >
               So ist das Programm aufgebaut
-            </Button>
+            </AnchorScrollLink>
           </div>
         </FadeIn>
       </Container>

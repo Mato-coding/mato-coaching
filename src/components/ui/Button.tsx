@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 type ButtonVariant = "primary" | "secondary";
 type ButtonSize = "default" | "small";
@@ -10,6 +10,10 @@ interface ButtonProps {
   size?: ButtonSize;
   className?: string;
   children: ReactNode;
+  // Optional, für Client-Wrapper wie AnchorScrollLink.tsx, die den
+  // Button-Look übernehmen, aber ihr eigenes Klick-Verhalten brauchen
+  // (Anker sanft anscrollen statt hart zu springen).
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 // Klassenketten 1:1 aus den bisherigen Fundstellen übernommen (Audit 2.2).
@@ -31,10 +35,12 @@ export default function Button({
   size = "default",
   className = "",
   children,
+  onClick,
 }: ButtonProps) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim()}
     >
       {children}
