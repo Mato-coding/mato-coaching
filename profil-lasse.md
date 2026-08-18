@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 06.07.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren.
+> Stand: 18.08.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren. Abschnitt 5 auf die Drei-Stufen-Angebotsarchitektur (Einzelsession, Kompaktbegleitung, Hauptprogramm) gebracht.
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -38,16 +38,20 @@ Ton für die Nutzung in Copy: bodenständig, physiologisch fundiert, unaufgeregt
 - Einnahmen daraus aktuell gering. Freelancing (Vertrieb, Organisations- und Teamentwicklung) trägt den Lebensunterhalt.
 - Noch keine Podcast- oder Presseauftritte.
 
-## 5. Angebot (Pilotrunde entschieden am 03.07.2026)
+## 5. Angebot (Drei-Stufen-Portfolio entschieden am 18.08.2026, Pilotrunde ursprünglich entschieden am 03.07.2026)
 
-- Hauptprogramm: 10 Wochen 1:1-Begleitung. Wöchentliche Session von 75 Minuten, remote oder in Hamburg vor Ort. Dazu voraufgezeichnetes Audio-Material für die tägliche Praxis zwischen den Sessions.
-- Gründungsrunde: 4 Plätze, fest kommuniziert ("Ich nehme in dieser ersten Runde vier Personen"). Rollierender Start, jeder beginnt, wenn er bereit ist. Bewusst kein Gruppenelement im Piloten; Kohorten-Gruppensessions frühestens ab Runde zwei.
-- Preis: 2.900 Euro in der Gründungsrunde, regulärer Preis ab 3.900 Euro. Beides wird offen kommuniziert. Die Kondition begründet sich durch ausführliches Feedback und die Erlaubnis, mit dem Ergebnis zu arbeiten (anonymisiert oder mit Vornamen). Framing als Tausch, nicht als Rabatt. Der Gründungspreis von 2.900 Euro ist zugleich die absolute Untergrenze, keine Verhandlung, in keiner Runde.
+Das Angebot besteht aus drei Stufen. Trennlinie zwischen ihnen ist die Tiefe der IFS-orientierten Arbeit: Stufe 1 und 2 arbeiten auf der Ebene der Beschützeranteile (Manager, Firefighter) unter dem Oberthema Nervensystem-Regulation. Stufe 3 geht darüber hinaus zu den verletzten Anteilen (Verbannte) und den Mustern und Glaubenssätzen dahinter, das braucht den Container von 10 Wochen, weil Beschützer den Zugang erst nach aufgebautem Vertrauen erlauben.
+
+- Stufe 1, Einzelsession: 75 Minuten, remote oder in Hamburg vor Ort, fester Preis 220 Euro (keine Spanne mehr). Möglicher Einstieg, wird weiterhin nicht aktiv beworben, ist aber auf /coaching und /breathwork sichtbar.
+- Stufe 2, Kompaktbegleitung: 6 Sessions à 75 Minuten über etwa 8 Wochen, 1.650 Euro. Dazu Übungen und Audios für die tägliche Praxis. Arbeitet auf der Beschützer-Ebene, bewusst ohne Verbannten-Arbeit.
+- Stufe 3, Hauptprogramm: 10 Wochen 1:1-Begleitung. Wöchentliche Session von 75 Minuten, remote oder in Hamburg vor Ort. Dazu voraufgezeichnetes Audio-Material für die tägliche Praxis zwischen den Sessions.
+- Gründungsrunde (Hauptprogramm): 4 Plätze, fest kommuniziert ("Ich nehme in dieser ersten Runde vier Personen"). Rollierender Start, jeder beginnt, wenn er bereit ist. Bewusst kein Gruppenelement im Piloten; Kohorten-Gruppensessions frühestens ab Runde zwei.
+- Preis Hauptprogramm: 2.900 Euro in der Gründungsrunde, regulärer Preis ab 3.900 Euro. Beides wird offen kommuniziert. Die Kondition begründet sich durch ausführliches Feedback und die Erlaubnis, mit dem Ergebnis zu arbeiten (anonymisiert oder mit Vornamen). Framing als Tausch, nicht als Rabatt. Der Gründungspreis von 2.900 Euro ist zugleich die absolute Untergrenze, keine Verhandlung, in keiner Runde.
 - Zahlung: Einmalzahlung oder zwei Raten, keine weiteren Modelle.
-- Ausfallregel: Sessions können verschoben oder hinten angehängt werden, das Programm läuft maximal 12 Wochen.
-- Erstgespräch: etwa 45 Minuten, Ablauf und Haltung in erstgespraech-leitfaden.md. Genau ein Ziel, gemeinsam prüfen, ob die Begleitung passt. Kein Verkaufsdruck, am Ende ein klares Angebot mit Platz, Preis und Startzeitpunkt.
-- Einzelsessions: 180 bis 220 Euro. Möglicher Einstieg, wird nicht aktiv beworben.
-- Kein Programmname im Piloten. Beschreibung schlicht: "10 Wochen 1:1-Begleitung". Namensentscheidung (ggf. unter der Mato-Ebene) erst nach der Pilotrunde mit realen Ergebnissen.
+- Ausfallregel: Sessions können verschoben oder hinten angehängt werden, das Hauptprogramm läuft maximal 12 Wochen.
+- Erstgespräch: etwa 45 Minuten, Ablauf und Haltung in erstgespraech-leitfaden.md. Genau ein Ziel, gemeinsam prüfen, ob die Begleitung passt. Kein Verkaufsdruck, am Ende ein klares Angebot mit Platz, Preis und Startzeitpunkt. Deckt alle drei Stufen ab, Zuordnungslogik in erstgespraech-leitfaden.md Abschnitt 11.
+- Anrechnung: Zahlungen für Einzelsession oder Kompaktbegleitung werden bei einem Wechsel ins Hauptprogramm innerhalb von 4 Wochen voll angerechnet. Kein Rabatt, sondern ein Upgrade-Pfad. Die 4-Wochen-Frist wird nur im Gespräch genannt, nicht auf der Website.
+- Kein Programmname im Piloten fürs Hauptprogramm. Beschreibung schlicht: "10 Wochen 1:1-Begleitung". Namensentscheidung (ggf. unter der Mato-Ebene) erst nach der Pilotrunde mit realen Ergebnissen.
 - Einladung am Kursende (sinngemäß): "Ich begleite ab [Startmonat] vier Menschen über zehn Wochen einzeln, bei Themen wie innerer Unruhe, Anspannung und Erschöpfung. Wenn dich das anspricht, sprich mich an oder buch dir ein Erstgespräch über meine Website."
 - Ergänzend später: thematische Gruppenformate (4 bis 6 Wochenend-Termine über ein Jahr verteilt). Nicht Teil des Piloten.
 - [offen] Startmonat der Gründungsrunde festlegen.

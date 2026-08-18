@@ -1,6 +1,6 @@
 # Leitfaden Erstgespräch
 
-> Stand: 06.07.2026. Interne Wissensdatei, nicht für die Website, nicht in die Sitemap. Vor jedem Erstgespräch in 5 Minuten durchgehen.
+> Stand: 18.08.2026. Interne Wissensdatei, nicht für die Website, nicht in die Sitemap. Vor jedem Erstgespräch in 5 Minuten durchgehen. Abschnitt 11 (Zuordnung der drei Stufen) ergänzt.
 
 ## 1. Ankersätze
 
@@ -111,6 +111,14 @@ Nie: zwei Argumente stapeln, Einwände vorwegnehmen, den Preis rechtfertigen, na
 ## 10. Nach dem Gespräch (3 Minuten, für die ersten 10 Gespräche)
 
 Notiz mit drei Feldern: Ausgang und nächster Schritt mit Datum. Erlebens-Wort der Person. Ein Satz Selbstbeobachtung: Wo habe ich verkauft statt gefragt?
+
+## 11. Zuordnung der drei Stufen
+
+- Drei Stufen: Einzelsession (220 Euro), Kompaktbegleitung (6 Sessions à 75 Minuten über etwa 8 Wochen, 1.650 Euro, Übungen und Audios für die tägliche Praxis), Hauptprogramm 10 Wochen (2.900 Euro Gründungsrunde, regulär ab 3.900 Euro).
+- Trennlinie ist die Tiefe der IFS-orientierten Arbeit: Einzelsession und Kompaktbegleitung arbeiten mit den Beschützeranteilen (Manager, Firefighter) unter dem Oberthema Regulation. Das Hauptprogramm geht darüber hinaus zu den verletzten Anteilen (Verbannte) und den Mustern und Glaubenssätzen dahinter. Diese Tiefe braucht den Container von 10 Wochen, weil Beschützer den Zugang erst nach aufgebautem Vertrauen erlauben.
+- Zuordnung im Gespräch: Kompaktbegleitung bei eher situativer Belastung und Wunsch nach Werkzeugen und Regulation. Hauptprogramm bei alten, sich durch alles ziehenden Mustern und der Erfahrung, dass Verstehen und Techniken allein nichts verändert haben.
+- Anrechnungsregel: Zahlungen für Einzelsession oder Kompaktbegleitung werden bei einem Wechsel ins Hauptprogramm innerhalb von 4 Wochen voll angerechnet. Die 4-Wochen-Frist wird nur im Gespräch genannt, nicht auf der Website.
+- Preise sind fest, keine Verhandlung, keine Rabatte. Anrechnung ist kein Rabatt, sondern ein Upgrade-Pfad.
 
 ## Anhang: Mail-Bausteine
 

@@ -21,9 +21,17 @@ export default function BreathworkClosingCTA() {
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <p className="text-primary/80 text-lg leading-relaxed mb-10">
+          <p className="text-primary/80 text-lg leading-relaxed mb-4">
             Wir klären in Ruhe, was du brauchst und ob die Arbeit zu dir passt.
             Kostenfrei und unverbindlich.
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={0.25}>
+          <p className="text-muted text-sm leading-relaxed mb-10">
+            Du willst diese Arbeit einzeln erleben? Einzelsessions von 75
+            Minuten gibt es remote oder in Hamburg vor Ort. Auch dieser Weg
+            beginnt mit einem kurzen Erstgespräch.
           </p>
         </FadeIn>
 

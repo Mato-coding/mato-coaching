@@ -7,6 +7,7 @@ import CoachingProgram from "@/components/sections/coaching/CoachingProgram";
 import CoachingMethod from "@/components/sections/coaching/CoachingMethod";
 import CoachingAbout from "@/components/sections/coaching/CoachingAbout";
 import CoachingFoundingRound from "@/components/sections/coaching/CoachingFoundingRound";
+import CoachingFormats from "@/components/sections/coaching/CoachingFormats";
 import CoachingClosingCTA from "@/components/sections/coaching/CoachingClosingCTA";
 import CoachingBoundary from "@/components/sections/coaching/CoachingBoundary";
 
@@ -60,6 +61,7 @@ export default function CoachingPage() {
       <CoachingMethod />
       <CoachingAbout />
       <CoachingFoundingRound />
+      <CoachingFormats />
       <CoachingClosingCTA />
       <CoachingBoundary />
     </>
