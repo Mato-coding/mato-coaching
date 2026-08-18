@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
 import Button from "@/components/ui/Button";
+import AnchorScrollLink from "@/components/ui/AnchorScrollLink";
 import { AUDIO_RESET_ANCHOR } from "@/lib/anchors";
 
 export default function BreathworkHero() {
@@ -35,13 +36,12 @@ export default function BreathworkHero() {
             <Button href="/termin" className="w-full sm:w-auto text-lg">
               Erstgespräch vereinbaren
             </Button>
-            <Button
-              href={`#${AUDIO_RESET_ANCHOR}`}
-              variant="secondary"
+            <AnchorScrollLink
+              anchorId={AUDIO_RESET_ANCHOR}
               className="w-full sm:w-auto text-lg"
             >
               Kostenloses Audio sichern
-            </Button>
+            </AnchorScrollLink>
           </div>
         </FadeIn>
       </Container>

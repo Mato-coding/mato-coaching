@@ -1,4 +1,3 @@
-import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
@@ -8,7 +7,7 @@ import Card from "@/components/ui/Card";
 
 export default function CoachingFormats() {
   return (
-    <Section size="default" className="bg-background">
+    <Section size="compact" className="bg-background">
       <Container width="narrow">
         <FadeIn>
           <Eyebrow label="Weitere Formate" />
@@ -74,19 +73,6 @@ export default function CoachingFormats() {
               rechne ich auf die 10-Wochen-Begleitung an.
             </p>
           </div>
-        </FadeIn>
-
-        <FadeIn delay={0.5}>
-          <p className="text-primary/80 text-lg leading-relaxed max-w-measure mt-8">
-            Der Weg in beide Formate beginnt mit einem kostenfreien
-            Erstgespräch.{" "}
-            <Link
-              href="/termin"
-              className="text-accent underline underline-offset-2 hover:opacity-80 transition-opacity"
-            >
-              Erstgespräch vereinbaren
-            </Link>
-          </p>
         </FadeIn>
       </Container>
     </Section>
