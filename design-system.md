@@ -140,3 +140,81 @@ Charakter sichtbar wird, sonst Stille.
   `--font-weight-regular`/`-semibold`/`-display`/`-hero`, `--duration-med`. Vor
   einem neuen Token in `@theme` immer prüfen, ob er tatsächlich in einer
   Komponente verdrahtet wird, statt ihn "für später" stehen zu lassen.
+
+---
+
+## 8. Frage-Blöcke (Feedback, Basis für einen künftigen Workbook-Merge)
+
+Verbindliche Regeln für die Frage-Schritte des Feedback-Formulars (`/feedback`,
+`FeedbackForm.tsx`). Das digitale IFS-Workbook (Branch `feature/workbook`,
+noch nicht gemergt) hat sein eigenes, umfangreicheres Blocksystem mit
+identischer Grundsprache (eigene Abschnitt-8-Fassung auf diesem Branch:
+Autosave-Feedback, Bereichs-Kopfzonen, `table`/`audio`/`bodymap`-Blöcke).
+Dieser Abschnitt beschreibt bewusst nur die Teilmenge, die `/feedback`
+tatsächlich nutzt, damit beide Renderer sich später ohne Widerspruch
+zusammenführen lassen. Kein Code wird zwischen den Branches geteilt, nur die
+Optik.
+
+### 8.1 Grundprinzip
+
+Fragen liegen direkt auf dem Papier-Hintergrund. Keine Karten, keine Rahmen,
+keine Schatten für die Frage selbst (Karten bleiben Ausnahmen wie der
+Audio-Block der Danke-Ansicht, siehe unten). Trennung entsteht über
+vertikalen Abstand und die Frage-Typografie.
+
+### 8.2 Fortschritt
+
+`/feedback` nutzt das aus `AssessmentForm.tsx` extrahierte `ProgressBar.tsx`
+(`src/components/ui/`): Zeile "Frage n von m" plus Prozentzahl, darunter ein
+1px-Hairline-Balken mit `--color-umber`-Füllung. Bewusst nicht die
+Workbook-Variante (Navy-Füllung, kein Prozentwert, Wording "n von m
+beantwortet") — beide Kontexte behalten vorerst ihre eigene, jeweils schon
+etablierte Fortschrittsoptik.
+
+### 8.3 Frage-Anatomie
+
+Jede Frage trägt eine laufende zweistellige Nummer ("01", "02") in Cormorant
+500, `text-lg`, `--color-muted`, gefolgt von der Frage in Cormorant Italic
+500, 19px mobil / 21px Desktop (`text-[1.1875rem] md:text-[1.3125rem]`),
+`leading-[1.4]`, `--color-ink`. Nummer und Frage baseline-ausgerichtet, 16px
+Lücke (`items-baseline gap-4`). Der Kontakt-Schritt (Frage 6) hat mehrere
+Felder statt einer Antwortliste und bleibt deshalb ohne die italic
+Frage-Optik, behält aber die Nummer.
+
+### 8.4 Frage-Typen
+
+**choice, Variante rows:** Für wenige Optionen (aktuell nur `format`).
+Zeilen, min-height 48px, führender Kreis 18px mit 1px-Rand in
+`--color-navy`, bei Auswahl Navy gefüllt. Bewusste Ausnahme von der
+`border-hairline`-Konvention (design-system.md Abschnitt 3): dieser Kreis
+ist kein Trennstrich, Kartenrand oder Eingabefeld, sondern der vom
+Blocksystem vorgegebene Auswahl-Indikator.
+
+**scale:** Punkte auf einer 1px-Hairline, gleichmäßig verteilt, horizontaler
+Innenrand 22px. Unselektiert: 8px-Punkt in `--color-ink` bei 55% Deckkraft.
+Gewählt: 16px-Punkt in `--color-navy`. Touch-Fläche 44px pro Punkt.
+Endpunkt-Labels (13px, `--color-muted`) mittig unter erstem/letztem Punkt,
+keine Zwischenbeschriftung. `/feedback` nutzt 5 Stufen (Konfigurationswert
+in `feedback-config.ts`, nicht die Workbook-Vorgabe von 7) statt einer
+eigenen Regel, weil der Wert später gegen Google-Bewertungen (Skala 1–5)
+lesbar sein soll.
+
+**choice, Variante pills:** Für kurze Mehrfachauswahl-Antworten (aktuell nur
+`descriptors`). Umbrechende Zeile, 12px Lücke, Radius 999px, min-height
+44px, Padding 10px 20px. Unselektiert `--color-surface` mit
+`border-hairline`, gewählt `--color-navy` mit Text in `--color-paper`.
+Auswahl-Obergrenzen (hier: höchstens drei) zeigen beim Erreichen einen
+leisen Hinweistext unter den Pills statt die Optionen sichtbar zu
+deaktivieren.
+
+**freetext:** Randloses Feld, kein umlaufender Rand, kein Resize-Griff,
+min-height 100px. Untere 1px-Hairline als Schreiblinie, bei Fokus 2px und
+`--color-navy` (das ist der Fokus-Indikator, kein zusätzlicher Ring).
+
+### 8.5 Danke-Ansicht (nur Feedback, kein Workbook-Konzept)
+
+Der Audio-Block der Danke-Ansicht ist bewusst die eine Ausnahme vom
+Card-losen Grundprinzip aus 8.1: `Card.tsx` mit Eyebrow, Titel, Beschreibung
+und nativem `<audio>`-Element, weil hier ein einzelnes, in sich
+abgeschlossenes Geschenk optisch abgesetzt werden soll, anders als eine
+Frage im Fluss.
