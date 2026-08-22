@@ -1,7 +1,5 @@
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
-import Eyebrow from "@/components/ui/Eyebrow";
-import Heading from "@/components/ui/Heading";
 import FeedbackForm from "@/components/forms/FeedbackForm";
 import { buildMetadata } from "@/lib/site";
 import { isValidFormat, isValidFeedbackSource, type Format } from "@/lib/feedback-config";
@@ -27,7 +25,8 @@ export default async function FeedbackPage({ searchParams }: FeedbackPageProps) 
 
   // Kein stiller Fallback (CLAUDE.md, offene Aufgabe 5): fehlt eine Env,
   // Warnung ins Server-Log statt eine Datei-URL zu raten. Die Danke-Ansicht
-  // lässt den betroffenen Block/Button dann einfach weg.
+  // lässt den betroffenen Block/Button dann einfach weg, zeigt außerhalb von
+  // Production zusätzlich einen sichtbaren Entwicklungshinweis (showEnvHints).
   const audioUrl = process.env.NEXT_PUBLIC_FEEDBACK_AUDIO_URL || null;
   if (!audioUrl) {
     console.warn(
@@ -42,26 +41,18 @@ export default async function FeedbackPage({ searchParams }: FeedbackPageProps) 
     );
   }
 
+  const showEnvHints = process.env.NODE_ENV !== "production";
+
   return (
     <Section size="default">
       <Container width="narrow">
-        <Eyebrow label="Feedback" />
-        <Heading variant="section" as="h1">
-          Wie war es für dich?
-        </Heading>
-        <p className="mt-4 max-w-measure text-lg leading-relaxed text-muted">
-          Danke, dass du da warst. Deine Rückmeldung hilft mir, meine Arbeit besser zu machen.
-          Das dauert etwa eine Minute.
-        </p>
-
-        <div className="mt-12">
-          <FeedbackForm
-            initialFormat={initialFormat}
-            source={source}
-            audioUrl={audioUrl}
-            googleReviewUrl={googleReviewUrl}
-          />
-        </div>
+        <FeedbackForm
+          initialFormat={initialFormat}
+          source={source}
+          audioUrl={audioUrl}
+          googleReviewUrl={googleReviewUrl}
+          showEnvHints={showEnvHints}
+        />
       </Container>
     </Section>
   );

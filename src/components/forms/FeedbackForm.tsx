@@ -4,12 +4,16 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import ProgressBar from "@/components/ui/ProgressBar";
 import FadeIn from "@/components/ui/FadeIn";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Heading from "@/components/ui/Heading";
 import FeedbackThankYou from "@/components/forms/FeedbackThankYou";
 import { scrollElementToTop } from "@/lib/scroll";
 import { isValidEmail } from "@/lib/mail";
 import {
   STEP_ORDER,
   TOTAL_STEPS,
+  AUTO_ADVANCE_DELAY_MS,
+  intro,
   formatQuestion,
   ratingQuestion,
   descriptorsQuestion,
@@ -33,11 +37,20 @@ interface HistoryEntry {
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
 
+// Antwort eines Auto-Advance-Schritts (format, rating) im
+// Bestätigungsfenster: sichtbar gewählt, aber noch nicht in die History
+// übernommen. Siehe AUTO_ADVANCE_DELAY_MS in feedback-config.ts.
+interface PendingAnswer {
+  step: AnswerStep;
+  value: HistoryEntry["value"];
+}
+
 interface FeedbackFormProps {
   initialFormat: Format | null;
   source: string | null;
   audioUrl: string | null;
   googleReviewUrl: string | null;
+  showEnvHints: boolean;
 }
 
 export default function FeedbackForm({
@@ -45,10 +58,13 @@ export default function FeedbackForm({
   source,
   audioUrl,
   googleReviewUrl,
+  showEnvHints,
 }: FeedbackFormProps) {
   const [history, setHistory] = useState<HistoryEntry[]>(() =>
     initialFormat ? [{ step: "format", value: initialFormat }] : []
   );
+  const [pendingAnswer, setPendingAnswer] = useState<PendingAnswer | null>(null);
+  const [liveMessage, setLiveMessage] = useState("");
   const [descriptorsDraft, setDescriptorsDraft] = useState<string[]>([]);
   const [descriptorLimitHint, setDescriptorLimitHint] = useState(false);
   const [bestDraft, setBestDraft] = useState("");
@@ -76,6 +92,7 @@ export default function FeedbackForm({
     if (descriptorLimitHint) setDescriptorLimitHint(false);
     if (bestDraft !== "") setBestDraft("");
     if (improveDraft !== "") setImproveDraft("");
+    if (liveMessage !== "") setLiveMessage("");
   }
 
   useEffect(() => {
@@ -86,12 +103,37 @@ export default function FeedbackForm({
     if (containerRef.current) scrollElementToTop(containerRef.current);
   }, [currentStepId]);
 
+  // Bestätigungsfenster für Auto-Advance-Fragen: die Antwort wird erst nach
+  // AUTO_ADVANCE_DELAY_MS in die History übernommen, damit sie sichtbar
+  // gewählt bleibt, bevor der nächste Schritt erscheint. Timer läuft in
+  // einem eigenen Effekt mit Cleanup, damit Zurück oder ein Unmount ihn
+  // sicher löschen.
+  useEffect(() => {
+    if (!pendingAnswer) return;
+    const timer = setTimeout(() => {
+      pushAnswer(pendingAnswer.step, pendingAnswer.value);
+      setPendingAnswer(null);
+    }, AUTO_ADVANCE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [pendingAnswer]);
+
   function pushAnswer(step: AnswerStep, value: HistoryEntry["value"]) {
     setHistory((prev) => [...prev, { step, value }]);
   }
 
+  // Für format/rating: setzt die Antwort erst als "pending" (sichtbar
+  // gewählt), der Effekt oben übernimmt sie nach dem Bestätigungsfenster.
+  // Weitere Klicks während des Fensters werden ignoriert (kein Doppeltipp,
+  // der zwei Schritte auslöst).
+  function selectPending(step: AnswerStep, value: HistoryEntry["value"]) {
+    if (pendingAnswer) return;
+    setPendingAnswer({ step, value });
+    setLiveMessage("Antwort gespeichert");
+  }
+
   function handleBack() {
     if (history.length === 0) return;
+    setPendingAnswer(null);
     setHistory((prev) => prev.slice(0, -1));
   }
 
@@ -168,12 +210,28 @@ export default function FeedbackForm({
   }
 
   if (status === "success") {
-    return <FeedbackThankYou audioUrl={audioUrl} googleReviewUrl={googleReviewUrl} />;
+    return (
+      <FeedbackThankYou
+        audioUrl={audioUrl}
+        googleReviewUrl={googleReviewUrl}
+        showEnvHints={showEnvHints}
+      />
+    );
   }
 
   return (
     <div ref={containerRef} className="text-primary">
-      <ProgressBar current={stepNumber} total={TOTAL_STEPS} />
+      <span aria-live="polite" className="sr-only">
+        {liveMessage}
+      </span>
+
+      <Eyebrow label={intro.eyebrow} />
+      <Heading variant="section" as="h1">
+        {intro.heading}
+      </Heading>
+      <p className="mt-4 max-w-measure text-lg leading-relaxed text-muted">{intro.text}</p>
+
+      <ProgressBar current={stepNumber} total={TOTAL_STEPS} className="mt-12" />
 
       <FadeIn key={currentStepId} durationSec={0.6} y={8}>
         <div>
@@ -181,8 +239,9 @@ export default function FeedbackForm({
             <QuestionHeader index={1} question={formatQuestion.question}>
               <ChoiceRows
                 options={formatQuestion.options}
-                value={answerFor<Format>("format") ?? null}
-                onSelect={(id) => pushAnswer("format", id as Format)}
+                value={pendingAnswer?.step === "format" ? (pendingAnswer.value as Format) : null}
+                pending={pendingAnswer !== null}
+                onSelect={(id) => selectPending("format", id as Format)}
               />
             </QuestionHeader>
           )}
@@ -191,8 +250,9 @@ export default function FeedbackForm({
             <QuestionHeader index={2} question={ratingQuestion.question}>
               <ScaleInput
                 question={ratingQuestion}
-                value={answerFor<number>("rating") ?? null}
-                onSelect={(n) => pushAnswer("rating", n)}
+                value={pendingAnswer?.step === "rating" ? (pendingAnswer.value as number) : null}
+                pending={pendingAnswer !== null}
+                onSelect={(n) => selectPending("rating", n)}
               />
             </QuestionHeader>
           )}
@@ -410,13 +470,18 @@ function QuestionHeader({
 // 1px-Rand in Navy, bei Auswahl gefüllt. Bewusste Ausnahme von der
 // border-hairline-Konvention: dieser Kreis ist kein Trennstrich/Kartenrand/
 // Eingabefeld, sondern der vom Blocksystem vorgegebene Auswahl-Indikator.
+// `pending` (Auto-Advance-Bestätigungsfenster, s. FeedbackForm) markiert die
+// Optionen als aria-disabled statt disabled, damit der Fokus nicht springt;
+// die Füllung bleibt sichtbar, weitere Klicks ignoriert der Aufrufer.
 function ChoiceRows({
   options,
   value,
+  pending = false,
   onSelect,
 }: {
   options: ChoiceOption[];
   value: string | null;
+  pending?: boolean;
   onSelect: (id: string) => void;
 }) {
   return (
@@ -428,12 +493,13 @@ function ChoiceRows({
             key={opt.id}
             type="button"
             aria-pressed={selected}
+            aria-disabled={pending || undefined}
             onClick={() => onSelect(opt.id)}
             className="flex min-h-12 items-center gap-4 py-2 text-left"
           >
             <span
               aria-hidden="true"
-              className={`h-[18px] w-[18px] shrink-0 rounded-full border border-accent transition-colors duration-200 ${
+              className={`h-[18px] w-[18px] shrink-0 rounded-full border border-accent motion-safe:transition-colors motion-safe:duration-150 ${
                 selected ? "bg-accent" : "bg-transparent"
               }`}
             />
@@ -480,14 +546,16 @@ function ChoicePills({
 }
 
 // scale (design-system.md 8.4): Punkte auf einer Hairline, Endpunkt-Labels
-// mittig darunter, keine Zwischenbeschriftung.
+// mittig darunter, keine Zwischenbeschriftung. `pending` s. ChoiceRows.
 function ScaleInput({
   question,
   value,
+  pending = false,
   onSelect,
 }: {
   question: ScaleQuestion;
   value: number | null;
+  pending?: boolean;
   onSelect: (n: number) => void;
 }) {
   const steps = Array.from(
@@ -506,13 +574,14 @@ function ScaleInput({
                 key={n}
                 type="button"
                 aria-pressed={selected}
+                aria-disabled={pending || undefined}
                 aria-label={`Stufe ${n} von ${question.max}`}
                 onClick={() => onSelect(n)}
                 className="relative -mt-[22px] flex h-11 w-11 items-center justify-center"
               >
                 <span
                   aria-hidden="true"
-                  className={`rounded-full transition-all duration-200 ${
+                  className={`rounded-full motion-safe:transition-[transform,background-color] motion-safe:duration-150 ${
                     selected ? "h-4 w-4 bg-accent" : "h-2 w-2 bg-primary/55"
                   }`}
                 />

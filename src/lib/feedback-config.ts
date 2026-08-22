@@ -78,6 +78,20 @@ export type StepId = (typeof STEP_ORDER)[number];
 
 export const TOTAL_STEPS = STEP_ORDER.length;
 
+// Bestätigungsfenster für Auto-Advance-Fragen (format, rating): Zeit, in der
+// die gewählte Antwort sichtbar gefüllt bleibt, bevor der nächste Schritt
+// erscheint (FeedbackForm.tsx, pendingAnswer-State). Gilt nicht für
+// descriptors/best/improve/contact, die einen eigenen Weiter-Button haben.
+export const AUTO_ADVANCE_DELAY_MS = 400;
+
+// Kopf des aktiven Formulars (oberhalb der ProgressBar), siehe
+// FeedbackForm.tsx. Kein Text im Komponenten-Code.
+export const intro = {
+  eyebrow: "Feedback",
+  heading: "Wie war es für dich?",
+  text: "Danke, dass du da warst. Deine Rückmeldung hilft mir, meine Arbeit besser zu machen. Das dauert etwa eine Minute.",
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // FRAGEN 1–5 (Frage 6 "contact" ist ein eigener Formular-Schritt)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -176,7 +190,8 @@ export const contactStep = {
 
 export const thankYou = {
   heading: "Danke dir.",
-  intro: "Deine Rückmeldung ist angekommen. Ich lese jede einzelne.",
+  intro:
+    "Deine Rückmeldung ist angekommen. Ich lese jede einzelne und antworte persönlich, wenn du das möchtest.",
   audio: {
     eyebrow: "Mein Dankeschön",
     title: "Ankommen in zehn Minuten. Atem und Stille.",
@@ -186,24 +201,31 @@ export const thankYou = {
   },
   nextSteps: {
     eyebrow: "Wie es weitergehen kann",
-    schedule: {
-      // Ziel wird nachgetragen, sobald eine feste Übersichtsseite für
-      // Klassen und Workshops steht.
-      href: "/",
-      label: "Aktuelle Klassen und Workshops",
-    },
-    journal: {
-      href: "/journal",
-      label: "Im Journal findest du Hintergründe zu Nervensystem und Somatic Breathwork.",
-    },
+    links: [
+      {
+        href: "/breathwork",
+        label: "Somatic Breathwork: Klassen, Workshops und Einzelsitzungen",
+      },
+      {
+        href: "/journal",
+        label: "Journal: Hintergründe zu Nervensystem und Somatic Breathwork",
+      },
+    ],
   },
   share: {
-    text: "Wenn du magst, hilf anderen, meine Klassen zu finden, und teile deine Erfahrung auf Google. Wenn etwas nicht gepasst hat, schreib mir gern direkt. Ich antworte persönlich.",
+    eyebrow: "Deine Erfahrung teilen",
+    text: "Wenn es dir gutgetan hat, hilf anderen, meine Arbeit zu finden. Eine Bewertung auf Google dauert eine Minute. Wenn etwas nicht gepasst hat, schreib mir direkt, ich antworte persönlich.",
     googleLabel: "Auf Google bewerten",
     directLabel: "Lieber direkt schreiben",
     mailSubject: "Feedback zu deiner Stunde",
   },
 };
+
+// Entwicklungshinweis, wenn eine Danke-Ansicht-Env fehlt (nur außerhalb von
+// Production sichtbar, siehe FeedbackThankYou.tsx' showEnvHints-Prop).
+export function envHint(varName: string): string {
+  return `Entwicklungshinweis: ${varName} fehlt, dieser Block wird im Livebetrieb erst mit gesetzter Env angezeigt.`;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // VALIDIERUNG (geteilt zwischen Client-Vorprüfung und /api/feedback)

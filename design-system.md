@@ -199,6 +199,20 @@ in `feedback-config.ts`, nicht die Workbook-Vorgabe von 7) statt einer
 eigenen Regel, weil der Wert später gegen Google-Bewertungen (Skala 1–5)
 lesbar sein soll.
 
+**Auto-Advance-Bestätigung (rows und scale):** Beide Fragetypen gehen ohne
+eigenen Weiter-Button direkt zum nächsten Schritt über (`format`, `rating`;
+`descriptors`/`best`/`improve`/`contact` haben einen Weiter-Button und sind
+davon nicht betroffen). Die gewählte Option bleibt `AUTO_ADVANCE_DELAY_MS`
+(400ms, `feedback-config.ts`) sichtbar gefüllt, bevor der nächste Schritt
+erscheint, damit die Auswahl als Bestätigung wahrnehmbar ist, statt
+kommentarlos zu verschwinden. Der Übergang zwischen unselektiert und
+gewählt läuft über eine 150ms-Transition auf dem Auswahl-Indikator selbst
+(Kreis-Füllung bei rows, Punktgröße/-farbe bei scale), `motion-safe`
+begrenzt, sodass bei `prefers-reduced-motion` keine Transition läuft, das
+400ms-Bestätigungsfenster aber bestehen bleibt. Kein Haken-Icon, kein
+Toast, keine zusätzliche Farbe: die Bestätigung entsteht allein aus
+gefülltem Zustand plus Pause.
+
 **choice, Variante pills:** Für kurze Mehrfachauswahl-Antworten (aktuell nur
 `descriptors`). Umbrechende Zeile, 12px Lücke, Radius 999px, min-height
 44px, Padding 10px 20px. Unselektiert `--color-surface` mit
@@ -213,8 +227,23 @@ min-height 100px. Untere 1px-Hairline als Schreiblinie, bei Fokus 2px und
 
 ### 8.5 Danke-Ansicht (nur Feedback, kein Workbook-Konzept)
 
+Die Danke-Ansicht (`FeedbackThankYou.tsx`) ersetzt nach dem Absenden den
+kompletten Seitenkopf des aktiven Formulars, nicht nur dessen Inhalt: sie
+trägt selbst Eyebrow ("Danke") und `Heading` mit `as="h1"`, damit die Seite
+zu jedem Zeitpunkt genau eine H1 hat (aktiver Zustand: Formular-Kopf: aktiv
+`FeedbackForm.tsx`; nach dem Absenden: `FeedbackThankYou.tsx`).
+
 Der Audio-Block der Danke-Ansicht ist bewusst die eine Ausnahme vom
 Card-losen Grundprinzip aus 8.1: `Card.tsx` mit Eyebrow, Titel, Beschreibung
 und nativem `<audio>`-Element, weil hier ein einzelnes, in sich
 abgeschlossenes Geschenk optisch abgesetzt werden soll, anders als eine
 Frage im Fluss.
+
+Der Bewertungsblock am Ende trägt eine eigene Eyebrow ("Deine Erfahrung
+teilen") und ist primär/sekundär geordnet: der Google-Button (Standard-
+Button-Variante, `external`) ist der Primär-CTA, "Lieber direkt schreiben"
+(mailto, `variant="secondary"`) der Ausweichpfad für alle, die nicht
+öffentlich bewerten wollen. Beide Blöcke (Audio, Google-Button) entfallen
+lautlos, wenn die zugehörige Env fehlt (kein stiller Fallback, s. CLAUDE.md
+offene Aufgabe 5); außerhalb von Production zeigt die Stelle stattdessen
+einen `text-sm text-umber`-Entwicklungshinweis, welche Env fehlt.
