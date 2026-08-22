@@ -1,18 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
 import ProgressBar from "@/components/ui/ProgressBar";
 import FadeIn from "@/components/ui/FadeIn";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
+import TextLinkButton from "@/components/ui/TextLinkButton";
 import FeedbackThankYou from "@/components/forms/FeedbackThankYou";
-import { scrollElementToTop } from "@/lib/scroll";
+import { scrollElementToTop, scrollIntoViewIfHidden } from "@/lib/scroll";
 import { isValidEmail } from "@/lib/mail";
 import {
   STEP_ORDER,
   TOTAL_STEPS,
   AUTO_ADVANCE_DELAY_MS,
+  skipLabel,
   intro,
   formatQuestion,
   ratingQuestion,
@@ -23,26 +25,34 @@ import {
   type Format,
   type StepId,
   type ChoiceOption,
+  type ChoiceQuestion,
   type ScaleQuestion,
+  type DescriptorsAnswer,
 } from "@/lib/feedback-config";
 
 // Eine beantwortete Frage (Schritte 1–5). "contact" (Schritt 6) ist
 // terminal: kein Auto-Advance, sondern der POST selbst, deshalb kein
-// eigener History-Eintrag nötig.
+// eigener answers-Eintrag nötig. Übersprungene Schritte landen als normaler
+// answers-Eintrag mit einem leeren Wert (format → null, descriptors → { ids:
+// [], custom: [] }, best/improve → ""), Zurück funktioniert dadurch ohne
+// Sonderfall auch über übersprungene Schritte hinweg.
 type AnswerStep = Exclude<StepId, "contact">;
-interface HistoryEntry {
-  step: AnswerStep;
-  value: Format | number | string[] | string;
-}
+type AnswerValue = Format | null | number | DescriptorsAnswer | string;
+
+// Antworten bleiben beim Zurückklicken erhalten (answers, keyed nach
+// AnswerStep), Zurück verringert nur stepIndex statt einen History-Stack zu
+// verwerfen. Vor-Navigation (Auswahl, Weiter, Überspringen) schreibt in
+// answers und erhöht stepIndex.
+type AnswersState = Partial<Record<AnswerStep, AnswerValue>>;
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
 
 // Antwort eines Auto-Advance-Schritts (format, rating) im
-// Bestätigungsfenster: sichtbar gewählt, aber noch nicht in die History
+// Bestätigungsfenster: sichtbar gewählt, aber noch nicht in answers
 // übernommen. Siehe AUTO_ADVANCE_DELAY_MS in feedback-config.ts.
 interface PendingAnswer {
   step: AnswerStep;
-  value: HistoryEntry["value"];
+  value: AnswerValue;
 }
 
 interface FeedbackFormProps {
@@ -60,13 +70,21 @@ export default function FeedbackForm({
   googleReviewUrl,
   showEnvHints,
 }: FeedbackFormProps) {
-  const [history, setHistory] = useState<HistoryEntry[]>(() =>
-    initialFormat ? [{ step: "format", value: initialFormat }] : []
+  const [answers, setAnswers] = useState<AnswersState>(() =>
+    initialFormat ? { format: initialFormat } : {}
   );
+  const [stepIndex, setStepIndex] = useState(() => (initialFormat ? 1 : 0));
   const [pendingAnswer, setPendingAnswer] = useState<PendingAnswer | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
   const [descriptorsDraft, setDescriptorsDraft] = useState<string[]>([]);
   const [descriptorLimitHint, setDescriptorLimitHint] = useState(false);
+  // Eigene Beschreibungsworte (descriptors, bis zu drei zusammen mit den
+  // festen Optionen): customWordsDraft hält die bereits bestätigten Worte,
+  // customDraft den Text der gerade offenen Eingabe-Pill, customInputOpen ob
+  // die Add-Pill gerade zur Eingabe-Pill aufgeklappt ist.
+  const [customWordsDraft, setCustomWordsDraft] = useState<string[]>([]);
+  const [customDraft, setCustomDraft] = useState("");
+  const [customInputOpen, setCustomInputOpen] = useState(false);
   const [bestDraft, setBestDraft] = useState("");
   const [improveDraft, setImproveDraft] = useState("");
   const [name, setName] = useState("");
@@ -78,21 +96,36 @@ export default function FeedbackForm({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const hasMountedRef = useRef(false);
+  const descriptorsButtonsRef = useRef<HTMLDivElement>(null);
+  const prevDescriptorsTotalRef = useRef(0);
 
-  const currentStepId: StepId = STEP_ORDER[history.length] ?? "contact";
-  const stepNumber = history.length + 1;
+  const currentStepId: StepId = STEP_ORDER[stepIndex] ?? "contact";
+  const stepNumber = stepIndex + 1;
 
-  // Auswahl-Entwürfe zurücksetzen, sobald ein neuer Schritt angezeigt wird.
-  // Von React sanktioniertes "State während des Renderns anpassen" (State
-  // statt Ref, kein setState in einem Effekt), Muster aus AssessmentForm.tsx.
+  // Obergrenze gilt für feste plus eigene Worte zusammen.
+  const descriptorsMax = descriptorsQuestion.maxSelect ?? Infinity;
+  const descriptorsTotalDraft = descriptorsDraft.length + customWordsDraft.length;
+  const descriptorsAtLimit = descriptorsTotalDraft >= descriptorsMax;
+
+  // Entwürfe (descriptors inkl. eigener Worte, best, improve) werden beim
+  // Anzeigen eines Schritts aus answers initialisiert, falls dort schon ein
+  // Wert steht, sonst auf den leeren Zustand zurückgesetzt. Von React
+  // sanktioniertes "State während des Renderns anpassen" (State statt Ref,
+  // kein setState in einem Effekt), Muster aus AssessmentForm.tsx. format
+  // und rating brauchen keinen eigenen Entwurf: ChoiceRows/ScaleInput lesen
+  // direkt aus answers (s. u.), eine erneute Auswahl überschreibt sie.
   const [shownStepId, setShownStepId] = useState<StepId>(currentStepId);
   if (shownStepId !== currentStepId) {
     setShownStepId(currentStepId);
-    if (descriptorsDraft.length > 0) setDescriptorsDraft([]);
-    if (descriptorLimitHint) setDescriptorLimitHint(false);
-    if (bestDraft !== "") setBestDraft("");
-    if (improveDraft !== "") setImproveDraft("");
-    if (liveMessage !== "") setLiveMessage("");
+    const savedDescriptors = answers.descriptors as DescriptorsAnswer | undefined;
+    setDescriptorsDraft(savedDescriptors?.ids ?? []);
+    setCustomWordsDraft(savedDescriptors?.custom ?? []);
+    setDescriptorLimitHint(false);
+    setCustomDraft("");
+    setCustomInputOpen(false);
+    setBestDraft((answers.best as string | undefined) ?? "");
+    setImproveDraft((answers.improve as string | undefined) ?? "");
+    setLiveMessage("");
   }
 
   useEffect(() => {
@@ -104,10 +137,10 @@ export default function FeedbackForm({
   }, [currentStepId]);
 
   // Bestätigungsfenster für Auto-Advance-Fragen: die Antwort wird erst nach
-  // AUTO_ADVANCE_DELAY_MS in die History übernommen, damit sie sichtbar
-  // gewählt bleibt, bevor der nächste Schritt erscheint. Timer läuft in
-  // einem eigenen Effekt mit Cleanup, damit Zurück oder ein Unmount ihn
-  // sicher löschen.
+  // AUTO_ADVANCE_DELAY_MS in answers übernommen, damit sie sichtbar gewählt
+  // bleibt, bevor der nächste Schritt erscheint. Timer läuft in einem
+  // eigenen Effekt mit Cleanup, damit Zurück oder ein Unmount ihn sicher
+  // löschen.
   useEffect(() => {
     if (!pendingAnswer) return;
     const timer = setTimeout(() => {
@@ -117,28 +150,45 @@ export default function FeedbackForm({
     return () => clearTimeout(timer);
   }, [pendingAnswer]);
 
-  function pushAnswer(step: AnswerStep, value: HistoryEntry["value"]) {
-    setHistory((prev) => [...prev, { step, value }]);
+  // Sanfter Mobil-Scroll zum Weiter-Button auf dem descriptors-Schritt:
+  // nach jeder Auswahl (feste Pill aktivieren, eigenes Wort bestätigen),
+  // nicht beim Abwählen. Die Gesamtzahl steigt nur bei einer Auswahl, nie
+  // beim Entfernen, deshalb genügt ein Vergleich mit dem vorherigen Wert.
+  useEffect(() => {
+    if (currentStepId !== "descriptors") {
+      prevDescriptorsTotalRef.current = descriptorsTotalDraft;
+      return;
+    }
+    if (descriptorsTotalDraft > prevDescriptorsTotalRef.current && descriptorsButtonsRef.current) {
+      scrollIntoViewIfHidden(descriptorsButtonsRef.current);
+    }
+    prevDescriptorsTotalRef.current = descriptorsTotalDraft;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [descriptorsDraft.length, customWordsDraft.length, currentStepId]);
+
+  function pushAnswer(step: AnswerStep, value: AnswerValue) {
+    setAnswers((prev) => ({ ...prev, [step]: value }));
+    setStepIndex((prev) => prev + 1);
   }
 
   // Für format/rating: setzt die Antwort erst als "pending" (sichtbar
   // gewählt), der Effekt oben übernimmt sie nach dem Bestätigungsfenster.
   // Weitere Klicks während des Fensters werden ignoriert (kein Doppeltipp,
   // der zwei Schritte auslöst).
-  function selectPending(step: AnswerStep, value: HistoryEntry["value"]) {
+  function selectPending(step: AnswerStep, value: AnswerValue) {
     if (pendingAnswer) return;
     setPendingAnswer({ step, value });
     setLiveMessage("Antwort gespeichert");
   }
 
   function handleBack() {
-    if (history.length === 0) return;
+    if (stepIndex === 0) return;
     setPendingAnswer(null);
-    setHistory((prev) => prev.slice(0, -1));
+    setStepIndex((prev) => prev - 1);
   }
 
   function answerFor<T>(step: AnswerStep): T | undefined {
-    return history.find((h) => h.step === step)?.value as T | undefined;
+    return answers[step] as T | undefined;
   }
 
   function toggleDescriptor(id: string) {
@@ -147,13 +197,87 @@ export default function FeedbackForm({
         setDescriptorLimitHint(false);
         return prev.filter((x) => x !== id);
       }
-      const max = descriptorsQuestion.maxSelect ?? Infinity;
-      if (prev.length >= max) {
+      if (descriptorsTotalDraft >= descriptorsMax) {
         setDescriptorLimitHint(true);
         return prev;
       }
       return [...prev, id];
     });
+  }
+
+  function openCustomInput() {
+    if (descriptorsAtLimit) return;
+    setCustomInputOpen(true);
+  }
+
+  function removeCustomWord(word: string) {
+    setCustomWordsDraft((prev) => prev.filter((w) => w !== word));
+    setDescriptorLimitHint(false);
+    setLiveMessage("Wort entfernt");
+  }
+
+  // Enter oder Blur mit Inhalt bestätigt ein eigenes Wort. Entspricht die
+  // (normalisierte) Eingabe dem Label einer festen Option, wird stattdessen
+  // diese Pill aktiviert statt ein eigenes Wort anzulegen. Entspricht sie
+  // einem bereits vorhandenen eigenen Wort, passiert nichts. Bleibt danach
+  // offen für ein weiteres Wort, solange die Obergrenze nicht erreicht ist.
+  function confirmCustomWord() {
+    const normalized = customDraft.trim().replace(/\s+/g, " ");
+    setCustomDraft("");
+
+    if (!normalized) {
+      setCustomInputOpen(false);
+      return;
+    }
+
+    const lower = normalized.toLowerCase();
+    const matchingOption = descriptorsQuestion.options.find(
+      (o) => o.label.toLowerCase() === lower
+    );
+    const alreadyActive = matchingOption
+      ? descriptorsDraft.includes(matchingOption.id)
+      : customWordsDraft.some((w) => w.toLowerCase() === lower);
+
+    if (alreadyActive) return;
+
+    if (descriptorsTotalDraft >= descriptorsMax) {
+      setDescriptorLimitHint(true);
+      return;
+    }
+
+    if (matchingOption) {
+      setDescriptorsDraft((prev) => [...prev, matchingOption.id]);
+    } else {
+      setCustomWordsDraft((prev) => [...prev, normalized]);
+    }
+    setLiveMessage("Wort hinzugefügt");
+
+    if (descriptorsTotalDraft + 1 >= descriptorsMax) {
+      setCustomInputOpen(false);
+      setDescriptorLimitHint(true);
+    }
+  }
+
+  function handleCustomInputKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      confirmCustomWord();
+    } else if (e.key === "Escape") {
+      setCustomDraft("");
+      setCustomInputOpen(false);
+    } else if (e.key === "Backspace" && customDraft === "" && customWordsDraft.length > 0) {
+      e.preventDefault();
+      removeCustomWord(customWordsDraft[customWordsDraft.length - 1]);
+    }
+  }
+
+  function handleCustomInputBlur() {
+    if (customDraft.trim()) {
+      confirmCustomWord();
+    } else {
+      setCustomDraft("");
+      setCustomInputOpen(false);
+    }
   }
 
   async function handleSubmit() {
@@ -176,15 +300,18 @@ export default function FeedbackForm({
     setStatus("loading");
     setErrorMessage("");
 
+    const descriptorsAnswer = answerFor<DescriptorsAnswer>("descriptors");
+
     try {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          format: answerFor<Format>("format"),
+          format: answerFor<Format | null>("format") ?? null,
           rating: answerFor<number>("rating"),
-          descriptors: answerFor<string[]>("descriptors"),
-          best: answerFor<string>("best"),
+          descriptors: descriptorsAnswer?.ids ?? [],
+          descriptorsCustom: descriptorsAnswer?.custom ?? [],
+          best: answerFor<string>("best") || null,
           improve: answerFor<string>("improve") || null,
           name: name.trim() || null,
           email: trimmedEmail || null,
@@ -239,10 +366,21 @@ export default function FeedbackForm({
             <QuestionHeader index={1} question={formatQuestion.question}>
               <ChoiceRows
                 options={formatQuestion.options}
-                value={pendingAnswer?.step === "format" ? (pendingAnswer.value as Format) : null}
+                value={
+                  pendingAnswer?.step === "format"
+                    ? (pendingAnswer.value as Format)
+                    : answerFor<Format>("format") ?? null
+                }
                 pending={pendingAnswer !== null}
                 onSelect={(id) => selectPending("format", id as Format)}
               />
+              <div className="mt-6">
+                <TextLinkButton
+                  label={skipLabel}
+                  disabled={pendingAnswer !== null}
+                  onClick={() => pushAnswer("format", null)}
+                />
+              </div>
             </QuestionHeader>
           )}
 
@@ -250,7 +388,11 @@ export default function FeedbackForm({
             <QuestionHeader index={2} question={ratingQuestion.question}>
               <ScaleInput
                 question={ratingQuestion}
-                value={pendingAnswer?.step === "rating" ? (pendingAnswer.value as number) : null}
+                value={
+                  pendingAnswer?.step === "rating"
+                    ? (pendingAnswer.value as number)
+                    : answerFor<number>("rating") ?? null
+                }
                 pending={pendingAnswer !== null}
                 onSelect={(n) => selectPending("rating", n)}
               />
@@ -260,22 +402,37 @@ export default function FeedbackForm({
           {currentStepId === "descriptors" && (
             <QuestionHeader index={3} question={descriptorsQuestion.question} hint={descriptorsQuestion.hint}>
               <ChoicePills
-                options={descriptorsQuestion.options}
+                question={descriptorsQuestion}
                 selected={descriptorsDraft}
                 onToggle={toggleDescriptor}
+                customWords={customWordsDraft}
+                customDraft={customDraft}
+                customInputOpen={customInputOpen}
+                atLimit={descriptorsAtLimit}
+                onOpenCustomInput={openCustomInput}
+                onCustomDraftChange={setCustomDraft}
+                onCustomInputKeyDown={handleCustomInputKeyDown}
+                onCustomInputBlur={handleCustomInputBlur}
+                onRemoveCustomWord={removeCustomWord}
               />
               <div className="mt-3 min-h-[20px] text-sm text-umber">
                 {descriptorLimitHint && "Du kannst höchstens drei Worte wählen."}
               </div>
-              <div className="mt-6">
+              <div ref={descriptorsButtonsRef} className="mt-6 flex scroll-mb-4 items-center gap-6">
                 <button
                   type="button"
-                  onClick={() => pushAnswer("descriptors", descriptorsDraft)}
-                  disabled={descriptorsDraft.length === 0}
+                  onClick={() =>
+                    pushAnswer("descriptors", { ids: descriptorsDraft, custom: customWordsDraft })
+                  }
+                  disabled={descriptorsTotalDraft === 0}
                   className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Weiter
                 </button>
+                <TextLinkButton
+                  label={skipLabel}
+                  onClick={() => pushAnswer("descriptors", { ids: [], custom: [] })}
+                />
               </div>
             </QuestionHeader>
           )}
@@ -289,15 +446,16 @@ export default function FeedbackForm({
                 maxLength={bestQuestion.maxLength}
                 autoFocus
               />
-              <div className="mt-6">
+              <div className="mt-6 flex items-center gap-6">
                 <button
                   type="button"
                   onClick={() => pushAnswer("best", bestDraft.trim())}
-                  disabled={bestDraft.trim().length < (bestQuestion.minLength ?? 1)}
+                  disabled={bestDraft.trim().length === 0}
                   className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Weiter
                 </button>
+                <TextLinkButton label={skipLabel} onClick={() => pushAnswer("best", "")} />
               </div>
             </QuestionHeader>
           )}
@@ -320,13 +478,7 @@ export default function FeedbackForm({
                 >
                   Weiter
                 </button>
-                <button
-                  type="button"
-                  onClick={() => pushAnswer("improve", "")}
-                  className="text-sm text-muted hover:text-primary transition-colors"
-                >
-                  Überspringen
-                </button>
+                <TextLinkButton label={skipLabel} onClick={() => pushAnswer("improve", "")} />
               </div>
             </QuestionHeader>
           )}
@@ -422,7 +574,7 @@ export default function FeedbackForm({
       <div className="flex items-center justify-between pt-6">
         <button
           onClick={handleBack}
-          disabled={history.length === 0}
+          disabled={stepIndex === 0}
           className="text-sm text-muted hover:text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Zurück
@@ -511,19 +663,47 @@ function ChoiceRows({
   );
 }
 
-// choice, Variante pills (design-system.md 8.4).
+// choice, Variante pills (design-system.md 8.4). Feste Optionen zuerst,
+// danach (falls question.custom gesetzt, aktuell nur descriptors) die
+// bereits bestätigten eigenen Worte als gefüllte Pills mit ×-Button, danach
+// die Add-Pill (gestrichelter Rand) oder, aufgeklappt, die Eingabe-Pill.
+// Alle Pill-Varianten teilen dieselbe feste Höhe h-11 (44px, kein
+// min-height): Padding nur horizontal, Inhalt über flex items-center
+// vertikal zentriert, damit jede Zeile der umbrechenden Reihe exakt gleich
+// hoch bleibt, mit oder ohne eigene Worte. Gesamte Reihe als role="group",
+// damit Screenreader sie als zusammengehörige Antwortmenge ansagen.
 function ChoicePills({
-  options,
+  question,
   selected,
   onToggle,
+  customWords,
+  customDraft,
+  customInputOpen,
+  atLimit,
+  onOpenCustomInput,
+  onCustomDraftChange,
+  onCustomInputKeyDown,
+  onCustomInputBlur,
+  onRemoveCustomWord,
 }: {
-  options: ChoiceOption[];
+  question: ChoiceQuestion;
   selected: string[];
   onToggle: (id: string) => void;
+  customWords: string[];
+  customDraft: string;
+  customInputOpen: boolean;
+  atLimit: boolean;
+  onOpenCustomInput: () => void;
+  onCustomDraftChange: (value: string) => void;
+  onCustomInputKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onCustomInputBlur: () => void;
+  onRemoveCustomWord: (word: string) => void;
 }) {
+  const custom = question.custom;
+
   return (
-    <div className="flex flex-wrap gap-3">
-      {options.map((opt) => {
+    <div role="group" aria-label={question.question} className="flex flex-wrap items-center gap-3">
+      {question.options.map((opt) => {
         const isSelected = selected.includes(opt.id);
         return (
           <button
@@ -531,7 +711,7 @@ function ChoicePills({
             type="button"
             aria-pressed={isSelected}
             onClick={() => onToggle(opt.id)}
-            className={`min-h-11 rounded-full px-5 py-[10px] text-base transition-colors duration-200 ${
+            className={`flex h-11 items-center rounded-full px-5 text-base transition-colors duration-200 ${
               isSelected
                 ? "bg-accent text-background"
                 : "border border-hairline bg-surface text-primary hover:border-accent/50"
@@ -541,6 +721,62 @@ function ChoicePills({
           </button>
         );
       })}
+
+      {custom &&
+        customWords.map((word) => (
+          <span
+            key={word}
+            className="flex h-11 items-center rounded-full bg-accent pl-5 pr-1.5 text-base text-background"
+          >
+            {word}
+            <button
+              type="button"
+              onClick={() => onRemoveCustomWord(word)}
+              aria-label={`${word} entfernen`}
+              className="ml-1 flex h-11 w-8 shrink-0 items-center justify-center text-background/70 transition-colors hover:text-background"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3 w-3">
+                <path
+                  d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </span>
+        ))}
+
+      {custom && !customInputOpen && !atLimit && (
+        <button
+          type="button"
+          onClick={onOpenCustomInput}
+          className="flex h-11 items-center rounded-full border border-dashed border-ink/40 bg-transparent px-5 text-base text-muted transition-colors hover:border-ink/60"
+        >
+          + {custom.addLabel}
+        </button>
+      )}
+
+      {custom && customInputOpen && (
+        <span className="flex h-11 items-center rounded-full border border-accent px-5">
+          <input
+            type="text"
+            value={customDraft}
+            onChange={(e) => onCustomDraftChange(e.target.value)}
+            onKeyDown={onCustomInputKeyDown}
+            onBlur={onCustomInputBlur}
+            placeholder={custom.placeholder}
+            maxLength={custom.maxLength}
+            autoFocus
+            aria-label="Eigenes Wort eingeben"
+            style={{
+              width: `${Math.min(custom.maxLength, Math.max(8, customDraft.length + 2))}ch`,
+              maxWidth: "100%",
+            }}
+            className="h-full border-0 bg-transparent text-base leading-none text-primary outline-none placeholder:text-muted/65"
+          />
+        </span>
+      )}
     </div>
   );
 }

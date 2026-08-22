@@ -41,6 +41,20 @@ export interface ChoiceQuestion extends BaseQuestion {
   options: ChoiceOption[];
   minSelect?: number; // nur bei mode "multi"
   maxSelect?: number; // nur bei mode "multi"
+  // Eigene, frei eingegebene Worte zusätzlich zu den festen Optionen (aktuell
+  // nur descriptors). Zählt gegen dasselbe maxSelect wie die festen Optionen.
+  custom?: {
+    addLabel: string;
+    placeholder: string;
+    maxLength: number;
+  };
+}
+
+// Antwort der descriptors-Frage: feste Optionen (ids) plus eigene, frei
+// eingegebene Worte, zusammen begrenzt durch descriptorsQuestion.maxSelect.
+export interface DescriptorsAnswer {
+  ids: string[];
+  custom: string[];
 }
 
 export interface ScaleQuestion extends BaseQuestion {
@@ -83,6 +97,11 @@ export const TOTAL_STEPS = STEP_ORDER.length;
 // erscheint (FeedbackForm.tsx, pendingAnswer-State). Gilt nicht für
 // descriptors/best/improve/contact, die einen eigenen Weiter-Button haben.
 export const AUTO_ADVANCE_DELAY_MS = 400;
+
+// Label des gemeinsamen Skip-Links (TextLinkButton.tsx), für alle
+// überspringbaren Schritte (format, descriptors, best, improve) identisch.
+// rating bleibt Pflicht und hat keinen Skip-Link.
+export const skipLabel = "Überspringen";
 
 // Kopf des aktiven Formulars (oberhalb der ProgressBar), siehe
 // FeedbackForm.tsx. Kein Text im Komponenten-Code.
@@ -128,8 +147,13 @@ export const descriptorsQuestion: ChoiceQuestion = {
   variant: "pills",
   question: "Welche Worte beschreiben deine Erfahrung am besten?",
   hint: "Wähl bis zu drei.",
-  minSelect: 1,
+  minSelect: 0,
   maxSelect: 3,
+  custom: {
+    addLabel: "Eigenes Wort",
+    placeholder: "Dein Wort",
+    maxLength: 30,
+  },
   options: [
     { id: "beruhigend", label: "beruhigend" },
     { id: "befreiend", label: "befreiend" },
@@ -153,8 +177,7 @@ export const bestQuestion: FreetextQuestion = {
   type: "freetext",
   question: "Was hat dir am meisten gebracht?",
   placeholder: "Ein, zwei Sätze reichen.",
-  required: true,
-  minLength: 3,
+  required: false,
   maxLength: 1000,
 };
 
@@ -228,6 +251,34 @@ export function envHint(varName: string): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// TEILNEHMER-MAIL (nach dem Absenden, nur bei angegebener E-Mail und
+// contactConsent, siehe /api/feedback). Aufbau in buildParticipantMail
+// (src/lib/mail.ts), damit route.ts schlank bleibt. Unabhängig von der
+// Bewertung (kein Review Gating, siehe CLAUDE.md).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const participantMail = {
+  subject: "Danke für dein Feedback",
+  greetingNamed: (name: string) => `Hallo ${name},`,
+  greetingGeneric: "Hallo,",
+  intro:
+    "danke, dass du dir die Minute genommen hast. Deine Rückmeldung ist angekommen, ich lese jede einzelne und antworte persönlich, wenn du das möchtest.",
+  audio: {
+    heading: "Mein Dankeschön",
+    text: "Ankommen in zehn Minuten. Atem und Stille. Eine kurze geführte Übung für zu Hause.",
+    buttonLabel: "Audio anhören",
+  },
+  google: {
+    text: "Wenn es dir gutgetan hat, hilf anderen, meine Arbeit zu finden. Eine Bewertung auf Google dauert eine Minute.",
+    buttonLabel: "Auf Google bewerten",
+  },
+  closingParagraph:
+    "Wenn etwas nicht gepasst hat oder du Fragen hast, antworte einfach auf diese Mail. Ich lese und antworte persönlich.",
+  signOff: "Herzlich, Lasse",
+  footer: "Lasse Klüver · Somatic Breathwork · IFS Coaching · www.lassekluever.de",
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // VALIDIERUNG (geteilt zwischen Client-Vorprüfung und /api/feedback)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -250,6 +301,27 @@ export function isValidDescriptors(value: unknown): value is string[] {
   const min = descriptorsQuestion.minSelect ?? 0;
   if (value.length < min || value.length > max) return false;
   return value.every((id) => typeof id === "string" && DESCRIPTOR_IDS.includes(id));
+}
+
+// Serverseitige Sanitisierung der eigenen Beschreibungsworte (/api/feedback):
+// trimmt, zieht Mehrfach-Leerzeichen zusammen, kappt auf die konfigurierte
+// Länge, verwirft leere Einträge und entfernt Duplikate (case-insensitiv).
+// Rohtext wird gespeichert, escapeHtml passiert erst beim Mail-Versand.
+export function sanitizeCustomDescriptors(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  const maxLength = descriptorsQuestion.custom?.maxLength ?? 30;
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const raw of value) {
+    if (typeof raw !== "string") continue;
+    const normalized = raw.trim().replace(/\s+/g, " ").slice(0, maxLength);
+    if (!normalized) continue;
+    const key = normalized.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(normalized);
+  }
+  return result;
 }
 
 // QR-Herkunftskennung (z. B. "mo-19"). Freier Kurzname, aber begrenzt auf ein
