@@ -251,6 +251,34 @@ export function envHint(varName: string): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// TEILNEHMER-MAIL (nach dem Absenden, nur bei angegebener E-Mail und
+// contactConsent, siehe /api/feedback). Aufbau in buildParticipantMail
+// (src/lib/mail.ts), damit route.ts schlank bleibt. Unabhängig von der
+// Bewertung (kein Review Gating, siehe CLAUDE.md).
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const participantMail = {
+  subject: "Danke für dein Feedback",
+  greetingNamed: (name: string) => `Hallo ${name},`,
+  greetingGeneric: "Hallo,",
+  intro:
+    "danke, dass du dir die Minute genommen hast. Deine Rückmeldung ist angekommen, ich lese jede einzelne und antworte persönlich, wenn du das möchtest.",
+  audio: {
+    heading: "Mein Dankeschön",
+    text: "Ankommen in zehn Minuten. Atem und Stille. Eine kurze geführte Übung für zu Hause.",
+    buttonLabel: "Audio anhören",
+  },
+  google: {
+    text: "Wenn es dir gutgetan hat, hilf anderen, meine Arbeit zu finden. Eine Bewertung auf Google dauert eine Minute.",
+    buttonLabel: "Auf Google bewerten",
+  },
+  closingParagraph:
+    "Wenn etwas nicht gepasst hat oder du Fragen hast, antworte einfach auf diese Mail. Ich lese und antworte persönlich.",
+  signOff: "Herzlich, Lasse",
+  footer: "Lasse Klüver · Somatic Breathwork · IFS Coaching · www.lassekluever.de",
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // VALIDIERUNG (geteilt zwischen Client-Vorprüfung und /api/feedback)
 // ─────────────────────────────────────────────────────────────────────────────
 

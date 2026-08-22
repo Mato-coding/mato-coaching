@@ -228,8 +228,12 @@ Toast, keine zusätzliche Farbe: die Bestätigung entsteht allein aus
 gefülltem Zustand plus Pause.
 
 **choice, Variante pills:** Für kurze Mehrfachauswahl-Antworten (aktuell nur
-`descriptors`). Umbrechende Zeile, 12px Lücke, Radius 999px, min-height
-44px, Padding 10px 20px. Unselektiert `--color-surface` mit
+`descriptors`). Umbrechende Zeile (`items-center`, nicht `stretch`), 12px
+Lücke, Radius 999px, Höhe 44px fest (nicht min-height), Padding nur
+horizontal 20px, Inhalt über `flex items-center` vertikal zentriert. Alle
+Pill-Varianten (fest, eigenes Wort, Add-Pill, Eingabe-Pill) teilen exakt
+diese Höhe, damit jede Zeile der umbrechenden Reihe gleich hoch bleibt, mit
+oder ohne eigene Worte. Unselektiert `--color-surface` mit
 `border-hairline`, gewählt `--color-navy` mit Text in `--color-paper`.
 Auswahl-Obergrenzen (hier: höchstens drei, feste plus eigene Worte
 zusammengezählt) zeigen beim Erreichen einen leisen Hinweistext unter den
@@ -242,25 +246,30 @@ Reihenfolge in derselben umbrechenden Pill-Reihe: erst die festen Pills,
 dann die bereits bestätigten eigenen Worte, danach die Add-Pill oder,
 aufgeklappt, die Eingabe-Pill.
 
-- *Eigene-Wort-Pill:* gleiche Maße wie die festen Pills, gefüllt
-  `--color-navy` mit Text `--color-paper`, dahinter ein ×-Button
-  (`aria-label` "<Wort> entfernen", Touch-Fläche 44px, Icon 12px,
-  `--color-paper` bei 70% Deckkraft, bei Hover 100%).
+- *Eigene-Wort-Pill:* gleiche Höhe (44px fest) wie die festen Pills, links
+  20px Padding, gefüllt `--color-navy` mit Text `--color-paper`, dahinter
+  ein ×-Button innerhalb derselben Höhe (`h-11 w-8`, `flex items-center
+  justify-center`, kein eigenes Padding, `-mr-3` negativer Außenabstand
+  statt zusätzlicher Höhe/Breite, damit die 32px breite Touch-Fläche die
+  Pill nicht sichtbar aufweitet). `aria-label` "<Wort> entfernen", Icon
+  12px, `--color-paper` bei 70% Deckkraft, bei Hover 100%.
 - *Add-Pill:* solange feste plus eigene Worte zusammen unter drei liegen,
   gleiche Maße, Hintergrund transparent, 1px gestrichelter Rand in
   `--color-ink` bei 40% Deckkraft, Text "+ Eigenes Wort" in `--color-muted`.
 - *Eingabe-Pill:* Antippen der Add-Pill wandelt sie in dieselbe Pill-Form mit
-  1px durchgezogenem Navy-Rand, darin ein randloses `<input>`
-  (`aria-label` "Eigenes Wort eingeben"), Autofokus, Breite wächst mit dem
-  Inhalt (min 8ch, max 100%). Enter oder Blur mit Inhalt bestätigt, Escape
-  oder Blur ohne Inhalt schließt ohne Eintrag, Backspace im leeren Feld
-  entfernt das zuletzt hinzugefügte eigene Wort. Entspricht die Eingabe
-  (getrimmt, normalisiert) dem Label einer festen Option, aktiviert das
-  stattdessen diese Pill statt ein eigenes Wort anzulegen; entspricht sie
-  einem bereits vorhandenen eigenen Wort, passiert nichts (Dedupe
-  case-insensitiv). Nach einer Bestätigung bleibt die Eingabe-Pill offen für
-  ein weiteres Wort, solange die Obergrenze nicht erreicht ist, sonst
-  schließt sie und der bestehende Limit-Hinweis erscheint.
+  1px durchgezogenem Navy-Rand, darin ein randloses `<input>` (`h-full`,
+  `leading-none`, keine eigene vertikale Padding, gleiche Schriftgröße wie
+  die anderen Pills, `aria-label` "Eigenes Wort eingeben"), Autofokus,
+  Breite wächst mit dem Inhalt (min 8ch, max 100%). Enter oder Blur mit
+  Inhalt bestätigt, Escape oder Blur ohne Inhalt schließt ohne Eintrag,
+  Backspace im leeren Feld entfernt das zuletzt hinzugefügte eigene Wort.
+  Entspricht die Eingabe (getrimmt, normalisiert) dem Label einer festen
+  Option, aktiviert das stattdessen diese Pill statt ein eigenes Wort
+  anzulegen; entspricht sie einem bereits vorhandenen eigenen Wort, passiert
+  nichts (Dedupe case-insensitiv). Nach einer Bestätigung bleibt die
+  Eingabe-Pill offen für ein weiteres Wort, solange die Obergrenze nicht
+  erreicht ist, sonst schließt sie und der bestehende Limit-Hinweis
+  erscheint.
 
 **freetext:** Randloses Feld, kein umlaufender Rand, kein Resize-Griff,
 min-height 100px. Untere 1px-Hairline als Schreiblinie, bei Fokus 2px und

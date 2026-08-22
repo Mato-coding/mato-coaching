@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import { MAIL_FROM, MAIL_REPLY_TO, isValidEmail, escapeHtml } from "@/lib/mail";
+import { MAIL_FROM, MAIL_REPLY_TO, isValidEmail, escapeHtml, buildParticipantMail } from "@/lib/mail";
 import {
   isValidFormat,
   isValidRating,
@@ -126,6 +126,7 @@ export async function POST(request: Request) {
         source,
         page_path: pagePath,
         notify_status: "pending",
+        participant_mail_status: "pending",
       })
       .select("id")
       .single();
@@ -139,6 +140,7 @@ export async function POST(request: Request) {
     }
 
     const feedbackId = inserted.id;
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // 2. Benachrichtigung an Lasse. Fehler beim Versand dürfen das bereits
     // gespeicherte Feedback nicht zurückrollen, nur notify_status spiegelt
@@ -147,7 +149,6 @@ export async function POST(request: Request) {
     let notifyStatus: "sent" | "failed" = "failed";
 
     if (notify) {
-      const resend = new Resend(process.env.RESEND_API_KEY);
       const needsReply = rating <= 3 || Boolean(improve);
       const replyHint = needsReply
         ? `<p style="margin:0 0 16px;font-weight:600;">Bitte persönlich antworten</p>`
@@ -199,9 +200,38 @@ export async function POST(request: Request) {
       console.warn("LEAD_NOTIFICATION_EMAIL fehlt: Feedback-Benachrichtigung wurde nicht versendet.");
     }
 
+    // 3. Bestätigungsmail an die teilnehmende Person, nur wenn E-Mail
+    // angegeben und contactConsent erteilt wurde (sonst "skipped", keine
+    // Mail). Unabhängig von der Bewertung (kein Review Gating). Fehler beim
+    // Versand ändern die Antwort an den Client nicht, nur
+    // participant_mail_status spiegelt den Ausgang wider.
+    let participantMailStatus: "sent" | "failed" | "skipped" = "skipped";
+
+    if (email && contactConsent) {
+      const audioUrl = process.env.NEXT_PUBLIC_FEEDBACK_AUDIO_URL || null;
+      const googleReviewUrl = process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL || null;
+      const { subject, html, text } = buildParticipantMail({ name, audioUrl, googleReviewUrl });
+
+      const { error: participantError } = await resend.emails.send({
+        from: MAIL_FROM,
+        to: email,
+        replyTo: MAIL_REPLY_TO,
+        subject,
+        html,
+        text,
+      });
+
+      if (participantError) {
+        console.error("Resend-Fehler (Feedback-Teilnehmer-Mail):", participantError);
+        participantMailStatus = "failed";
+      } else {
+        participantMailStatus = "sent";
+      }
+    }
+
     const { error: statusError } = await supabase
       .from("feedback_submissions")
-      .update({ notify_status: notifyStatus })
+      .update({ notify_status: notifyStatus, participant_mail_status: participantMailStatus })
       .eq("id", feedbackId);
 
     if (statusError) {

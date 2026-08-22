@@ -105,7 +105,10 @@ export default function DatenschutzPage() {
               Rechtsgrundlage ist bei Angabe von Name und E-Mail-Adresse Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), im Übrigen unser berechtigtes Interesse an einer ehrlichen Qualitätsrückmeldung zu unseren Angeboten (Art. 6 Abs. 1 lit. f DSGVO). Wenn Sie zusätzlich einwilligen, dass Ihre Worte anonym als Teilnehmerstimme auf dieser Website gezeigt werden dürfen, geschieht auch das ausschließlich anonym, ohne Namen oder sonstige identifizierende Angaben, und nur auf Grundlage dieser gesonderten Einwilligung.
             </p>
             <p className="mb-4">
-              Die Daten werden 24 Monate gespeichert und danach gelöscht oder anonymisiert. Für den Versand der internen Benachrichtigung bei neuem Feedback nutzen wir Resend, für die Speicherung Supabase, beide als Auftragsverarbeiter im Sinne von Art. 28 DSGVO.
+              Wenn Sie eine E-Mail-Adresse angeben und der Kontaktaufnahme zustimmen, erhalten Sie zusätzlich automatisch eine Bestätigungs-E-Mail mit einem Dankeschön und weiterführenden Informationen an die von Ihnen angegebene Adresse.
+            </p>
+            <p className="mb-4">
+              Die Daten werden 24 Monate gespeichert und danach gelöscht oder anonymisiert. Für den Versand der internen Benachrichtigung bei neuem Feedback sowie der Bestätigungs-E-Mail nutzen wir Resend, für die Speicherung Supabase, beide als Auftragsverarbeiter im Sinne von Art. 28 DSGVO.
             </p>
             <p>
               Sie können eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, formlos per E-Mail an hello@lassekluever.de.
