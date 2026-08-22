@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
 import ProgressBar from "@/components/ui/ProgressBar";
 import FadeIn from "@/components/ui/FadeIn";
 import Eyebrow from "@/components/ui/Eyebrow";
 import Heading from "@/components/ui/Heading";
+import TextLinkButton from "@/components/ui/TextLinkButton";
 import FeedbackThankYou from "@/components/forms/FeedbackThankYou";
 import { scrollElementToTop } from "@/lib/scroll";
 import { isValidEmail } from "@/lib/mail";
@@ -13,6 +14,7 @@ import {
   STEP_ORDER,
   TOTAL_STEPS,
   AUTO_ADVANCE_DELAY_MS,
+  skipLabel,
   intro,
   formatQuestion,
   ratingQuestion,
@@ -23,16 +25,21 @@ import {
   type Format,
   type StepId,
   type ChoiceOption,
+  type ChoiceQuestion,
   type ScaleQuestion,
+  type DescriptorsAnswer,
 } from "@/lib/feedback-config";
 
 // Eine beantwortete Frage (Schritte 1–5). "contact" (Schritt 6) ist
 // terminal: kein Auto-Advance, sondern der POST selbst, deshalb kein
-// eigener History-Eintrag nötig.
+// eigener History-Eintrag nötig. Übersprungene Schritte landen als normaler
+// History-Eintrag mit einem leeren Wert (format → null, descriptors → { ids:
+// [], custom: [] }, best/improve → ""), Zurück funktioniert dadurch ohne
+// Sonderfall auch über übersprungene Schritte hinweg.
 type AnswerStep = Exclude<StepId, "contact">;
 interface HistoryEntry {
   step: AnswerStep;
-  value: Format | number | string[] | string;
+  value: Format | null | number | DescriptorsAnswer | string;
 }
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
@@ -67,6 +74,13 @@ export default function FeedbackForm({
   const [liveMessage, setLiveMessage] = useState("");
   const [descriptorsDraft, setDescriptorsDraft] = useState<string[]>([]);
   const [descriptorLimitHint, setDescriptorLimitHint] = useState(false);
+  // Eigene Beschreibungsworte (descriptors, bis zu drei zusammen mit den
+  // festen Optionen): customWordsDraft hält die bereits bestätigten Worte,
+  // customDraft den Text der gerade offenen Eingabe-Pill, customInputOpen ob
+  // die Add-Pill gerade zur Eingabe-Pill aufgeklappt ist.
+  const [customWordsDraft, setCustomWordsDraft] = useState<string[]>([]);
+  const [customDraft, setCustomDraft] = useState("");
+  const [customInputOpen, setCustomInputOpen] = useState(false);
   const [bestDraft, setBestDraft] = useState("");
   const [improveDraft, setImproveDraft] = useState("");
   const [name, setName] = useState("");
@@ -90,6 +104,9 @@ export default function FeedbackForm({
     setShownStepId(currentStepId);
     if (descriptorsDraft.length > 0) setDescriptorsDraft([]);
     if (descriptorLimitHint) setDescriptorLimitHint(false);
+    if (customWordsDraft.length > 0) setCustomWordsDraft([]);
+    if (customDraft !== "") setCustomDraft("");
+    if (customInputOpen) setCustomInputOpen(false);
     if (bestDraft !== "") setBestDraft("");
     if (improveDraft !== "") setImproveDraft("");
     if (liveMessage !== "") setLiveMessage("");
@@ -141,19 +158,98 @@ export default function FeedbackForm({
     return history.find((h) => h.step === step)?.value as T | undefined;
   }
 
+  // Obergrenze gilt für feste plus eigene Worte zusammen.
+  const descriptorsMax = descriptorsQuestion.maxSelect ?? Infinity;
+  const descriptorsTotal = descriptorsDraft.length + customWordsDraft.length;
+  const descriptorsAtLimit = descriptorsTotal >= descriptorsMax;
+
   function toggleDescriptor(id: string) {
     setDescriptorsDraft((prev) => {
       if (prev.includes(id)) {
         setDescriptorLimitHint(false);
         return prev.filter((x) => x !== id);
       }
-      const max = descriptorsQuestion.maxSelect ?? Infinity;
-      if (prev.length >= max) {
+      if (descriptorsTotal >= descriptorsMax) {
         setDescriptorLimitHint(true);
         return prev;
       }
       return [...prev, id];
     });
+  }
+
+  function openCustomInput() {
+    if (descriptorsAtLimit) return;
+    setCustomInputOpen(true);
+  }
+
+  function removeCustomWord(word: string) {
+    setCustomWordsDraft((prev) => prev.filter((w) => w !== word));
+    setDescriptorLimitHint(false);
+    setLiveMessage("Wort entfernt");
+  }
+
+  // Enter oder Blur mit Inhalt bestätigt ein eigenes Wort. Entspricht die
+  // (normalisierte) Eingabe dem Label einer festen Option, wird stattdessen
+  // diese Pill aktiviert statt ein eigenes Wort anzulegen. Entspricht sie
+  // einem bereits vorhandenen eigenen Wort, passiert nichts. Bleibt danach
+  // offen für ein weiteres Wort, solange die Obergrenze nicht erreicht ist.
+  function confirmCustomWord() {
+    const normalized = customDraft.trim().replace(/\s+/g, " ");
+    setCustomDraft("");
+
+    if (!normalized) {
+      setCustomInputOpen(false);
+      return;
+    }
+
+    const lower = normalized.toLowerCase();
+    const matchingOption = descriptorsQuestion.options.find(
+      (o) => o.label.toLowerCase() === lower
+    );
+    const alreadyActive = matchingOption
+      ? descriptorsDraft.includes(matchingOption.id)
+      : customWordsDraft.some((w) => w.toLowerCase() === lower);
+
+    if (alreadyActive) return;
+
+    if (descriptorsTotal >= descriptorsMax) {
+      setDescriptorLimitHint(true);
+      return;
+    }
+
+    if (matchingOption) {
+      setDescriptorsDraft((prev) => [...prev, matchingOption.id]);
+    } else {
+      setCustomWordsDraft((prev) => [...prev, normalized]);
+    }
+    setLiveMessage("Wort hinzugefügt");
+
+    if (descriptorsTotal + 1 >= descriptorsMax) {
+      setCustomInputOpen(false);
+      setDescriptorLimitHint(true);
+    }
+  }
+
+  function handleCustomInputKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      confirmCustomWord();
+    } else if (e.key === "Escape") {
+      setCustomDraft("");
+      setCustomInputOpen(false);
+    } else if (e.key === "Backspace" && customDraft === "" && customWordsDraft.length > 0) {
+      e.preventDefault();
+      removeCustomWord(customWordsDraft[customWordsDraft.length - 1]);
+    }
+  }
+
+  function handleCustomInputBlur() {
+    if (customDraft.trim()) {
+      confirmCustomWord();
+    } else {
+      setCustomDraft("");
+      setCustomInputOpen(false);
+    }
   }
 
   async function handleSubmit() {
@@ -176,15 +272,18 @@ export default function FeedbackForm({
     setStatus("loading");
     setErrorMessage("");
 
+    const descriptorsAnswer = answerFor<DescriptorsAnswer>("descriptors");
+
     try {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          format: answerFor<Format>("format"),
+          format: answerFor<Format | null>("format") ?? null,
           rating: answerFor<number>("rating"),
-          descriptors: answerFor<string[]>("descriptors"),
-          best: answerFor<string>("best"),
+          descriptors: descriptorsAnswer?.ids ?? [],
+          descriptorsCustom: descriptorsAnswer?.custom ?? [],
+          best: answerFor<string>("best") || null,
           improve: answerFor<string>("improve") || null,
           name: name.trim() || null,
           email: trimmedEmail || null,
@@ -243,6 +342,13 @@ export default function FeedbackForm({
                 pending={pendingAnswer !== null}
                 onSelect={(id) => selectPending("format", id as Format)}
               />
+              <div className="mt-6">
+                <TextLinkButton
+                  label={skipLabel}
+                  disabled={pendingAnswer !== null}
+                  onClick={() => pushAnswer("format", null)}
+                />
+              </div>
             </QuestionHeader>
           )}
 
@@ -260,22 +366,37 @@ export default function FeedbackForm({
           {currentStepId === "descriptors" && (
             <QuestionHeader index={3} question={descriptorsQuestion.question} hint={descriptorsQuestion.hint}>
               <ChoicePills
-                options={descriptorsQuestion.options}
+                question={descriptorsQuestion}
                 selected={descriptorsDraft}
                 onToggle={toggleDescriptor}
+                customWords={customWordsDraft}
+                customDraft={customDraft}
+                customInputOpen={customInputOpen}
+                atLimit={descriptorsAtLimit}
+                onOpenCustomInput={openCustomInput}
+                onCustomDraftChange={setCustomDraft}
+                onCustomInputKeyDown={handleCustomInputKeyDown}
+                onCustomInputBlur={handleCustomInputBlur}
+                onRemoveCustomWord={removeCustomWord}
               />
               <div className="mt-3 min-h-[20px] text-sm text-umber">
                 {descriptorLimitHint && "Du kannst höchstens drei Worte wählen."}
               </div>
-              <div className="mt-6">
+              <div className="mt-6 flex items-center gap-6">
                 <button
                   type="button"
-                  onClick={() => pushAnswer("descriptors", descriptorsDraft)}
-                  disabled={descriptorsDraft.length === 0}
+                  onClick={() =>
+                    pushAnswer("descriptors", { ids: descriptorsDraft, custom: customWordsDraft })
+                  }
+                  disabled={descriptorsTotal === 0}
                   className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Weiter
                 </button>
+                <TextLinkButton
+                  label={skipLabel}
+                  onClick={() => pushAnswer("descriptors", { ids: [], custom: [] })}
+                />
               </div>
             </QuestionHeader>
           )}
@@ -289,15 +410,16 @@ export default function FeedbackForm({
                 maxLength={bestQuestion.maxLength}
                 autoFocus
               />
-              <div className="mt-6">
+              <div className="mt-6 flex items-center gap-6">
                 <button
                   type="button"
                   onClick={() => pushAnswer("best", bestDraft.trim())}
-                  disabled={bestDraft.trim().length < (bestQuestion.minLength ?? 1)}
+                  disabled={bestDraft.trim().length === 0}
                   className="w-full sm:w-auto rounded-md bg-accent px-8 py-3 text-background transition hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Weiter
                 </button>
+                <TextLinkButton label={skipLabel} onClick={() => pushAnswer("best", "")} />
               </div>
             </QuestionHeader>
           )}
@@ -320,13 +442,7 @@ export default function FeedbackForm({
                 >
                   Weiter
                 </button>
-                <button
-                  type="button"
-                  onClick={() => pushAnswer("improve", "")}
-                  className="text-sm text-muted hover:text-primary transition-colors"
-                >
-                  Überspringen
-                </button>
+                <TextLinkButton label={skipLabel} onClick={() => pushAnswer("improve", "")} />
               </div>
             </QuestionHeader>
           )}
@@ -511,19 +627,44 @@ function ChoiceRows({
   );
 }
 
-// choice, Variante pills (design-system.md 8.4).
+// choice, Variante pills (design-system.md 8.4). Feste Optionen zuerst,
+// danach (falls question.custom gesetzt, aktuell nur descriptors) die
+// bereits bestätigten eigenen Worte als gefüllte Pills mit ×-Button, danach
+// die Add-Pill (gestrichelter Rand) oder, aufgeklappt, die Eingabe-Pill.
+// Gesamte Reihe als role="group", damit Screenreader sie als
+// zusammengehörige Antwortmenge ansagen.
 function ChoicePills({
-  options,
+  question,
   selected,
   onToggle,
+  customWords,
+  customDraft,
+  customInputOpen,
+  atLimit,
+  onOpenCustomInput,
+  onCustomDraftChange,
+  onCustomInputKeyDown,
+  onCustomInputBlur,
+  onRemoveCustomWord,
 }: {
-  options: ChoiceOption[];
+  question: ChoiceQuestion;
   selected: string[];
   onToggle: (id: string) => void;
+  customWords: string[];
+  customDraft: string;
+  customInputOpen: boolean;
+  atLimit: boolean;
+  onOpenCustomInput: () => void;
+  onCustomDraftChange: (value: string) => void;
+  onCustomInputKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onCustomInputBlur: () => void;
+  onRemoveCustomWord: (word: string) => void;
 }) {
+  const custom = question.custom;
+
   return (
-    <div className="flex flex-wrap gap-3">
-      {options.map((opt) => {
+    <div role="group" aria-label={question.question} className="flex flex-wrap gap-3">
+      {question.options.map((opt) => {
         const isSelected = selected.includes(opt.id);
         return (
           <button
@@ -541,6 +682,62 @@ function ChoicePills({
           </button>
         );
       })}
+
+      {custom &&
+        customWords.map((word) => (
+          <span
+            key={word}
+            className="flex min-h-11 items-center gap-1 rounded-full bg-accent py-[10px] pl-5 pr-2 text-base text-background"
+          >
+            {word}
+            <button
+              type="button"
+              onClick={() => onRemoveCustomWord(word)}
+              aria-label={`${word} entfernen`}
+              className="flex h-11 w-11 shrink-0 items-center justify-center text-background/70 transition-colors hover:text-background"
+            >
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3 w-3">
+                <path
+                  d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </span>
+        ))}
+
+      {custom && !customInputOpen && !atLimit && (
+        <button
+          type="button"
+          onClick={onOpenCustomInput}
+          className="min-h-11 rounded-full border border-dashed border-ink/40 bg-transparent px-5 py-[10px] text-base text-muted transition-colors hover:border-ink/60"
+        >
+          + {custom.addLabel}
+        </button>
+      )}
+
+      {custom && customInputOpen && (
+        <span className="flex min-h-11 items-center rounded-full border border-accent px-5 py-[10px]">
+          <input
+            type="text"
+            value={customDraft}
+            onChange={(e) => onCustomDraftChange(e.target.value)}
+            onKeyDown={onCustomInputKeyDown}
+            onBlur={onCustomInputBlur}
+            placeholder={custom.placeholder}
+            maxLength={custom.maxLength}
+            autoFocus
+            aria-label="Eigenes Wort eingeben"
+            style={{
+              width: `${Math.min(custom.maxLength, Math.max(8, customDraft.length + 2))}ch`,
+              maxWidth: "100%",
+            }}
+            className="border-0 bg-transparent text-base text-primary outline-none placeholder:text-muted/65"
+          />
+        </span>
+      )}
     </div>
   );
 }

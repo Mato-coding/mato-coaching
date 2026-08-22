@@ -181,6 +181,20 @@ Lücke (`items-baseline gap-4`). Der Kontakt-Schritt (Frage 6) hat mehrere
 Felder statt einer Antwortliste und bleibt deshalb ohne die italic
 Frage-Optik, behält aber die Nummer.
 
+**Skip-Link:** Überspringbare Schritte (`format`, `descriptors`, `best`,
+`improve`; `rating` bleibt Pflicht, `contact` überspringt sich implizit über
+"Feedback senden" ohne Angaben) tragen einen einheitlichen Skip-Link,
+`TextLinkButton.tsx` (`src/components/ui/`): `<button type="button">`,
+`text-sm text-muted underline underline-offset-2 hover:text-accent`. Label
+`skipLabel` ("Überspringen", `feedback-config.ts`). Platzierung: bei Fragen
+mit eigenem Weiter-Button rechts daneben in derselben Zeile (`flex
+items-center gap-6`); bei Auto-Advance-Fragen ohne Weiter-Button (aktuell nur
+`format`) unter der Antwort. Ein Skip setzt für den Schritt denselben leeren
+Wert, den eine explizite Nicht-Antwort hätte (`format` → `null`,
+`descriptors` → keine Auswahl, `best`/`improve` → leerer Text), und landet
+als normaler History-Eintrag, Zurück funktioniert dadurch auch über
+übersprungene Schritte hinweg, ohne Sonderfall.
+
 ### 8.4 Frage-Typen
 
 **choice, Variante rows:** Für wenige Optionen (aktuell nur `format`).
@@ -217,9 +231,36 @@ gefülltem Zustand plus Pause.
 `descriptors`). Umbrechende Zeile, 12px Lücke, Radius 999px, min-height
 44px, Padding 10px 20px. Unselektiert `--color-surface` mit
 `border-hairline`, gewählt `--color-navy` mit Text in `--color-paper`.
-Auswahl-Obergrenzen (hier: höchstens drei) zeigen beim Erreichen einen
-leisen Hinweistext unter den Pills statt die Optionen sichtbar zu
-deaktivieren.
+Auswahl-Obergrenzen (hier: höchstens drei, feste plus eigene Worte
+zusammengezählt) zeigen beim Erreichen einen leisen Hinweistext unter den
+Pills statt die Optionen sichtbar zu deaktivieren.
+
+**choice, Variante pills, eigenes Wort:** `descriptors` erlaubt zusätzlich zu
+den zwölf festen Optionen bis zu drei eigene, frei eingegebene Worte
+(zusammen mit den festen Optionen gegen dieselbe Obergrenze gezählt).
+Reihenfolge in derselben umbrechenden Pill-Reihe: erst die festen Pills,
+dann die bereits bestätigten eigenen Worte, danach die Add-Pill oder,
+aufgeklappt, die Eingabe-Pill.
+
+- *Eigene-Wort-Pill:* gleiche Maße wie die festen Pills, gefüllt
+  `--color-navy` mit Text `--color-paper`, dahinter ein ×-Button
+  (`aria-label` "<Wort> entfernen", Touch-Fläche 44px, Icon 12px,
+  `--color-paper` bei 70% Deckkraft, bei Hover 100%).
+- *Add-Pill:* solange feste plus eigene Worte zusammen unter drei liegen,
+  gleiche Maße, Hintergrund transparent, 1px gestrichelter Rand in
+  `--color-ink` bei 40% Deckkraft, Text "+ Eigenes Wort" in `--color-muted`.
+- *Eingabe-Pill:* Antippen der Add-Pill wandelt sie in dieselbe Pill-Form mit
+  1px durchgezogenem Navy-Rand, darin ein randloses `<input>`
+  (`aria-label` "Eigenes Wort eingeben"), Autofokus, Breite wächst mit dem
+  Inhalt (min 8ch, max 100%). Enter oder Blur mit Inhalt bestätigt, Escape
+  oder Blur ohne Inhalt schließt ohne Eintrag, Backspace im leeren Feld
+  entfernt das zuletzt hinzugefügte eigene Wort. Entspricht die Eingabe
+  (getrimmt, normalisiert) dem Label einer festen Option, aktiviert das
+  stattdessen diese Pill statt ein eigenes Wort anzulegen; entspricht sie
+  einem bereits vorhandenen eigenen Wort, passiert nichts (Dedupe
+  case-insensitiv). Nach einer Bestätigung bleibt die Eingabe-Pill offen für
+  ein weiteres Wort, solange die Obergrenze nicht erreicht ist, sonst
+  schließt sie und der bestehende Limit-Hinweis erscheint.
 
 **freetext:** Randloses Feld, kein umlaufender Rand, kein Resize-Griff,
 min-height 100px. Untere 1px-Hairline als Schreiblinie, bei Fokus 2px und
