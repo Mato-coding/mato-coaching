@@ -726,14 +726,14 @@ function ChoicePills({
         customWords.map((word) => (
           <span
             key={word}
-            className="flex h-11 items-center gap-1 rounded-full bg-accent pl-5 text-base text-background"
+            className="flex h-11 items-center rounded-full bg-accent pl-5 pr-1.5 text-base text-background"
           >
             {word}
             <button
               type="button"
               onClick={() => onRemoveCustomWord(word)}
               aria-label={`${word} entfernen`}
-              className="-mr-3 flex h-11 w-8 shrink-0 items-center justify-center text-background/70 transition-colors hover:text-background"
+              className="ml-1 flex h-11 w-8 shrink-0 items-center justify-center text-background/70 transition-colors hover:text-background"
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3 w-3">
                 <path

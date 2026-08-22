@@ -246,13 +246,14 @@ Reihenfolge in derselben umbrechenden Pill-Reihe: erst die festen Pills,
 dann die bereits bestätigten eigenen Worte, danach die Add-Pill oder,
 aufgeklappt, die Eingabe-Pill.
 
-- *Eigene-Wort-Pill:* gleiche Höhe (44px fest) wie die festen Pills, links
-  20px Padding, gefüllt `--color-navy` mit Text `--color-paper`, dahinter
-  ein ×-Button innerhalb derselben Höhe (`h-11 w-8`, `flex items-center
-  justify-center`, kein eigenes Padding, `-mr-3` negativer Außenabstand
-  statt zusätzlicher Höhe/Breite, damit die 32px breite Touch-Fläche die
-  Pill nicht sichtbar aufweitet). `aria-label` "<Wort> entfernen", Icon
-  12px, `--color-paper` bei 70% Deckkraft, bei Hover 100%.
+- *Eigene-Wort-Pill:* gleiche Höhe (44px fest) wie die festen Pills, gefüllt
+  `--color-navy` mit Text `--color-paper`, Padding asymmetrisch (links 20px,
+  rechts 6px statt der sonst symmetrischen 20px), dahinter ein ×-Button
+  innerhalb derselben Höhe (`h-11 w-8`, `flex items-center justify-center`,
+  1px linker Außenabstand zum Wort, kein negativer Außenabstand), sodass die
+  32px breite Touch-Fläche vollständig innerhalb des runden Rands liegt und
+  ihn nicht überragt. `aria-label` "<Wort> entfernen", Icon 12px,
+  `--color-paper` bei 70% Deckkraft, bei Hover 100%.
 - *Add-Pill:* solange feste plus eigene Worte zusammen unter drei liegen,
   gleiche Maße, Hintergrund transparent, 1px gestrichelter Rand in
   `--color-ink` bei 40% Deckkraft, Text "+ Eigenes Wort" in `--color-muted`.
