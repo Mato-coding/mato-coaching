@@ -93,6 +93,25 @@ export default function DatenschutzPage() {
             </p>
           </section>
 
+          <section>
+            <h2 className="text-xl font-medium text-primary mb-4">5. Feedback-Formular</h2>
+            <p className="mb-4">
+              Unter /feedback können Teilnehmerinnen und Teilnehmer nach einer Klasse, einem Workshop oder einer Einzelsitzung eine Rückmeldung zu ihrer Erfahrung geben. Der Zugang erfolgt über einen QR-Code, der direkt in der jeweiligen Klasse, dem Workshop oder der Sitzung ausgehängt bzw. gezeigt wird. Zweck der Verarbeitung ist die Qualitätsrückmeldung zu unseren Angeboten.
+            </p>
+            <p className="mb-4">
+              Gespeichert werden das besuchte Format, die abgegebene Bewertung, die gewählten Beschreibungsworte, die frei formulierten Antworten, optional Name und E-Mail-Adresse, die abgegebenen Einwilligungen, eine Herkunftskennung des jeweiligen QR-Codes (z. B. welche Klasse oder welcher Kurstag) sowie der Seitenpfad des Aufrufs. Keine IP-Adresse, kein Gerät oder Browser wird gespeichert.
+            </p>
+            <p className="mb-4">
+              Rechtsgrundlage ist bei Angabe von Name und E-Mail-Adresse Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), im Übrigen unser berechtigtes Interesse an einer ehrlichen Qualitätsrückmeldung zu unseren Angeboten (Art. 6 Abs. 1 lit. f DSGVO). Wenn Sie zusätzlich einwilligen, dass Ihre Worte anonym als Teilnehmerstimme auf dieser Website gezeigt werden dürfen, geschieht auch das ausschließlich anonym, ohne Namen oder sonstige identifizierende Angaben, und nur auf Grundlage dieser gesonderten Einwilligung.
+            </p>
+            <p className="mb-4">
+              Die Daten werden 24 Monate gespeichert und danach gelöscht oder anonymisiert. Für den Versand der internen Benachrichtigung bei neuem Feedback nutzen wir Resend, für die Speicherung Supabase, beide als Auftragsverarbeiter im Sinne von Art. 28 DSGVO.
+            </p>
+            <p>
+              Sie können eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, formlos per E-Mail an hello@lassekluever.de.
+            </p>
+          </section>
+
         </div>
       </div>
     </Section>

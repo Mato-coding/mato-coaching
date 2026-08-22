@@ -1,28 +1,13 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getSupabaseAdmin } from "@/lib/supabase";
-
-// Absender und Antwortadresse
-const FROM = "Lasse Klüver · Mato Coaching <hello@lassekluever.de>";
-const REPLY_TO = "hello@lassekluever.de";
+import { MAIL_FROM, MAIL_REPLY_TO, isValidEmail, escapeHtml } from "@/lib/mail";
 
 // Link zum gefuehrten Breathwork-Audio.
 // Sobald die echte Datei online ist, in Vercel die Variable LEAD_AUDIO_URL setzen.
 const AUDIO_URL =
   process.env.LEAD_AUDIO_URL ||
   "https://www.lassekluever.de/audio/physiological-sigh.m4a";
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 export async function POST(request: Request) {
   try {
@@ -89,9 +74,9 @@ export async function POST(request: Request) {
 
     // Audio-Mail an den Interessenten
     const { error: audioError } = await resend.emails.send({
-      from: FROM,
+      from: MAIL_FROM,
       to: email,
-      replyTo: REPLY_TO,
+      replyTo: MAIL_REPLY_TO,
       subject: "Dein geführtes Breathwork-Audio",
       html: `
         <div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;background:#fcfaf0;padding:32px;color:#19191a;">
@@ -149,7 +134,7 @@ export async function POST(request: Request) {
             )}, Ergebnis ${escapeHtml(assessmentResult || "–")}</p>`
           : "";
       const { error: notifyError } = await resend.emails.send({
-        from: FROM,
+        from: MAIL_FROM,
         to: notify,
         replyTo: email,
         subject: "Neue Anmeldung zum Breathwork-Audio",

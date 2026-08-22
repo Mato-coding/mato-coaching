@@ -14,6 +14,10 @@ interface BuildMetadataOptions {
   title: string;
   description: string;
   ogType?: "website" | "article";
+  // Für Seiten, die bewusst nicht in Suchergebnissen erscheinen sollen (z. B.
+  // /feedback, eine QR-Einladungsseite). Default false, Canonical/OpenGraph
+  // bleiben davon unberührt.
+  noindex?: boolean;
 }
 
 // Ein Muster für alle Seiten-Metadata (Architektur-Audit 2.6, Refactoring-
@@ -25,6 +29,7 @@ export function buildMetadata({
   title,
   description,
   ogType = "website",
+  noindex = false,
 }: BuildMetadataOptions): Metadata {
   const url = absoluteUrl(path);
 
@@ -40,5 +45,6 @@ export function buildMetadata({
       description,
       url,
     },
+    ...(noindex ? { robots: { index: false, follow: false } } : {}),
   };
 }

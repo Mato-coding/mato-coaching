@@ -14,6 +14,11 @@ interface ButtonProps {
   // Button-Look übernehmen, aber ihr eigenes Klick-Verhalten brauchen
   // (Anker sanft anscrollen statt hart zu springen).
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  // Für Links, die die Seite verlassen (externe Ziele, mailto:), öffnet in
+  // einem neuen Tab mit rel="noopener noreferrer". Next/Link rendert für
+  // externe hrefs ohnehin ein normales <a>, hier kommen nur die beiden
+  // zusätzlichen Attribute dazu.
+  external?: boolean;
 }
 
 // Klassenketten 1:1 aus den bisherigen Fundstellen übernommen (Audit 2.2).
@@ -36,11 +41,14 @@ export default function Button({
   className = "",
   children,
   onClick,
+  external = false,
 }: ButtonProps) {
   return (
     <Link
       href={href}
       onClick={onClick}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className={`${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim()}
     >
       {children}
