@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 02.09.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren. Abschnitt 9 aktualisiert: Instagram und TikTok als berufliche Profile ergänzt (in sameAs im Schema hinterlegt), LinkedIn-Zeile auf die Social-Media-Strategie im Portfolio-Modell präzisiert.
+> Stand: 04.09.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren. Abschnitt 9 aktualisiert: Journal-Content-Programm ergänzt (Artikel 01, Wim-Hof-Atmung, veröffentlicht 08.09.2026).
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -91,6 +91,7 @@ Hinweis: Teilnehmerworte wie "weniger Anxiety, Panikattacken" dürfen als gekenn
 - TikTok: berufliches Business-Profil @lassekluever (seit August 2026), Reichweiten-Motor der Social-Strategie. In sameAs im Schema hinterlegt.
 - Studio-Profile: als Lehrer in verschiedenen Studios vorgestellt.
 - Website www.lassekluever.de mit Funnel (Assessment, Audio-Lead-Magnet, Cal-Buchung, Journal).
+- Journal: Content-Programm gestartet (Artikel 01, Wim-Hof-Atmung, veröffentlicht 08.09.2026), Themenplanung wöchentlich nach claude/journal-keyword-plan.md im Claude-Projekt, Details zum Stand in architekturfahrplan.md Abschnitt SEO-Offensive, SEO-3.
 - Sonst keine Kanäle, keine E-Mail-Liste über die Leads hinaus.
 - Testimonials und Google-Bewertungen: noch keine, aber mehrere Personen können kurzfristig gebeten werden. [offen] Status nachhalten.
 

@@ -1,6 +1,6 @@
 # Architektur-Fahrplan und Entscheidungs-Register
 
-> Stand: 16.08.2026. Ablageort: Repo-Root, über GitHub ins Projektwissen gesynct. Diese Datei ist die Quelle der Wahrheit für abgeschlossene Architektur-Entscheidungen und die nächsten Schwerpunkte. Bei jedem abgeschlossenen Auftrag mit aktualisieren. Die frühere Kopie im Claude-Projektwissen (claude/architektur-fahrplan.md) ist durch diese Datei ersetzt.
+> Stand: 04.09.2026. Ablageort: Repo-Root, über GitHub ins Projektwissen gesynct. Diese Datei ist die Quelle der Wahrheit für abgeschlossene Architektur-Entscheidungen und die nächsten Schwerpunkte. Bei jedem abgeschlossenen Auftrag mit aktualisieren. Die frühere Kopie im Claude-Projektwissen (claude/architektur-fahrplan.md) ist durch diese Datei ersetzt. Status SEO-3 ergänzt: Artikel 01 (Wim-Hof-Atmung) veröffentlicht.
 
 ## Status: Architektur-Serie abgeschlossen
 
@@ -43,6 +43,9 @@ Status SEO-1 (16.08.2026): Checkliste erstellt, Umsetzung läuft ohne Code durch
 
 2. SEO-2, On-Page /breathwork für "breathwork hamburg": Title, H1, Copy und FAQ gezielt auf die Query prüfen und schärfen (im Rahmen der Copy-Regeln, keine Heilversprechen), lokalen Bezug stärken, areaServed im Schema, interne Links von Startseite und Journal-Artikeln auf /breathwork.
 3. SEO-3, Max-Strom-Artikel ausbauen: der umfassendste deutschsprachige Artikel zu Breathe to Heal werden (Buch, Methode, Kernübungen, eigene Praxiserfahrung, Abgrenzung), Title und Description auf die Query, interne Verlinkung zu /breathwork. Perspektivisch Artikel-Cluster rund um Atemarbeit und Nervensystem mit Querverlinkung.
+
+Status SEO-3 (04.09.2026): Artikel 01 (Wim-Hof-Atmung, /journal/wim-hof-atmung-nervensystem) veröffentlicht am 08.09.2026. Nächster Schritt: Ausbau des Max-Strom-Artikels (KW 38), danach wöchentlich nach claude/journal-keyword-plan.md im Claude-Projekt.
+
 4. SEO-4, Struktur: Header-Navigation und ausführlicherer Footer (interne Verlinkung, auch Voraussetzung für Google-Sitelinks). Laut CLAUDE.md-Entscheidung erst nach /ifs, dieser Punkt verzahnt sich daher mit dem /ifs-Bau.
 
 Nächster Auftrag: SEO-2, On-Page /breathwork, eigener Chat.
