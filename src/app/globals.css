@@ -8,6 +8,15 @@
   --color-navy: #09173B;
   --color-muted: #6B6E72;
   --color-umber: #7C6A57;
+  /* Ausnahme von der Konvention "nur Tokens mit Fundstelle im Code bleiben
+     stehen": diese drei werden zuerst in Social-Media-Grafiken außerhalb des
+     Repos verwendet, bevor sie in Komponenten-Code landen. */
+  /* Grafischer Akzent. Fläche, Zahl, Marke, Daten. Nie CTA, nie Fließtext. */
+  --color-accent-graphic: #12615B;
+  /* Hinterlegung auf Paper. Merksatz-Panel, Textmarke. */
+  --color-accent-graphic-tint: #E0E8DE;
+  /* Gegenstück auf Navy-Flächen. */
+  --color-accent-graphic-light: #7FBDB4;
   --color-hairline: color-mix(in srgb, var(--color-muted) 30%, transparent);
 
   /* Aliase für bestehenden Komponenten-Code */

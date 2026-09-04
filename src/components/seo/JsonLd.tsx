@@ -45,8 +45,11 @@ const jsonLd = {
     jobTitle: "Coach & Somatic Breathwork Begleiter",
     sameAs: ["https://www.linkedin.com/in/lassekl%C3%BCver/"],
   },
-  // Profile des Unternehmens (z. B. berufliches Instagram), sobald vorhanden hier eintragen:
-  sameAs: [],
+  // Berufliche Social-Media-Profile des Unternehmens.
+  sameAs: [
+    "https://www.instagram.com/lassekluever.coaching/",
+    "https://www.tiktok.com/@lassekluever",
+  ],
 };
 
 export default function JsonLd() {

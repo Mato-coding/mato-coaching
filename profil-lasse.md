@@ -1,6 +1,6 @@
 # Profil: Lasse Klüver
 
-> Stand: 18.08.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren. Abschnitt 5 auf die Drei-Stufen-Angebotsarchitektur (Einzelsession, Kompaktbegleitung, Hauptprogramm) gebracht.
+> Stand: 02.09.2026. Diese Zeile bei jeder inhaltlichen Änderung aktualisieren. Abschnitt 9 aktualisiert: Instagram und TikTok als berufliche Profile ergänzt (in sameAs im Schema hinterlegt), LinkedIn-Zeile auf die Social-Media-Strategie im Portfolio-Modell präzisiert.
 
 Zweck: Dieses Dokument beantwortet die wiederkehrenden Fragen zu Person, Qualifikation, Angebot und Zielen. Es liegt im Projektwissen neben CLAUDE.md und design-system.md. Bei Konflikten gilt: CLAUDE.md für Projekt- und Technikstand, design-system.md für Gestaltung, dieses Dokument für Person, Angebot und Business-Ziele.
 
@@ -86,7 +86,9 @@ Hinweis: Teilnehmerworte wie "weniger Anxiety, Panikattacken" dürfen als gekenn
 
 ## 9. Kanäle und Assets
 
-- LinkedIn: vorhanden, bisher mit anderem inhaltlichen Fokus (Freelancing). [offen] Follower-Zahl und Umstellungsplan.
+- LinkedIn: Fokus-Plattform der Social-Media-Strategie im Portfolio-Modell (entschieden 19.08.2026): Headline mit zwei Polen (Coaching sowie Beratung und Interim Management), Ding Dong Ping Pong im Info-Text-Block plus Berufserfahrungs-Eintrag, Content etwa 75/15/10 (Coaching, Beratungs-Brücken, DDPP).
+- Instagram: berufliches Profil @lassekluever.coaching (seit August 2026), zweite Plattform mit Fokus Nahbarkeit und lokale Kurs-Pipeline Hamburg. In sameAs im Schema hinterlegt.
+- TikTok: berufliches Business-Profil @lassekluever (seit August 2026), Reichweiten-Motor der Social-Strategie. In sameAs im Schema hinterlegt.
 - Studio-Profile: als Lehrer in verschiedenen Studios vorgestellt.
 - Website www.lassekluever.de mit Funnel (Assessment, Audio-Lead-Magnet, Cal-Buchung, Journal).
 - Sonst keine Kanäle, keine E-Mail-Liste über die Leads hinaus.

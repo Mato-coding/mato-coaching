@@ -22,6 +22,9 @@ für Werte, dieses Dokument für Haltung.
 | `--color-navy` | `#09173B` | Primär: Autorität, CTAs, Akzentflächen |
 | `--color-muted` | `#6B6E72` | Sekundärtext, Captions |
 | `--color-umber` | `#7C6A57` | Einziger warmer Zier-Akzent. Sehr sparsam: dünne Linie, Eyebrow-Strich, kleine Marke. |
+| `--color-accent-graphic` | `#12615B` | Grafischer Akzent. Fläche, Zahl, Marke, Daten. Nie CTA, nie Fließtext. |
+| `--color-accent-graphic-tint` | `#E0E8DE` | Hinterlegung auf Paper. Merksatz-Panel, Textmarke. |
+| `--color-accent-graphic-light` | `#7FBDB4` | Gegenstück von `accent-graphic` auf Navy-Flächen. |
 | `--color-hairline` | `muted @ 30%` | Abgeleitet, für Hairlines (`color-mix`). |
 
 Regeln:
@@ -29,6 +32,12 @@ Regeln:
 - `--color-umber` ist Signal, nicht Dekoration. Selten und absichtsvoll.
 - Navy bleibt der Anker, Umber ist warm, aber nie laut. Nie beide als Flächen konkurrieren lassen.
 - Umber nie für Fließtext. Kontrast immer prüfen.
+- `accent-graphic` ist der einzige Akzent mit Flächenrecht. Eine Geste pro Sektion, nie zwei.
+- Navy bleibt Anker und einzige CTA-Fläche. `accent-graphic` wird nie Button.
+- Umber behält Eyebrow und Hairline. `accent-graphic` übernimmt Fläche, Zahl, Textmarke, Datenbalken.
+- Gesperrt: `accent-graphic` als Fließtext, `accent-graphic` direkt neben Umber (Kontrast 1,45), `accent-graphic` auf Navy (2,41, dort `accent-graphic-light`, Kontrast 8,22).
+- Geprüfte Kontraste: auf Paper 6,95, auf Surface 7,27, Ink auf Tint 14,03, `accent-graphic` auf Tint 5,81.
+- Herkunft: Der Bestand hatte keine Farbe mit Sättigung im mittleren Helligkeitsbereich, Petrol liegt 114 Grad von Umber und 104 Grad von Navy entfernt.
 
 ---
 
